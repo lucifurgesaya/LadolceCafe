@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>LaDolce Cafe | FULL CMS</title>
+
+<link rel="icon" href="logos.ico">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+:root{
+  --primary:#800000;
+  --secondary:#228B22;
+  --cream:#F5F5DC;
+  --brown:#8B4513;
+  --dark:#2B1C16;
+}
+
+body{
+  background: var(--cream);
+  font-family: sans-serif;
+}
+
+.card{
+  background:white;
+  padding:24px;
+  border-radius:24px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.06);
+}
+
+input, textarea, select{
+  width:100%;
+  padding:10px;
+  margin-top:6px;
+  border-radius:12px;
+  border:1px solid #ddd;
+}
+
+button{
+  transition:.2s;
+}
+button:hover{
+  transform:scale(1.03);
+}
+
+.section-title{
+  font-size:22px;
+  font-weight:800;
+  margin-bottom:12px;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header class="bg-[#2B1C16] text-white p-5 flex justify-between items-center">
+<h1 class="text-2xl font-black">LaDolce Cafe CMS</h1>
+
+<a href="index.html" class="bg-[#800000] px-4 py-2 rounded-xl">
+View Website
+</a>
+</header>
+
+<main class="max-w-6xl mx-auto p-6 grid md:grid-cols-2 gap-8">
+
+<!-- LOGO -->
+<div class="card">
+<div class="section-title">Logo</div>
+
+<input type="file" id="logoFile">
+
+<button onclick="uploadLogo()"
+class="mt-4 bg-[#800000] text-white px-4 py-2 rounded-xl">
+Upload Logo
+</button>
+</div>
+
+<!-- HERO SETTINGS -->
+<div class="card">
+<div class="section-title">Hero Section</div>
+
+<label>Title</label>
+<input id="heroTitle">
+
+<label>Description</label>
+<textarea id="heroDesc"></textarea>
+
+<label>Hero Background Image</label>
+<input type="file" id="heroImage">
+
+<button onclick="updateHero()"
+class="mt-4 bg-[#800000] text-white px-4 py-2 rounded-xl">
+Save Hero
+</button>
+</div>
+
+<!-- ABOUT -->
+<div class="card">
+<div class="section-title">About Section</div>
+
+<textarea id="aboutText" rows="6"></textarea>
+
+<button onclick="updateAbout()"
+class="mt-4 bg-[#228B22] text-white px-4 py-2 rounded-xl">
+Save About
+</button>
+</div>
+
+<!-- CONTACT -->
+<div class="card">
+<div class="section-title">Contact Info</div>
+
+<input id="phone" placeholder="Phone">
+<input id="address" placeholder="Address">
+<input id="facebook" placeholder="Facebook Link">
+
+<button onclick="updateContact()"
+class="mt-4 bg-[#800000] text-white px-4 py-2 rounded-xl">
+Save Contact
+</button>
+</div>
+
+<!-- MENU -->
+<div class="card md:col-span-2">
+<div class="section-title">Menu Management</div>
+
+<input id="menuName" placeholder="Food Name">
+<input id="menuPrice" placeholder="Price">
+<textarea id="menuDesc" placeholder="Description"></textarea>
+<input type="file" id="menuImage">
+
+<button onclick="addMenu()"
+class="mt-4 bg-[#228B22] text-white px-4 py-2 rounded-xl">
+Add Menu Item
+</button>
+
+<div id="menuList" class="grid md:grid-cols-3 gap-4 mt-6"></div>
+</div>
+
+<!-- GALLERY -->
+<div class="card md:col-span-2">
+<div class="section-title">Gallery</div>
+
+<input type="file" id="galleryImage">
+
+<button onclick="uploadGallery()"
+class="mt-4 bg-[#800000] text-white px-4 py-2 rounded-xl">
+Upload Image
+</button>
+
+<div id="galleryList" class="grid md:grid-cols-4 gap-4 mt-6"></div>
+</div>
+
+</main>
+
+<!-- SUPABASE -->
+<script>
+
+const SUPABASE_URL = "https://qvcipcwgzjttqvffdeye.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_LoD9J_ZNZWw5nTMOCmExjw_NgfvOvo6";
+
+const supabaseClient = supabase.createClient(
+SUPABASE_URL,
+SUPABASE_ANON_KEY
+);
+
+</script>
+
+<!-- CMS LOGIC -->
+<script>
+
+// FILE UPLOAD
+async function uploadFile(file){
+const name = Date.now() + "-" + file.name;
+
+const { error } = await supabaseClient
+.storage.from("kuya-dan-media")
+.upload(name, file);
+
+if(error) return null;
+
+const { data } = supabaseClient
+.storage.from("kuya-dan-media")
+.getPublicUrl(name);
+
+return data.publicUrl;
+}
+
+/* ================= HERO ================= */
+async function updateHero(){
+
+const title = document.getElementById("heroTitle").value;
+const desc = document.getElementById("heroDesc").value;
+const file = document.getElementById("heroImage").files[0];
+
+let image = null;
+if(file) image = await uploadFile(file);
+
+await supabaseClient
+.from("website_settings")
+.update({
+hero_title:title,
+hero_description:desc,
+hero_image:image
+})
+.eq("id",1);
+
+alert("Hero Updated!");
+}
+
+/* ================= ABOUT ================= */
+async function updateAbout(){
+
+const about = document.getElementById("aboutText").value;
+
+await supabaseClient
+.from("website_settings")
+.update({
+about_text:about
+})
+.eq("id",1);
+
+alert("About Updated!");
+}
+
+/* ================= CONTACT ================= */
+async function updateContact(){
+
+await supabaseClient
+.from("website_settings")
+.update({
+phone: document.getElementById("phone").value,
+address: document.getElementById("address").value,
+facebook: document.getElementById("facebook").value
+})
+.eq("id",1);
+
+alert("Contact Updated!");
+}
+
+/* ================= MENU ================= */
+async function addMenu(){
+
+const name = document.getElementById("menuName").value;
+const price = document.getElementById("menuPrice").value;
+const desc = document.getElementById("menuDesc").value;
+const file = document.getElementById("menuImage").files[0];
+
+let img = "";
+if(file) img = await uploadFile(file);
+
+await supabaseClient
+.from("menu_items")
+.insert([{
+name, price, description:desc, image_url:img
+}]);
+
+loadMenu();
+}
+
+/* ================= MENU LOAD ================= */
+async function loadMenu(){
+
+const { data } = await supabaseClient
+.from("menu_items")
+.select("*");
+
+const box = document.getElementById("menuList");
+box.innerHTML = "";
+
+data?.forEach(item=>{
+box.innerHTML += `
+<div class="bg-white p-4 rounded-xl shadow">
+<img src="${item.image_url}" class="h-32 w-full object-cover rounded-lg"/>
+<h3 class="font-bold mt-2">${item.name}</h3>
+<p>₱${item.price}</p>
+</div>
+`;
+});
+}
+
+/* ================= GALLERY ================= */
+async function uploadGallery(){
+
+const file = document.getElementById("galleryImage").files[0];
+
+const url = await uploadFile(file);
+
+await supabaseClient
+.from("gallery")
+.insert([{ image_url:url }]);
+
+loadGallery();
+}
+
+async function loadGallery(){
+
+const { data } = await supabaseClient
+.from("gallery")
+.select("*");
+
+const box = document.getElementById("galleryList");
+box.innerHTML = "";
+
+data?.forEach(img=>{
+box.innerHTML += `
+<img src="${img.image_url}" class="h-32 w-full object-cover rounded-xl"/>
+`;
+});
+}
+
+/* INIT */
+loadMenu();
+loadGallery();
+
+</script>
+
+</body>
+</html>
