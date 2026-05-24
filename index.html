@@ -15,9 +15,7 @@ html { scroll-behavior: smooth; }
 
 :root{
   --primary:#800000;
-  --secondary:#228B22;
   --cream:#F5F5DC;
-  --brown:#8B4513;
   --dark:#2B1C16;
 }
 
@@ -26,17 +24,38 @@ body{
   color:#2b1c16;
 }
 
+/* NAV GLASS */
 .glass{
   backdrop-filter: blur(18px);
   background: rgba(245,245,220,0.85);
 }
 
+/* HERO */
 .hero{
-  background:
-  linear-gradient(rgba(43,28,22,.7),rgba(43,28,22,.7)),
-  url('https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb') center/cover;
+  height: 100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  color:white;
+  background-size:cover;
+  background-position:center;
+  position:relative;
 }
 
+.hero::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background: rgba(43,28,22,.65);
+}
+
+.hero-content{
+  position:relative;
+  z-index:2;
+}
+
+/* CARDS */
 .card-hover{
   transition:.3s;
 }
@@ -44,12 +63,11 @@ body{
   transform:translateY(-8px);
 }
 
-.fade{
-  animation:fade .8s ease;
-}
-@keyframes fade{
-  from{opacity:0; transform:translateY(20px);}
-  to{opacity:1; transform:translateY(0);}
+/* SECTION */
+.section{
+  padding:80px 20px;
+  max-width:1200px;
+  margin:auto;
 }
 </style>
 </head>
@@ -74,9 +92,9 @@ body{
 </nav>
 
 <!-- HERO -->
-<section id="home" class="hero h-screen flex items-center justify-center text-white text-center px-6">
+<section id="home" class="hero" style="background-image:url('https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb');">
 
-<div class="max-w-3xl fade">
+<div class="hero-content max-w-3xl px-6">
 
 <h1 id="hero-title" class="text-5xl md:text-7xl font-black">
 LaDolce Cafe
@@ -94,46 +112,25 @@ Authentic Filipino Cuisine served with love and passion.
 </div>
 </section>
 
-<!-- STATS -->
-<section class="py-16 max-w-6xl mx-auto grid md:grid-cols-3 gap-6 text-center">
-
-<div class="bg-white rounded-2xl p-6 shadow">
-<h2 class="text-4xl font-black text-[#800000]">5K+</h2>
-<p>Happy Customers</p>
-</div>
-
-<div class="bg-white rounded-2xl p-6 shadow">
-<h2 class="text-4xl font-black text-[#800000]">50+</h2>
-<p>Menu Items</p>
-</div>
-
-<div class="bg-white rounded-2xl p-6 shadow">
-<h2 class="text-4xl font-black text-[#800000]">10+</h2>
-<p>Years Serving</p>
-</div>
-
-</section>
-
 <!-- ABOUT -->
-<section id="about" class="py-24 max-w-7xl mx-auto px-6">
+<section id="about" class="section">
 
 <h2 class="text-4xl font-black mb-6">About LaDolce Cafe</h2>
 
-<p class="text-lg leading-relaxed text-gray-700 max-w-3xl">
-Mabuhay! LaDolce Cafe is your home for authentic Filipino comfort food,
-crafted with passion, fresh ingredients, and love.
+<p class="text-lg text-gray-700 max-w-3xl">
+Mabuhay! LaDolce Cafe is your home for authentic Filipino comfort food served with passion and love.
 </p>
 
 <div class="grid md:grid-cols-3 gap-6 mt-12">
 
 <div class="bg-white p-6 rounded-2xl shadow">
-<h3 class="font-bold">Opening Hours</h3>
+<h3 class="font-bold">Hours</h3>
 <p>10:00 AM - 10:00 PM</p>
 </div>
 
 <div class="bg-white p-6 rounded-2xl shadow">
 <h3 class="font-bold">Location</h3>
-<p>Rara St., Brgy. 7, Cabadbaran City</p>
+<p>Rara St., Cabadbaran City</p>
 </div>
 
 <div class="bg-white p-6 rounded-2xl shadow">
@@ -144,54 +141,49 @@ crafted with passion, fresh ingredients, and love.
 </div>
 </section>
 
-<!-- FEATURED SPECIALS -->
-<section class="py-20 bg-[#800000] text-white text-center">
-
-<h2 class="text-4xl font-black">Chef’s Special Picks</h2>
-<p class="mt-4 text-white/80">Customer favorites made fresh daily</p>
-
+<!-- SPECIAL BANNER -->
+<section class="py-16 bg-[#800000] text-white text-center">
+<h2 class="text-3xl md:text-5xl font-black">
+Good Food. Good Mood. Great Memories.
+</h2>
 </section>
 
 <!-- MENU -->
-<section id="menu" class="py-24 bg-white">
-
-<div class="max-w-7xl mx-auto px-6">
+<section id="menu" class="section">
 
 <h2 class="text-4xl font-black mb-10">Featured Menu</h2>
 
 <div id="menu-container" class="grid md:grid-cols-3 gap-8"></div>
 
-</div>
 </section>
 
 <!-- TESTIMONIALS -->
-<section class="py-24 max-w-6xl mx-auto px-6">
+<section class="section">
 
 <h2 class="text-4xl font-black mb-10 text-center">What Customers Say</h2>
 
 <div class="grid md:grid-cols-3 gap-6">
 
 <div class="bg-white p-6 rounded-2xl shadow">
-<p>"Best Filipino food in Cabadbaran! Super sulit!"</p>
+<p>"Best Filipino food in town!"</p>
 <span class="text-sm text-gray-500">- Maria</span>
 </div>
 
 <div class="bg-white p-6 rounded-2xl shadow">
-<p>"Cozy place, great food, and friendly staff."</p>
+<p>"Cozy and affordable meals."</p>
 <span class="text-sm text-gray-500">- John</span>
 </div>
 
 <div class="bg-white p-6 rounded-2xl shadow">
-<p>"Highly recommended for family dining."</p>
+<p>"Highly recommended!"</p>
 <span class="text-sm text-gray-500">- Carlo</span>
 </div>
 
 </div>
-
 </section>
 
 <!-- GALLERY -->
-<section id="gallery" class="py-24 max-w-7xl mx-auto px-6">
+<section id="gallery" class="section">
 
 <h2 class="text-4xl font-black mb-10">Gallery</h2>
 
@@ -202,39 +194,26 @@ crafted with passion, fresh ingredients, and love.
 <!-- CONTACT -->
 <section id="contact" class="py-24 bg-[#2B1C16] text-white text-center">
 
-<h2 class="text-4xl font-black">Visit LaDolce Cafe</h2>
+<h2 class="text-4xl font-black">Visit Us</h2>
 
-<p class="mt-4">Rara St., Brgy. 7, Cabadbaran City</p>
-<p>Open Daily 10:00 AM - 10:00 PM</p>
+<p class="mt-4">Rara St., Cabadbaran City</p>
+<p>10:00 AM - 10:00 PM</p>
 <p class="mt-2">09304089307</p>
 
-<a href="https://www.facebook.com/ladolcecafe.bm"
-class="inline-block mt-6 bg-[#800000] px-6 py-3 rounded-xl">
-Facebook Page
-</a>
-
 </section>
-
-<!-- FOOTER -->
-<footer class="py-6 text-center text-sm bg-[#F5F5DC]">
-© 2026 LaDolce Cafe. All rights reserved.
-</footer>
 
 <!-- SUPABASE -->
 <script>
 const SUPABASE_URL = "https://fflnpsiutikdywibbltj.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_WLoDWwjyE2FctbWEoYYSng_qOjZn4hX";
 
-const supabaseClient = supabase.createClient(
-SUPABASE_URL,
-SUPABASE_ANON_KEY
-);
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 </script>
 
 <!-- APP -->
 <script>
 
-// HERO
+/* HERO FIX (IMPORTANT) */
 async function loadHero(){
 const { data } = await supabaseClient
 .from('website_settings')
@@ -242,12 +221,23 @@ const { data } = await supabaseClient
 .single();
 
 if(data){
-document.getElementById('hero-title').innerText = data.hero_title || "LaDolce Cafe";
-document.getElementById('hero-content').innerText = data.hero_description || "";
+
+document.getElementById('hero-title').innerText =
+data.hero_title || "LaDolce Cafe";
+
+document.getElementById('hero-content').innerText =
+data.hero_description || "";
+
+/* 💀 FIX HERO BACKGROUND */
+if(data.hero_image){
+document.getElementById('home').style.backgroundImage =
+`linear-gradient(rgba(43,28,22,.65),rgba(43,28,22,.65)), url('${data.hero_image}')`;
+}
+
 }
 }
 
-// MENU
+/* MENU */
 async function loadMenu(){
 const { data } = await supabaseClient
 .from('menu_items')
@@ -269,7 +259,7 @@ container.innerHTML += `
 });
 }
 
-// GALLERY
+/* GALLERY */
 async function loadGallery(){
 const { data } = await supabaseClient
 .from('gallery')
@@ -286,7 +276,7 @@ container.innerHTML += `
 });
 }
 
-// INIT
+/* INIT */
 loadHero();
 loadMenu();
 loadGallery();
