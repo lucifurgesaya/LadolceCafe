@@ -24,7 +24,7 @@ body{
   color:#2b1c16;
 }
 
-/* NAV GLASS */
+/* NAV */
 .glass{
   backdrop-filter: blur(18px);
   background: rgba(245,245,220,0.85);
@@ -32,7 +32,7 @@ body{
 
 /* HERO */
 .hero{
-  height: 100vh;
+  height:100vh;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -41,6 +41,7 @@ body{
   background-size:cover;
   background-position:center;
   position:relative;
+  transition: background-image .5s ease;
 }
 
 .hero::before{
@@ -55,7 +56,7 @@ body{
   z-index:2;
 }
 
-/* CARDS */
+/* CARD */
 .card-hover{
   transition:.3s;
 }
@@ -65,7 +66,7 @@ body{
 
 /* SECTION */
 .section{
-  padding:80px 20px;
+  padding:90px 20px;
   max-width:1200px;
   margin:auto;
 }
@@ -74,8 +75,8 @@ body{
 
 <body>
 
-<!-- NAVBAR -->
-<nav class="fixed w-full z-50 glass border-b border-[#8B4513]/20">
+<!-- NAV -->
+<nav class="fixed w-full z-50 glass border-b border-black/10">
 <div class="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
 
 <h1 class="font-black text-xl">LaDolce Cafe</h1>
@@ -92,7 +93,8 @@ body{
 </nav>
 
 <!-- HERO -->
-<section id="home" class="hero" style="background-image:url('https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb');">
+<section id="home" class="hero"
+style="background-image:url('https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb');">
 
 <div class="hero-content max-w-3xl px-6">
 
@@ -118,7 +120,8 @@ Authentic Filipino Cuisine served with love and passion.
 <h2 class="text-4xl font-black mb-6">About LaDolce Cafe</h2>
 
 <p class="text-lg text-gray-700 max-w-3xl">
-Mabuhay! LaDolce Cafe is your home for authentic Filipino comfort food served with passion and love.
+Mabuhay! LaDolce Cafe is your home for authentic Filipino comfort food,
+made fresh daily with love and passion.
 </p>
 
 <div class="grid md:grid-cols-3 gap-6 mt-12">
@@ -141,7 +144,7 @@ Mabuhay! LaDolce Cafe is your home for authentic Filipino comfort food served wi
 </div>
 </section>
 
-<!-- SPECIAL BANNER -->
+<!-- BANNER -->
 <section class="py-16 bg-[#800000] text-white text-center">
 <h2 class="text-3xl md:text-5xl font-black">
 Good Food. Good Mood. Great Memories.
@@ -165,17 +168,17 @@ Good Food. Good Mood. Great Memories.
 <div class="grid md:grid-cols-3 gap-6">
 
 <div class="bg-white p-6 rounded-2xl shadow">
-<p>"Best Filipino food in town!"</p>
+<p>"Best Filipino food in Cabadbaran!"</p>
 <span class="text-sm text-gray-500">- Maria</span>
 </div>
 
 <div class="bg-white p-6 rounded-2xl shadow">
-<p>"Cozy and affordable meals."</p>
+<p>"Cozy place and great meals."</p>
 <span class="text-sm text-gray-500">- John</span>
 </div>
 
 <div class="bg-white p-6 rounded-2xl shadow">
-<p>"Highly recommended!"</p>
+<p>"Highly recommended for family dining."</p>
 <span class="text-sm text-gray-500">- Carlo</span>
 </div>
 
@@ -213,11 +216,12 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 <!-- APP -->
 <script>
 
-/* HERO FIX (IMPORTANT) */
+/* HERO (FIXED 100%) */
 async function loadHero(){
 const { data } = await supabaseClient
 .from('website_settings')
 .select('*')
+.eq('id',1)
 .single();
 
 if(data){
@@ -228,12 +232,11 @@ data.hero_title || "LaDolce Cafe";
 document.getElementById('hero-content').innerText =
 data.hero_description || "";
 
-/* 💀 FIX HERO BACKGROUND */
+/* ✅ HERO BACKGROUND FIX */
 if(data.hero_image){
 document.getElementById('home').style.backgroundImage =
 `linear-gradient(rgba(43,28,22,.65),rgba(43,28,22,.65)), url('${data.hero_image}')`;
 }
-
 }
 }
 
@@ -254,8 +257,7 @@ container.innerHTML += `
 <h3 class="text-xl font-bold mt-4">${item.name}</h3>
 <p class="text-gray-600">${item.description}</p>
 <p class="font-black mt-2 text-[#800000]">₱${item.price}</p>
-</div>
-`;
+</div>`;
 });
 }
 
