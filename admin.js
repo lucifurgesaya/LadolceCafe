@@ -1,18 +1,20 @@
-/* =====================================================
-   LaDolce Cafe CMS - FINAL ADMIN CONNECTOR
-   CLEAN + FULL CONTROL VERSION
-===================================================== */
-
 const SUPABASE_URL = "https://fflnpsiutikdywibbltj.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_WLoDWwjyE2FctbWEoYYSng_qOjZn4hX";
 
-const supabaseClient = supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_ANON_KEY
-);
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+const $ = (id) => document.getElementById(id);
 
 /* =====================================================
-   UPLOAD FILE (GLOBAL)
+   PREVIEW REFRESH
+===================================================== */
+function refreshPreview() {
+  const frame = $("previewFrame");
+  if (frame) frame.src = "index.html?v=" + Date.now();
+}
+
+/* =====================================================
+   FILE UPLOAD (GLOBAL SAFE)
 ===================================================== */
 async function uploadFile(file) {
   if (!file) return null;
@@ -25,7 +27,7 @@ async function uploadFile(file) {
 
   if (error) {
     console.error("Upload error:", error.message);
-    alert("Upload failed");
+    alert("File upload failed");
     return null;
   }
 
@@ -37,130 +39,265 @@ async function uploadFile(file) {
 }
 
 /* =====================================================
-   WEBSITE SETTINGS (SINGLE ROW ID = 1)
+   SETTINGS (LOAD OPTIONAL)
 ===================================================== */
-async function getSettings() {
-  const { data } = await supabaseClient
+async function loadSettings() {
+  const { data, error } = await supabaseClient
     .from("website_settings")
     .select("*")
     .eq("id", 1)
-    .single();
+    .maybeSingle();
 
-  return data;
+  if (error) {
+    console.error("Settings load error:", error.message);
+    return;
+  }
+
+  if (!data) return;
+
+  if ($("heroTitle")) $("heroTitle").value = data.hero_title || "";
+  if ($("heroDesc")) $("heroDesc").value = data.hero_description || "";
+  if ($("aboutText")) $("aboutText").value = data.about_text || "";
+  if ($("phone")) $("phone").value = data.phone || "";
+  if ($("address")) $("address").value = data.address || "";
+  if ($("facebook")) $("facebook").value = data.facebook || "";
+  if ($("hours")) $("hours").value = data.opening_hours || "";
 }
 
-async function updateSettings(payload) {
+/* =====================================================
+   HERO UPDATE
+===================================================== */
+async function updateHero() {
+  const file = $("heroImage")?.files?.[0];
+  const imageUrl = await uploadFile(file);
+
   const { error } = await supabaseClient
     .from("website_settings")
-    .update(payload)
+    .update({
+      hero_title: $("heroTitle").value,
+      hero_description: $("heroDesc").value,
+      ...(imageUrl && { hero_image: imageUrl })
+    })
     .eq("id", 1);
 
   if (error) {
     console.error(error.message);
-    alert("Settings update failed");
-    return false;
+    alert("Hero update failed");
+    return;
   }
 
-  return true;
+  refreshPreview();
 }
 
 /* =====================================================
-   HERO
+   ABOUT UPDATE
 ===================================================== */
-async function updateHero(title, desc, imageFile) {
-  let imageUrl = null;
+async function updateAbout() {
+  const { error } = await supabaseClient
+    .from("website_settings")
+    .update({
+      about_text: $("aboutText").value
+    })
+    .eq("id", 1);
 
-  if (imageFile) {
-    imageUrl = await uploadFile(imageFile);
+  if (error) {
+    console.error(error.message);
+    alert("About update failed");
+    return;
   }
 
-  return await updateSettings({
-    hero_title: title,
-    hero_description: desc,
-    ...(imageUrl && { hero_image: imageUrl })
-  });
+  refreshPreview();
 }
 
 /* =====================================================
-   ABOUT
+   CONTACT UPDATE
 ===================================================== */
-async function updateAbout(text) {
-  return await updateSettings({
-    about_text: text
-  });
+async function updateContact() {
+  const { error } = await supabaseClient
+    .from("website_settings")
+    .update({
+      phone: $("phone").value,
+      address: $("address").value,
+      facebook: $("facebook").value,
+      opening_hours: $("hours").value
+    })
+    .eq("id", 1);
+
+  if (error) {
+    console.error(error.message);
+    alert("Contact update failed");
+    return;
+  }
+
+  refreshPreview();
 }
 
 /* =====================================================
-   CONTACT
+   MENU - ADD
 ===================================================== */
-async function updateContact(phone, address, facebook) {
-  return await updateSettings({
-    phone,
-    address,
-    facebook
-  });
-}
+async function addMenu() {
+  const name = $("menuName").value;
+  const price = parseFloat($("menuPrice").value);
+  const desc = $("menuDesc").value;
+  const file = $("menuImage")?.files?.[0];
 
-/* =====================================================
-   MENU CRUD
-===================================================== */
-async function addMenu(item) {
+  if (!name || !price) {
+    alert("Name and price required");
+    return;
+  }
+
+  const imageUrl = await uploadFile(file);
+
   const { error } = await supabaseClient
     .from("menu_items")
-    .insert([item]);
+    .insert([{
+      name,
+      price,
+      description: desc,
+      image_url: imageUrl
+    }]);
 
   if (error) {
     console.error(error.message);
     alert("Menu add failed");
-    return false;
+    return;
   }
 
-  return true;
+  loadMenu();
+  refreshPreview();
 }
 
+/* =====================================================
+   MENU - LOAD
+===================================================== */
+async function loadMenu() {
+  const { data, error } = await supabaseClient
+    .from("menu_items")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error(error.message);
+    return;
+  }
+
+  const list = $("menuList");
+  if (!list) return;
+
+  list.innerHTML = "";
+
+  data?.forEach(item => {
+    list.innerHTML += `
+      <div class="flex justify-between items-center bg-gray-100 p-2 rounded">
+        <div>
+          <p class="font-bold">${item.name}</p>
+          <p>₱${item.price}</p>
+        </div>
+
+        <button onclick="deleteMenu(${item.id})"
+          class="text-red-600 font-bold">X</button>
+      </div>
+    `;
+  });
+}
+
+/* =====================================================
+   MENU - DELETE
+===================================================== */
 async function deleteMenu(id) {
   const { error } = await supabaseClient
     .from("menu_items")
     .delete()
     .eq("id", id);
 
-  return !error;
-}
+  if (error) {
+    console.error(error.message);
+    return;
+  }
 
-async function getMenu() {
-  const { data } = await supabaseClient
-    .from("menu_items")
-    .select("*")
-    .order("created_at", { ascending: false });
-
-  return data || [];
+  loadMenu();
+  refreshPreview();
 }
 
 /* =====================================================
-   GALLERY CRUD
+   GALLERY - UPLOAD
 ===================================================== */
-async function addGallery(url) {
+async function uploadGallery() {
+  const file = $("galleryImage")?.files?.[0];
+  const url = await uploadFile(file);
+
+  if (!url) return;
+
   const { error } = await supabaseClient
     .from("gallery")
     .insert([{ image_url: url }]);
 
-  return !error;
+  if (error) {
+    console.error(error.message);
+    alert("Gallery upload failed");
+    return;
+  }
+
+  loadGallery();
+  refreshPreview();
 }
 
+/* =====================================================
+   GALLERY - LOAD
+===================================================== */
+async function loadGallery() {
+  const { data, error } = await supabaseClient
+    .from("gallery")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error(error.message);
+    return;
+  }
+
+  const grid = $("galleryList");
+  if (!grid) return;
+
+  grid.innerHTML = "";
+
+  data?.forEach(img => {
+    grid.innerHTML += `
+      <div class="relative">
+        <img src="${img.image_url}" class="h-20 w-full object-cover rounded"/>
+
+        <button onclick="deleteGallery(${img.id})"
+          class="absolute top-1 right-1 bg-red-600 text-white px-2 rounded">
+          X
+        </button>
+      </div>
+    `;
+  });
+}
+
+/* =====================================================
+   GALLERY - DELETE
+===================================================== */
 async function deleteGallery(id) {
   const { error } = await supabaseClient
     .from("gallery")
     .delete()
     .eq("id", id);
 
-  return !error;
+  if (error) {
+    console.error(error.message);
+    return;
+  }
+
+  loadGallery();
+  refreshPreview();
 }
 
-async function getGallery() {
-  const { data } = await supabaseClient
-    .from("gallery")
-    .select("*")
-    .order("created_at", { ascending: false });
-
-  return data || [];
-}
+/* =====================================================
+   INIT
+===================================================== */
+document.addEventListener("DOMContentLoaded", () => {
+  loadSettings();
+  loadMenu();
+  loadGallery();
+});
