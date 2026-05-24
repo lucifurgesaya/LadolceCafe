@@ -129,144 +129,228 @@ Upload
 </div>
 
 <script>
+<script>
 const SUPABASE_URL="https://fflnpsiutikdywibbltj.supabase.co";
 const SUPABASE_ANON_KEY="sb_publishable_WLoDWwjyE2FctbWEoYYSng_qOjZn4hX";
 
 const supabaseClient = supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
 
-/* LIVE REFRESH */
+/* =========================
+   SAFE GET INPUT
+========================= */
+const $ = (id) => document.getElementById(id);
+
+/* =========================
+   REFRESH
+========================= */
 function refreshPreview(){
-document.getElementById("previewFrame").src+="?";
+  document.getElementById("previewFrame").src += "?v=" + Date.now();
 }
 
-/* UPLOAD */
+/* =========================
+   UPLOAD FILE (FIXED)
+========================= */
 async function uploadFile(file){
-const name=Date.now()+"-"+file.name;
+  if(!file) return null;
 
-await supabaseClient.storage
-.from("kuya-dan-media")
-.upload(name,file);
+  const fileName = Date.now() + "-" + file.name;
 
-const {data}=supabaseClient.storage
-.from("kuya-dan-media")
-.getPublicUrl(name);
+  const { error } = await supabaseClient.storage
+    .from("kuya-dan-media")
+    .upload(fileName, file);
 
-return data.publicUrl;
+  if(error){
+    console.error("UPLOAD ERROR:", error.message);
+    alert("Upload failed");
+    return null;
+  }
+
+  const { data } = supabaseClient.storage
+    .from("kuya-dan-media")
+    .getPublicUrl(fileName);
+
+  return data.publicUrl;
 }
 
-/* HERO */
+/* =========================
+   HERO
+========================= */
 async function updateHero(){
-let img=null;
-if(heroImage.files[0]) img=await uploadFile(heroImage.files[0]);
+  const file = $("heroImage").files[0];
+  const img = await uploadFile(file);
 
-await supabaseClient.from("website_settings")
-.update({
-hero_title:heroTitle.value,
-hero_description:heroDesc.value,
-hero_image:img
-}).eq("id",1);
+  const { error } = await supabaseClient
+    .from("website_settings")
+    .update({
+      hero_title: $("heroTitle").value || "",
+      hero_description: $("heroDesc").value || "",
+      hero_image: img
+    })
+    .eq("id",1);
 
-refreshPreview();
+  if(error){
+    console.error(error.message);
+    alert("Hero update failed");
+  }
+
+  refreshPreview();
 }
 
-/* ABOUT */
+/* =========================
+   ABOUT
+========================= */
 async function updateAbout(){
-await supabaseClient.from("website_settings")
-.update({about_text:aboutText.value}).eq("id",1);
+  await supabaseClient
+    .from("website_settings")
+    .update({ about_text: $("aboutText").value })
+    .eq("id",1);
 
-refreshPreview();
+  refreshPreview();
 }
 
-/* CONTACT */
+/* =========================
+   CONTACT
+========================= */
 async function updateContact(){
-await supabaseClient.from("website_settings")
-.update({
-phone:phone.value,
-address:address.value,
-facebook:facebook.value
-}).eq("id",1);
+  await supabaseClient
+    .from("website_settings")
+    .update({
+      phone: $("phone").value,
+      address: $("address").value,
+      facebook: $("facebook").value
+    })
+    .eq("id",1);
 
-refreshPreview();
+  refreshPreview();
 }
 
-/* MENU ADD */
+/* =========================
+   ADD MENU (FIXED)
+========================= */
 async function addMenu(){
-let img="";
-if(menuImage.files[0]) img=await uploadFile(menuImage.files[0]);
 
-await supabaseClient.from("menu_items")
-.insert([{
-name:menuName.value,
-price:menuPrice.value,
-description:menuDesc.value,
-image_url:img
-}]);
+  const file = $("menuImage").files[0];
+  const img = await uploadFile(file);
 
-loadMenu();
-refreshPreview();
+  const name = $("menuName").value;
+  const price = parseFloat($("menuPrice").value);
+  const desc = $("menuDesc").value;
+
+  if(!name || !price){
+    alert("Name and Price required!");
+    return;
+  }
+
+  const { error } = await supabaseClient
+    .from("menu_items")
+    .insert([{
+      name,
+      price,
+      description: desc,
+      image_url: img
+    }]);
+
+  if(error){
+    console.error("MENU ERROR:", error.message);
+    alert("Failed to add menu");
+    return;
+  }
+
+  loadMenu();
+  refreshPreview();
 }
 
-/* LOAD MENU */
+/* =========================
+   LOAD MENU (FIXED)
+========================= */
 async function loadMenu(){
-const {data}=await supabaseClient.from("menu_items").select("*");
 
-menuList.innerHTML="";
-data?.forEach(i=>{
-menuList.innerHTML+=`
-<div class="bg-white p-2 rounded-lg shadow flex justify-between items-center">
-<div>
-<p class="font-bold">${i.name}</p>
-<p>₱${i.price}</p>
-</div>
+  const { data, error } = await supabaseClient
+    .from("menu_items")
+    .select("*")
+    .order("created_at",{ascending:false});
 
-<div class="flex gap-2">
-<button onclick="deleteMenu(${i.id})" class="text-red-600">X</button>
-</div>
-</div>`;
-});
+  if(error){
+    console.error(error.message);
+    return;
+  }
+
+  $("menuList").innerHTML = "";
+
+  data.forEach(i=>{
+    $("menuList").innerHTML += `
+      <div class="bg-white p-2 rounded-lg shadow flex justify-between items-center">
+        <div>
+          <p class="font-bold">${i.name}</p>
+          <p>₱${i.price}</p>
+        </div>
+        <button onclick="deleteMenu(${i.id})" class="text-red-600">X</button>
+      </div>
+    `;
+  });
 }
 
-/* DELETE MENU */
+/* =========================
+   DELETE MENU
+========================= */
 async function deleteMenu(id){
-await supabaseClient.from("menu_items").delete().eq("id",id);
-loadMenu();
-refreshPreview();
+  await supabaseClient
+    .from("menu_items")
+    .delete()
+    .eq("id",id);
+
+  loadMenu();
+  refreshPreview();
 }
 
-/* GALLERY */
+/* =========================
+   GALLERY
+========================= */
 async function uploadGallery(){
-const url=await uploadFile(galleryImage.files[0]);
 
-await supabaseClient.from("gallery")
-.insert([{image_url:url}]);
+  const file = $("galleryImage").files[0];
+  const url = await uploadFile(file);
 
-loadGallery();
-refreshPreview();
+  await supabaseClient
+    .from("gallery")
+    .insert([{ image_url: url }]);
+
+  loadGallery();
+  refreshPreview();
 }
 
-/* LOAD GALLERY */
 async function loadGallery(){
-const {data}=await supabaseClient.from("gallery").select("*");
 
-galleryList.innerHTML="";
-data?.forEach(i=>{
-galleryList.innerHTML+=`
-<div class="relative">
-<img src="${i.image_url}" class="rounded-lg h-20 w-full object-cover">
-<button onclick="deleteGallery(${i.id})"
-class="absolute top-1 right-1 bg-red-600 text-white px-2 rounded">X</button>
-</div>`;
-});
+  const { data } = await supabaseClient
+    .from("gallery")
+    .select("*");
+
+  $("galleryList").innerHTML = "";
+
+  data.forEach(i=>{
+    $("galleryList").innerHTML += `
+      <div class="relative">
+        <img src="${i.image_url}" class="h-20 w-full object-cover rounded"/>
+        <button onclick="deleteGallery(${i.id})"
+        class="absolute top-1 right-1 bg-red-600 text-white px-2 rounded">X</button>
+      </div>
+    `;
+  });
 }
 
-/* DELETE GALLERY */
 async function deleteGallery(id){
-await supabaseClient.from("gallery").delete().eq("id",id);
-loadGallery();
-refreshPreview();
+  await supabaseClient
+    .from("gallery")
+    .delete()
+    .eq("id",id);
+
+  loadGallery();
+  refreshPreview();
 }
 
-/* INIT */
+/* =========================
+   INIT
+========================= */
 loadMenu();
 loadGallery();
 
