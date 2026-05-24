@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>LaDolce Cafe | FULL CMS</title>
+<title>LaDolce Cafe | PRO CMS</title>
 
 <link rel="icon" href="logos.ico">
 
@@ -11,7 +11,6 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-
 :root{
   --primary:#800000;
   --secondary:#228B22;
@@ -21,23 +20,22 @@
 }
 
 body{
-  background: var(--cream);
-  font-family: sans-serif;
+  background:var(--cream);
 }
 
 .card{
   background:white;
-  padding:24px;
-  border-radius:24px;
+  border-radius:20px;
+  padding:20px;
   box-shadow:0 10px 30px rgba(0,0,0,0.06);
 }
 
-input, textarea, select{
+input,textarea{
   width:100%;
   padding:10px;
-  margin-top:6px;
-  border-radius:12px;
+  border-radius:10px;
   border:1px solid #ddd;
+  margin-top:5px;
 }
 
 button{
@@ -46,89 +44,77 @@ button{
 button:hover{
   transform:scale(1.03);
 }
-
-.section-title{
-  font-size:22px;
-  font-weight:800;
-  margin-bottom:12px;
-}
-
 </style>
 </head>
 
 <body>
 
 <!-- HEADER -->
-<header class="bg-[#2B1C16] text-white p-5 flex justify-between items-center">
-<h1 class="text-2xl font-black">LaDolce Cafe CMS</h1>
+<header class="bg-[#2B1C16] text-white px-6 py-4 flex justify-between items-center">
+<h1 class="text-2xl font-black">LaDolce Cafe CMS PRO</h1>
 
-<a href="index.html" class="bg-[#800000] px-4 py-2 rounded-xl">
-View Website
+<div class="flex gap-3">
+<a href="index.html" target="_blank"
+class="bg-[#800000] px-4 py-2 rounded-xl">
+Open Website
 </a>
-</header>
 
-<main class="max-w-6xl mx-auto p-6 grid md:grid-cols-2 gap-8">
-
-<!-- LOGO -->
-<div class="card">
-<div class="section-title">Logo</div>
-
-<input type="file" id="logoFile">
-
-<button onclick="uploadLogo()"
-class="mt-4 bg-[#800000] text-white px-4 py-2 rounded-xl">
-Upload Logo
+<button onclick="refreshPreview()"
+class="bg-white text-black px-4 py-2 rounded-xl">
+Refresh Live
 </button>
 </div>
+</header>
 
-<!-- HERO SETTINGS -->
+<!-- MAIN GRID -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 p-6">
+
+<!-- LEFT PANEL (CONTROLS) -->
+<div class="space-y-6">
+
+<!-- HERO -->
 <div class="card">
-<div class="section-title">Hero Section</div>
+<h2 class="font-black text-xl">Hero Section</h2>
 
-<label>Title</label>
-<input id="heroTitle">
+<input id="heroTitle" placeholder="Hero Title">
+<textarea id="heroDesc" placeholder="Hero Description"></textarea>
 
-<label>Description</label>
-<textarea id="heroDesc"></textarea>
-
-<label>Hero Background Image</label>
 <input type="file" id="heroImage">
 
 <button onclick="updateHero()"
-class="mt-4 bg-[#800000] text-white px-4 py-2 rounded-xl">
-Save Hero
+class="mt-3 bg-[#800000] text-white px-4 py-2 rounded-xl">
+Update Hero
 </button>
 </div>
 
 <!-- ABOUT -->
 <div class="card">
-<div class="section-title">About Section</div>
-
-<textarea id="aboutText" rows="6"></textarea>
+<h2 class="font-black text-xl">About</h2>
+<textarea id="aboutText"></textarea>
 
 <button onclick="updateAbout()"
-class="mt-4 bg-[#228B22] text-white px-4 py-2 rounded-xl">
+class="mt-3 bg-green-700 text-white px-4 py-2 rounded-xl">
 Save About
 </button>
 </div>
 
 <!-- CONTACT -->
 <div class="card">
-<div class="section-title">Contact Info</div>
+<h2 class="font-black text-xl">Contact</h2>
 
 <input id="phone" placeholder="Phone">
 <input id="address" placeholder="Address">
-<input id="facebook" placeholder="Facebook Link">
+<input id="facebook" placeholder="Facebook">
 
 <button onclick="updateContact()"
-class="mt-4 bg-[#800000] text-white px-4 py-2 rounded-xl">
+class="mt-3 bg-[#800000] text-white px-4 py-2 rounded-xl">
 Save Contact
 </button>
 </div>
 
 <!-- MENU -->
-<div class="card md:col-span-2">
-<div class="section-title">Menu Management</div>
+<div class="card">
+<h2 class="font-black text-xl">Menu</h2>
 
 <input id="menuName" placeholder="Food Name">
 <input id="menuPrice" placeholder="Price">
@@ -136,182 +122,170 @@ Save Contact
 <input type="file" id="menuImage">
 
 <button onclick="addMenu()"
-class="mt-4 bg-[#228B22] text-white px-4 py-2 rounded-xl">
-Add Menu Item
+class="mt-3 bg-green-700 text-white px-4 py-2 rounded-xl">
+Add Food
 </button>
 
-<div id="menuList" class="grid md:grid-cols-3 gap-4 mt-6"></div>
+<div id="menuList" class="grid grid-cols-2 gap-3 mt-4"></div>
 </div>
 
 <!-- GALLERY -->
-<div class="card md:col-span-2">
-<div class="section-title">Gallery</div>
+<div class="card">
+<h2 class="font-black text-xl">Gallery</h2>
 
 <input type="file" id="galleryImage">
 
 <button onclick="uploadGallery()"
-class="mt-4 bg-[#800000] text-white px-4 py-2 rounded-xl">
-Upload Image
+class="mt-3 bg-[#800000] text-white px-4 py-2 rounded-xl">
+Upload
 </button>
 
-<div id="galleryList" class="grid md:grid-cols-4 gap-4 mt-6"></div>
+<div id="galleryList" class="grid grid-cols-3 gap-2 mt-4"></div>
 </div>
 
-</main>
+</div>
+
+<!-- RIGHT PANEL (LIVE PREVIEW) -->
+<div class="card h-[90vh] sticky top-4">
+
+<div class="flex justify-between items-center mb-3">
+<h2 class="font-black text-xl">LIVE WEBSITE</h2>
+</div>
+
+<iframe
+id="previewFrame"
+src="index.html"
+class="w-full h-full rounded-xl border">
+</iframe>
+
+</div>
+
+</div>
 
 <!-- SUPABASE -->
 <script>
-
-const SUPABASE_URL = "https://qvcipcwgzjttqvffdeye.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_LoD9J_ZNZWw5nTMOCmExjw_NgfvOvo6";
+const SUPABASE_URL="https://qvcipcwgzjttqvffdeye.supabase.co";
+const SUPABASE_ANON_KEY="sb_publishable_LoD9J_ZNZWw5nTMOCmExjw_NgfvOvo6";
 
 const supabaseClient = supabase.createClient(
 SUPABASE_URL,
 SUPABASE_ANON_KEY
 );
-
 </script>
 
 <!-- CMS LOGIC -->
 <script>
 
-// FILE UPLOAD
+/* REFRESH LIVE */
+function refreshPreview(){
+document.getElementById("previewFrame").src =
+document.getElementById("previewFrame").src;
+}
+
+/* UPLOAD FILE */
 async function uploadFile(file){
-const name = Date.now() + "-" + file.name;
+const name = Date.now()+"-"+file.name;
 
-const { error } = await supabaseClient
-.storage.from("kuya-dan-media")
-.upload(name, file);
+await supabaseClient.storage
+.from("kuya-dan-media")
+.upload(name,file);
 
-if(error) return null;
-
-const { data } = supabaseClient
-.storage.from("kuya-dan-media")
+const { data } = supabaseClient.storage
+.from("kuya-dan-media")
 .getPublicUrl(name);
 
 return data.publicUrl;
 }
 
-/* ================= HERO ================= */
+/* HERO */
 async function updateHero(){
+const file=document.getElementById("heroImage").files[0];
+let img=null;
+if(file) img=await uploadFile(file);
 
-const title = document.getElementById("heroTitle").value;
-const desc = document.getElementById("heroDesc").value;
-const file = document.getElementById("heroImage").files[0];
-
-let image = null;
-if(file) image = await uploadFile(file);
-
-await supabaseClient
-.from("website_settings")
+await supabaseClient.from("website_settings")
 .update({
-hero_title:title,
-hero_description:desc,
-hero_image:image
-})
-.eq("id",1);
+hero_title:heroTitle.value,
+hero_description:heroDesc.value,
+hero_image:img
+}).eq("id",1);
 
-alert("Hero Updated!");
+refreshPreview();
 }
 
-/* ================= ABOUT ================= */
+/* ABOUT */
 async function updateAbout(){
-
-const about = document.getElementById("aboutText").value;
-
-await supabaseClient
-.from("website_settings")
+await supabaseClient.from("website_settings")
 .update({
-about_text:about
-})
-.eq("id",1);
+about_text:aboutText.value
+}).eq("id",1);
 
-alert("About Updated!");
+refreshPreview();
 }
 
-/* ================= CONTACT ================= */
+/* CONTACT */
 async function updateContact(){
-
-await supabaseClient
-.from("website_settings")
+await supabaseClient.from("website_settings")
 .update({
-phone: document.getElementById("phone").value,
-address: document.getElementById("address").value,
-facebook: document.getElementById("facebook").value
-})
-.eq("id",1);
+phone:phone.value,
+address:address.value,
+facebook:facebook.value
+}).eq("id",1);
 
-alert("Contact Updated!");
+refreshPreview();
 }
 
-/* ================= MENU ================= */
+/* MENU */
 async function addMenu(){
+const file=menuImage.files[0];
+let img="";
+if(file) img=await uploadFile(file);
 
-const name = document.getElementById("menuName").value;
-const price = document.getElementById("menuPrice").value;
-const desc = document.getElementById("menuDesc").value;
-const file = document.getElementById("menuImage").files[0];
-
-let img = "";
-if(file) img = await uploadFile(file);
-
-await supabaseClient
-.from("menu_items")
+await supabaseClient.from("menu_items")
 .insert([{
-name, price, description:desc, image_url:img
+name:menuName.value,
+price:menuPrice.value,
+description:menuDesc.value,
+image_url:img
 }]);
 
 loadMenu();
+refreshPreview();
 }
 
-/* ================= MENU LOAD ================= */
 async function loadMenu(){
+const {data}=await supabaseClient.from("menu_items").select("*");
 
-const { data } = await supabaseClient
-.from("menu_items")
-.select("*");
-
-const box = document.getElementById("menuList");
-box.innerHTML = "";
-
-data?.forEach(item=>{
-box.innerHTML += `
-<div class="bg-white p-4 rounded-xl shadow">
-<img src="${item.image_url}" class="h-32 w-full object-cover rounded-lg"/>
-<h3 class="font-bold mt-2">${item.name}</h3>
-<p>₱${item.price}</p>
-</div>
-`;
+menuList.innerHTML="";
+data?.forEach(i=>{
+menuList.innerHTML+=`
+<div class="bg-white p-2 rounded-lg shadow">
+<img src="${i.image_url}" class="h-20 w-full object-cover rounded"/>
+<p class="font-bold">${i.name}</p>
+<p>₱${i.price}</p>
+</div>`;
 });
 }
 
-/* ================= GALLERY ================= */
+/* GALLERY */
 async function uploadGallery(){
+const file=galleryImage.files[0];
+const url=await uploadFile(file);
 
-const file = document.getElementById("galleryImage").files[0];
-
-const url = await uploadFile(file);
-
-await supabaseClient
-.from("gallery")
-.insert([{ image_url:url }]);
+await supabaseClient.from("gallery")
+.insert([{image_url:url}]);
 
 loadGallery();
+refreshPreview();
 }
 
 async function loadGallery(){
+const {data}=await supabaseClient.from("gallery").select("*");
 
-const { data } = await supabaseClient
-.from("gallery")
-.select("*");
-
-const box = document.getElementById("galleryList");
-box.innerHTML = "";
-
-data?.forEach(img=>{
-box.innerHTML += `
-<img src="${img.image_url}" class="h-32 w-full object-cover rounded-xl"/>
-`;
+galleryList.innerHTML="";
+data?.forEach(i=>{
+galleryList.innerHTML+=`
+<img src="${i.image_url}" class="h-20 w-full object-cover rounded"/>`;
 });
 }
 
