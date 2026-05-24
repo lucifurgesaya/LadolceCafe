@@ -3,33 +3,39 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>LaDolce Cafe | FULL CMS PRO</title>
+<title>LaDolce Admin CMS</title>
 
 <link rel="icon" href="logo.ico">
-
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-body{background:#F5F5DC;font-family:sans-serif;}
+body{
+  background:#F5F5DC;
+  font-family:sans-serif;
+}
 
 .card{
   background:white;
   padding:20px;
-  border-radius:18px;
-  box-shadow:0 10px 25px rgba(0,0,0,0.06);
+  border-radius:16px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.08);
 }
 
 input,textarea{
   width:100%;
   padding:10px;
+  margin-top:6px;
   border:1px solid #ddd;
   border-radius:10px;
-  margin-top:5px;
 }
 
-button{transition:.2s}
-button:hover{transform:scale(1.03)}
+button{
+  transition:.2s;
+}
+button:hover{
+  transform:scale(1.03);
+}
 </style>
 </head>
 
@@ -37,11 +43,13 @@ button:hover{transform:scale(1.03)}
 
 <!-- HEADER -->
 <header class="bg-[#2B1C16] text-white flex justify-between p-4">
-<h1 class="font-black text-xl">LaDolce CMS PRO MAX</h1>
+<h1 class="font-black text-xl">LaDolce CMS Admin</h1>
 
 <div class="flex gap-2">
 <a href="index.html" target="_blank"
-class="bg-[#800000] px-4 py-2 rounded-xl">Open Site</a>
+class="bg-[#800000] px-4 py-2 rounded-xl">
+Open Site
+</a>
 
 <button onclick="refreshPreview()"
 class="bg-white text-black px-4 py-2 rounded-xl">
@@ -53,52 +61,61 @@ Refresh
 <!-- GRID -->
 <div class="grid lg:grid-cols-2 gap-6 p-6">
 
-<!-- LEFT -->
+<!-- LEFT PANEL -->
 <div class="space-y-6">
 
 <!-- HERO -->
 <div class="card">
-<h2 class="font-black">Hero</h2>
-<input id="heroTitle" placeholder="Title">
-<textarea id="heroDesc" placeholder="Description"></textarea>
+<h2 class="font-black text-lg">Hero Section</h2>
+
+<input id="heroTitle" placeholder="Hero Title">
+<textarea id="heroDesc" placeholder="Hero Description"></textarea>
 <input type="file" id="heroImage">
 
-<button onclick="updateHero()" class="mt-3 bg-[#800000] text-white px-4 py-2 rounded-xl">
-Update Hero
+<button onclick="updateHero()"
+class="mt-3 bg-[#800000] text-white px-4 py-2 rounded-xl">
+Save Hero
 </button>
 </div>
 
 <!-- ABOUT -->
 <div class="card">
-<h2 class="font-black">About</h2>
-<textarea id="aboutText"></textarea>
-<button onclick="updateAbout()" class="mt-3 bg-green-700 text-white px-4 py-2 rounded-xl">
-Save
+<h2 class="font-black text-lg">About</h2>
+
+<textarea id="aboutText" placeholder="About text"></textarea>
+
+<button onclick="updateAbout()"
+class="mt-3 bg-green-700 text-white px-4 py-2 rounded-xl">
+Save About
 </button>
 </div>
 
 <!-- CONTACT -->
 <div class="card">
-<h2 class="font-black">Contact</h2>
-<input id="phone">
-<input id="address">
-<input id="facebook">
+<h2 class="font-black text-lg">Contact</h2>
 
-<button onclick="updateContact()" class="mt-3 bg-[#800000] text-white px-4 py-2 rounded-xl">
-Save
+<input id="phone" placeholder="Phone">
+<input id="address" placeholder="Address">
+<input id="facebook" placeholder="Facebook Link">
+<input id="hours" placeholder="Opening Hours">
+
+<button onclick="updateContact()"
+class="mt-3 bg-[#800000] text-white px-4 py-2 rounded-xl">
+Save Contact
 </button>
 </div>
 
-<!-- MENU (FULL CONTROL) -->
+<!-- MENU -->
 <div class="card">
-<h2 class="font-black">Menu (Edit / Delete)</h2>
+<h2 class="font-black text-lg">Menu</h2>
 
-<input id="menuName">
-<input id="menuPrice">
-<textarea id="menuDesc"></textarea>
+<input id="menuName" placeholder="Name">
+<input id="menuPrice" placeholder="Price">
+<textarea id="menuDesc" placeholder="Description"></textarea>
 <input type="file" id="menuImage">
 
-<button onclick="addMenu()" class="mt-3 bg-green-700 text-white px-4 py-2 rounded-xl">
+<button onclick="addMenu()"
+class="mt-3 bg-green-700 text-white px-4 py-2 rounded-xl">
 Add Item
 </button>
 
@@ -107,12 +124,13 @@ Add Item
 
 <!-- GALLERY -->
 <div class="card">
-<h2 class="font-black">Gallery</h2>
+<h2 class="font-black text-lg">Gallery</h2>
 
 <input type="file" id="galleryImage">
 
-<button onclick="uploadGallery()" class="mt-3 bg-[#800000] text-white px-4 py-2 rounded-xl">
-Upload
+<button onclick="uploadGallery()"
+class="mt-3 bg-[#800000] text-white px-4 py-2 rounded-xl">
+Upload Image
 </button>
 
 <div id="galleryList" class="grid grid-cols-3 gap-2 mt-4"></div>
@@ -120,35 +138,35 @@ Upload
 
 </div>
 
-<!-- RIGHT -->
+<!-- RIGHT PANEL (LIVE PREVIEW) -->
 <div class="card h-[90vh] sticky top-4">
-<h2 class="font-black mb-2">LIVE PREVIEW</h2>
-<iframe id="previewFrame" src="index.html" class="w-full h-full border rounded-xl"></iframe>
+<h2 class="font-black mb-2">Live Preview</h2>
+
+<iframe id="previewFrame"
+src="index.html"
+class="w-full h-full border rounded-xl"></iframe>
 </div>
 
 </div>
 
 <script>
 
-const SUPABASE_URL="https://fflnpsiutikdywibbltj.supabase.co";
-const SUPABASE_ANON_KEY="sb_publishable_WLoDWwjyE2FctbWEoYYSng_qOjZn4hX";
+const SUPABASE_URL = "https://fflnpsiutikdywibbltj.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_WLoDWwjyE2FctbWEoYYSng_qOjZn4H";
 
-const supabaseClient = supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-/* =========================
-   SAFE GET INPUT
-========================= */
 const $ = (id) => document.getElementById(id);
 
 /* =========================
-   REFRESH
+   REFRESH PREVIEW
 ========================= */
 function refreshPreview(){
-  document.getElementById("previewFrame").src += "?v=" + Date.now();
+  $("previewFrame").src = "index.html?v=" + Date.now();
 }
 
 /* =========================
-   UPLOAD FILE (FIXED)
+   UPLOAD FILE
 ========================= */
 async function uploadFile(file){
   if(!file) return null;
@@ -160,7 +178,7 @@ async function uploadFile(file){
     .upload(fileName, file);
 
   if(error){
-    console.error("UPLOAD ERROR:", error.message);
+    console.error(error.message);
     alert("Upload failed");
     return null;
   }
@@ -176,176 +194,184 @@ async function uploadFile(file){
    HERO
 ========================= */
 async function updateHero(){
-  const file = $("heroImage").files[0];
-  const img = await uploadFile(file);
 
-  const { error } = await supabaseClient
-    .from("website_settings")
-    .update({
-      hero_title: $("heroTitle").value || "",
-      hero_description: $("heroDesc").value || "",
-      hero_image: img
-    })
-    .eq("id",1);
+const img = await uploadFile($("heroImage").files[0]);
 
-  if(error){
-    console.error(error.message);
-    alert("Hero update failed");
-  }
+const { error } = await supabaseClient
+.from("website_settings")
+.update({
+  hero_title: $("heroTitle").value,
+  hero_description: $("heroDesc").value,
+  hero_image: img
+})
+.eq("id",1);
 
-  refreshPreview();
+if(error){
+  console.error(error.message);
+  alert("Hero update failed");
+  return;
+}
+
+refreshPreview();
 }
 
 /* =========================
    ABOUT
 ========================= */
 async function updateAbout(){
-  await supabaseClient
-    .from("website_settings")
-    .update({ about_text: $("aboutText").value })
-    .eq("id",1);
 
-  refreshPreview();
+await supabaseClient
+.from("website_settings")
+.update({
+  about_text: $("aboutText").value
+})
+.eq("id",1);
+
+refreshPreview();
 }
 
 /* =========================
    CONTACT
 ========================= */
 async function updateContact(){
-  await supabaseClient
-    .from("website_settings")
-    .update({
-      phone: $("phone").value,
-      address: $("address").value,
-      facebook: $("facebook").value
-    })
-    .eq("id",1);
 
-  refreshPreview();
+await supabaseClient
+.from("website_settings")
+.update({
+  phone: $("phone").value,
+  address: $("address").value,
+  facebook: $("facebook").value,
+  opening_hours: $("hours").value
+})
+.eq("id",1);
+
+refreshPreview();
 }
 
 /* =========================
-   ADD MENU (FIXED)
+   MENU ADD
 ========================= */
 async function addMenu(){
 
-  const file = $("menuImage").files[0];
-  const img = await uploadFile(file);
+const img = await uploadFile($("menuImage").files[0]);
 
-  const name = $("menuName").value;
-  const price = parseFloat($("menuPrice").value);
-  const desc = $("menuDesc").value;
+const name = $("menuName").value;
+const price = $("menuPrice").value;
+const desc = $("menuDesc").value;
 
-  if(!name || !price){
-    alert("Name and Price required!");
-    return;
-  }
+if(!name || !price){
+  alert("Name and price required");
+  return;
+}
 
-  const { error } = await supabaseClient
-    .from("menu_items")
-    .insert([{
-      name,
-      price,
-      description: desc,
-      image_url: img
-    }]);
+const { error } = await supabaseClient
+.from("menu_items")
+.insert([{
+  name,
+  price,
+  description: desc,
+  image_url: img
+}]);
 
-  if(error){
-    console.error("MENU ERROR:", error.message);
-    alert("Failed to add menu");
-    return;
-  }
+if(error){
+  console.error(error.message);
+  alert("Menu add failed");
+  return;
+}
 
-  loadMenu();
-  refreshPreview();
+loadMenu();
+refreshPreview();
 }
 
 /* =========================
-   LOAD MENU (FIXED)
+   LOAD MENU
 ========================= */
 async function loadMenu(){
 
-  const { data, error } = await supabaseClient
-    .from("menu_items")
-    .select("*")
-    .order("created_at",{ascending:false});
+const { data } = await supabaseClient
+.from("menu_items")
+.select("*")
+.order("created_at",{ascending:false});
 
-  if(error){
-    console.error(error.message);
-    return;
-  }
+$("menuList").innerHTML = "";
 
-  $("menuList").innerHTML = "";
+data?.forEach(i=>{
+$("menuList").innerHTML += `
+<div class="flex justify-between items-center bg-gray-100 p-2 rounded">
+  <div>
+    <p class="font-bold">${i.name}</p>
+    <p>₱${i.price}</p>
+  </div>
 
-  data.forEach(i=>{
-    $("menuList").innerHTML += `
-      <div class="bg-white p-2 rounded-lg shadow flex justify-between items-center">
-        <div>
-          <p class="font-bold">${i.name}</p>
-          <p>₱${i.price}</p>
-        </div>
-        <button onclick="deleteMenu(${i.id})" class="text-red-600">X</button>
-      </div>
-    `;
-  });
+  <button onclick="deleteMenu(${i.id})"
+  class="text-red-600 font-bold">X</button>
+</div>`;
+});
 }
 
 /* =========================
    DELETE MENU
 ========================= */
 async function deleteMenu(id){
-  await supabaseClient
-    .from("menu_items")
-    .delete()
-    .eq("id",id);
 
-  loadMenu();
-  refreshPreview();
+await supabaseClient
+.from("menu_items")
+.delete()
+.eq("id",id);
+
+loadMenu();
+refreshPreview();
 }
 
 /* =========================
-   GALLERY
+   GALLERY UPLOAD
 ========================= */
 async function uploadGallery(){
 
-  const file = $("galleryImage").files[0];
-  const url = await uploadFile(file);
+const url = await uploadFile($("galleryImage").files[0]);
 
-  await supabaseClient
-    .from("gallery")
-    .insert([{ image_url: url }]);
+await supabaseClient
+.from("gallery")
+.insert([{ image_url: url }]);
 
-  loadGallery();
-  refreshPreview();
+loadGallery();
+refreshPreview();
 }
 
+/* =========================
+   LOAD GALLERY
+========================= */
 async function loadGallery(){
 
-  const { data } = await supabaseClient
-    .from("gallery")
-    .select("*");
+const { data } = await supabaseClient
+.from("gallery")
+.select("*")
+.order("created_at",{ascending:false});
 
-  $("galleryList").innerHTML = "";
+$("galleryList").innerHTML = "";
 
-  data.forEach(i=>{
-    $("galleryList").innerHTML += `
-      <div class="relative">
-        <img src="${i.image_url}" class="h-20 w-full object-cover rounded"/>
-        <button onclick="deleteGallery(${i.id})"
-        class="absolute top-1 right-1 bg-red-600 text-white px-2 rounded">X</button>
-      </div>
-    `;
-  });
+data?.forEach(i=>{
+$("galleryList").innerHTML += `
+<div class="relative">
+  <img src="${i.image_url}" class="h-20 w-full object-cover rounded"/>
+  <button onclick="deleteGallery(${i.id})"
+  class="absolute top-1 right-1 bg-red-600 text-white px-2 rounded">X</button>
+</div>`;
+});
 }
 
+/* =========================
+   DELETE GALLERY
+========================= */
 async function deleteGallery(id){
-  await supabaseClient
-    .from("gallery")
-    .delete()
-    .eq("id",id);
 
-  loadGallery();
-  refreshPreview();
+await supabaseClient
+.from("gallery")
+.delete()
+.eq("id",id);
+
+loadGallery();
+refreshPreview();
 }
 
 /* =========================
