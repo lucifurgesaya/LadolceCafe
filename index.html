@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>LaDolce Cafe</title>
+
+<link rel="icon" href="logos.ico">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+html { scroll-behavior: smooth; }
+
+:root{
+  --primary:#800000;
+  --secondary:#228B22;
+  --cream:#F5F5DC;
+  --brown:#8B4513;
+  --dark:#2B1C16;
+}
+
+body{
+  background: var(--cream);
+  overflow-x:hidden;
+  color:#2b1c16;
+}
+
+.glass{
+  backdrop-filter: blur(18px);
+  background: rgba(245,245,220,0.8);
+}
+
+.hero{
+  background: linear-gradient(rgba(43,28,22,.65), rgba(43,28,22,.75)),
+  url('https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb') center/cover;
+}
+
+.card-hover{
+  transition: .3s ease;
+}
+
+.card-hover:hover{
+  transform: translateY(-8px);
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="fixed w-full z-50 glass border-b border-[#8B4513]/20">
+<div class="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
+
+<h1 class="font-black text-xl tracking-wide">
+LaDolce Cafe
+</h1>
+
+<div class="hidden md:flex gap-6 text-sm font-semibold">
+<a href="#home">Home</a>
+<a href="#about">About</a>
+<a href="#menu">Menu</a>
+<a href="#gallery">Gallery</a>
+<a href="#contact">Contact</a>
+</div>
+
+</div>
+</nav>
+
+<!-- HERO -->
+<section id="home" class="hero h-screen flex items-center justify-center text-white">
+<div class="text-center max-w-3xl px-6">
+
+<h1 id="hero-title" class="text-5xl md:text-7xl font-black">
+LaDolce Cafe
+</h1>
+
+<p id="hero-content" class="mt-6 text-lg md:text-xl text-white/90">
+Authentic Filipino Cuisine served with love and passion.
+</p>
+
+<div class="mt-8 flex justify-center gap-4">
+<button class="bg-[#800000] px-6 py-3 rounded-xl">View Menu</button>
+<button class="bg-white text-black px-6 py-3 rounded-xl">Visit Us</button>
+</div>
+
+</div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="py-24 max-w-7xl mx-auto px-6">
+
+<h2 class="text-4xl font-black mb-6">About LaDolce Cafe</h2>
+
+<p class="text-lg leading-relaxed text-gray-700 max-w-3xl">
+Mabuhay! Welcome to LaDolce Cafe — where Filipino cuisine meets comfort and passion.
+We serve freshly prepared meals perfect for families, barkadas, and everyday cravings.
+</p>
+
+<div class="grid md:grid-cols-3 gap-6 mt-12">
+
+<div class="bg-white p-6 rounded-2xl shadow">
+<h3 class="font-bold text-xl">Opening Hours</h3>
+<p>10:00 AM - 10:00 PM</p>
+</div>
+
+<div class="bg-white p-6 rounded-2xl shadow">
+<h3 class="font-bold text-xl">Location</h3>
+<p>Rara St., Brgy. 7, Cabadbaran City</p>
+</div>
+
+<div class="bg-white p-6 rounded-2xl shadow">
+<h3 class="font-bold text-xl">Contact</h3>
+<p>09304089307</p>
+</div>
+
+</div>
+
+</section>
+
+<!-- MENU -->
+<section id="menu" class="py-24 bg-white">
+
+<div class="max-w-7xl mx-auto px-6">
+
+<h2 class="text-4xl font-black mb-10">Featured Menu</h2>
+
+<div id="menu-container" class="grid md:grid-cols-3 gap-8"></div>
+
+</div>
+
+</section>
+
+<!-- SPECIAL BANNER -->
+<section class="py-20 bg-[#800000] text-white text-center">
+
+<h2 class="text-3xl md:text-5xl font-black">
+Good Food. Good Mood. Great Memories.
+</h2>
+
+</section>
+
+<!-- GALLERY -->
+<section id="gallery" class="py-24 max-w-7xl mx-auto px-6">
+
+<h2 class="text-4xl font-black mb-10">Gallery</h2>
+
+<div id="gallery-container" class="grid md:grid-cols-4 gap-4"></div>
+
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="py-24 bg-[#2B1C16] text-white text-center">
+
+<h2 class="text-4xl font-black">Visit Us</h2>
+
+<p class="mt-4">Rara St., Brgy. 7, Cabadbaran City</p>
+<p>Open Daily 10:00 AM - 10:00 PM</p>
+<p class="mt-2">09304089307</p>
+
+<a href="https://www.facebook.com/ladolcecafe.bm"
+class="inline-block mt-6 bg-[#800000] px-6 py-3 rounded-xl">
+Facebook Page
+</a>
+
+</section>
+
+<!-- FOOTER -->
+<footer class="py-6 text-center text-sm bg-[#F5F5DC]">
+© 2026 LaDolce Cafe. All rights reserved.
+</footer>
+
+<!-- SUPABASE -->
+<script>
+const SUPABASE_URL = "https://qvcipcwgzjttqvffdeye.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_LoD9J_ZNZWw5nTMOCmExjw_NgfvOvo6";
+
+const supabaseClient = supabase.createClient(
+SUPABASE_URL,
+SUPABASE_ANON_KEY
+);
+</script>
+
+<!-- APP -->
+<script>
+
+// HERO
+async function loadHero(){
+const { data } = await supabaseClient
+.from('website_settings')
+.select('*')
+.single();
+
+if(data){
+document.getElementById('hero-title').innerText = data.hero_title || "LaDolce Cafe";
+document.getElementById('hero-content').innerText = data.hero_description || "";
+}
+}
+
+// MENU
+async function loadMenu(){
+const { data } = await supabaseClient
+.from('menu_items')
+.select('*')
+.order('created_at',{ascending:false});
+
+const container = document.getElementById('menu-container');
+container.innerHTML = "";
+
+data?.forEach(item=>{
+container.innerHTML += `
+<div class="bg-white rounded-2xl shadow p-4 card-hover">
+<img src="${item.image_url}" class="rounded-xl h-48 w-full object-cover"/>
+<h3 class="text-xl font-bold mt-4">${item.name}</h3>
+<p class="text-gray-600">${item.description}</p>
+<p class="font-black mt-2 text-[#800000]">₱${item.price}</p>
+</div>
+`;
+});
+}
+
+// GALLERY
+async function loadGallery(){
+const { data } = await supabaseClient
+.from('gallery')
+.select('*')
+.order('created_at',{ascending:false});
+
+const container = document.getElementById('gallery-container');
+container.innerHTML = "";
+
+data?.forEach(img=>{
+container.innerHTML += `
+<img src="${img.image_url}" class="rounded-2xl h-48 w-full object-cover"/>
+`;
+});
+}
+
+// INIT
+loadHero();
+loadMenu();
+loadGallery();
+
+</script>
+
+</body>
+</html>
