@@ -41,7 +41,7 @@ body{
   background-size:cover;
   background-position:center;
   position:relative;
-  transition: background-image .5s ease;
+  transition: background-image .4s ease;
 }
 
 .hero::before{
@@ -120,8 +120,7 @@ Authentic Filipino Cuisine served with love and passion.
 <h2 class="text-4xl font-black mb-6">About LaDolce Cafe</h2>
 
 <p class="text-lg text-gray-700 max-w-3xl">
-Mabuhay! LaDolce Cafe is your home for authentic Filipino comfort food,
-made fresh daily with love and passion.
+Mabuhay! LaDolce Cafe is your home for authentic Filipino comfort food.
 </p>
 
 <div class="grid md:grid-cols-3 gap-6 mt-12">
@@ -216,15 +215,23 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 <!-- APP -->
 <script>
 
-/* HERO (FIXED 100%) */
+/* =========================
+   HERO (SAFE + NO CRASH)
+========================= */
 async function loadHero(){
-const { data } = await supabaseClient
+
+const { data, error } = await supabaseClient
 .from('website_settings')
 .select('*')
 .eq('id',1)
-.single();
+.maybeSingle(); // 🔥 FIX: prevents crash if empty
 
-if(data){
+if(error){
+  console.log("Hero load error:", error.message);
+  return;
+}
+
+if(!data) return;
 
 document.getElementById('hero-title').innerText =
 data.hero_title || "LaDolce Cafe";
@@ -232,15 +239,17 @@ data.hero_title || "LaDolce Cafe";
 document.getElementById('hero-content').innerText =
 data.hero_description || "";
 
-/* ✅ HERO BACKGROUND FIX */
-if(data.hero_image){
+/* HERO IMAGE SAFE UPDATE */
+if(data.hero_image && data.hero_image.length > 5){
 document.getElementById('home').style.backgroundImage =
 `linear-gradient(rgba(43,28,22,.65),rgba(43,28,22,.65)), url('${data.hero_image}')`;
 }
-}
+
 }
 
-/* MENU */
+/* =========================
+   MENU
+========================= */
 async function loadMenu(){
 const { data } = await supabaseClient
 .from('menu_items')
@@ -253,15 +262,17 @@ container.innerHTML = "";
 data?.forEach(item=>{
 container.innerHTML += `
 <div class="bg-white rounded-2xl shadow p-5 card-hover">
-<img src="${item.image_url}" class="rounded-xl h-52 w-full object-cover"/>
+<img src="${item.image_url || ''}" class="rounded-xl h-52 w-full object-cover"/>
 <h3 class="text-xl font-bold mt-4">${item.name}</h3>
-<p class="text-gray-600">${item.description}</p>
+<p class="text-gray-600">${item.description || ''}</p>
 <p class="font-black mt-2 text-[#800000]">₱${item.price}</p>
 </div>`;
 });
 }
 
-/* GALLERY */
+/* =========================
+   GALLERY
+========================= */
 async function loadGallery(){
 const { data } = await supabaseClient
 .from('gallery')
@@ -278,7 +289,9 @@ container.innerHTML += `
 });
 }
 
-/* INIT */
+/* =========================
+   INIT
+========================= */
 loadHero();
 loadMenu();
 loadGallery();
