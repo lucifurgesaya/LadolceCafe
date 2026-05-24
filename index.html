@@ -59,7 +59,7 @@ body{
   margin:auto;
 }
 
-/* GLASS NAV */
+/* NAV */
 .nav{
   backdrop-filter: blur(18px);
   background: rgba(255,255,255,0.8);
@@ -106,18 +106,15 @@ Visit Us
 
 <!-- ABOUT -->
 <section id="about" class="section text-center">
-<h2 class="text-4xl font-black mb-6">About LaDolce Cafe</h2>
-
-<p class="max-w-2xl mx-auto text-gray-700 text-lg">
-A cozy place where authentic Filipino flavors meet comfort and passion.
-Every dish is made with love, tradition, and warmth.
+<h2 class="text-4xl font-black mb-6">About</h2>
+<p id="about-text" class="max-w-2xl mx-auto text-gray-700 text-lg">
+Loading...
 </p>
 </section>
 
 <!-- MENU -->
 <section id="menu" class="section">
 <h2 class="text-4xl font-black mb-10 text-center">Our Menu</h2>
-
 <div id="menu-container" class="grid md:grid-cols-3 gap-8"></div>
 </section>
 
@@ -131,7 +128,6 @@ Good Food. Good Mood. Great Memories.
 <!-- GALLERY -->
 <section id="gallery" class="section">
 <h2 class="text-4xl font-black mb-10 text-center">Gallery</h2>
-
 <div id="gallery-container" class="grid md:grid-cols-4 gap-4"></div>
 </section>
 
@@ -139,9 +135,10 @@ Good Food. Good Mood. Great Memories.
 <section id="contact" class="py-20 bg-[#2B1C16] text-white text-center">
 <h2 class="text-4xl font-black">Visit Us</h2>
 
-<p class="mt-4">Rara St., Cabadbaran City</p>
-<p>10:00 AM - 10:00 PM</p>
-<p class="mt-2">09304089307</p>
+<p id="address" class="mt-4">Loading address...</p>
+<p id="hours">Loading hours...</p>
+<p id="phone" class="mt-2">Loading phone...</p>
+<p id="facebook" class="mt-2"></p>
 </section>
 
 <!-- SUPABASE -->
@@ -152,28 +149,47 @@ const SUPABASE_ANON_KEY = "sb_publishable_WLoDWwjyE2FctbWEoYYSng_qOjZn4hX";
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 /* =========================
-   HERO (SAFE + CLEAN)
+   LOAD SETTINGS (GLOBAL CMS)
 ========================= */
-async function loadHero(){
+async function loadSettings(){
 
 const { data } = await supabaseClient
-.from("website_settings")
-.select("*")
-.eq("id",1)
-.maybeSingle();
+  .from("website_settings")
+  .select("*")
+  .eq("id",1)
+  .maybeSingle();
 
 if(!data) return;
 
+// HERO
 document.getElementById("hero-title").innerText =
 data.hero_title || "LaDolce Cafe";
 
 document.getElementById("hero-desc").innerText =
 data.hero_description || "";
 
-if(data.hero_image && data.hero_image.length > 5){
+// HERO IMAGE
+if(data.hero_image){
 document.getElementById("home").style.backgroundImage =
 `linear-gradient(rgba(43,28,22,.65),rgba(43,28,22,.65)), url('${data.hero_image}')`;
 }
+
+// ABOUT
+document.getElementById("about-text").innerText =
+data.about_text || "No about text yet.";
+
+// CONTACT
+document.getElementById("address").innerText =
+data.address || "";
+
+document.getElementById("phone").innerText =
+data.phone || "";
+
+document.getElementById("facebook").innerText =
+data.facebook ? "Facebook: " + data.facebook : "";
+
+document.getElementById("hours").innerText =
+data.opening_hours || "";
 }
 
 /* =========================
@@ -223,7 +239,7 @@ container.innerHTML += `
 /* =========================
    INIT
 ========================= */
-loadHero();
+loadSettings();
 loadMenu();
 loadGallery();
 </script>
