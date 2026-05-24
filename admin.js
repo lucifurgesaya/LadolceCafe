@@ -2,8 +2,8 @@
    LaDolce Cafe - SUPABASE CONNECTOR
 ================================== */
 
-const SUPABASE_URL = "https://qvcipcwgzjttqvffdeye.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_LoD9J_ZNZWw5nTMOCmExjw_NgfvOvo6";
+const SUPABASE_URL = "https://fflnpsiutikdywibbltj.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_WLoDWwjyE2FctbWEoYYSng_qOjZn4hX";
 
 const supabaseClient = supabase.createClient(
   SUPABASE_URL,
