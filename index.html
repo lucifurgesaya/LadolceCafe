@@ -6,28 +6,15 @@
 <title>LaDolce Cafe</title>
 
 <link rel="icon" href="logo.ico">
-
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 html { scroll-behavior: smooth; }
 
-:root{
-  --primary:#800000;
-  --cream:#F5F5DC;
-  --dark:#2B1C16;
-}
-
 body{
-  background: var(--cream);
+  background:#F5F5DC;
   color:#2b1c16;
-}
-
-/* NAV */
-.glass{
-  backdrop-filter: blur(18px);
-  background: rgba(245,245,220,0.85);
 }
 
 /* HERO */
@@ -41,7 +28,6 @@ body{
   background-size:cover;
   background-position:center;
   position:relative;
-  transition: background-image .4s ease;
 }
 
 .hero::before{
@@ -57,14 +43,9 @@ body{
 }
 
 /* CARD */
-.card-hover{
-  transition:.3s;
-}
-.card-hover:hover{
-  transform:translateY(-8px);
-}
+.card-hover{ transition:.3s; }
+.card-hover:hover{ transform:translateY(-6px); }
 
-/* SECTION */
 .section{
   padding:90px 20px;
   max-width:1200px;
@@ -76,19 +57,15 @@ body{
 <body>
 
 <!-- NAV -->
-<nav class="fixed w-full z-50 glass border-b border-black/10">
+<nav class="fixed w-full z-50 bg-white/80 backdrop-blur border-b">
 <div class="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
-
 <h1 class="font-black text-xl">LaDolce Cafe</h1>
-
 <div class="hidden md:flex gap-6 text-sm font-semibold">
 <a href="#home">Home</a>
 <a href="#about">About</a>
 <a href="#menu">Menu</a>
 <a href="#gallery">Gallery</a>
-<a href="#contact">Contact</a>
 </div>
-
 </div>
 </nav>
 
@@ -97,205 +74,100 @@ body{
 style="background-image:url('https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb');">
 
 <div class="hero-content max-w-3xl px-6">
-
-<h1 id="hero-title" class="text-5xl md:text-7xl font-black">
-LaDolce Cafe
-</h1>
-
-<p id="hero-content" class="mt-6 text-lg md:text-xl text-white/90">
-Authentic Filipino Cuisine served with love and passion.
-</p>
-
-<div class="mt-8 flex justify-center gap-4">
-<button class="bg-[#800000] px-6 py-3 rounded-xl">View Menu</button>
-<button class="bg-white text-black px-6 py-3 rounded-xl">Visit Us</button>
-</div>
-
+<h1 id="hero-title" class="text-5xl font-black">LaDolce Cafe</h1>
+<p id="hero-content" class="mt-6 text-lg">Loading...</p>
 </div>
 </section>
 
 <!-- ABOUT -->
 <section id="about" class="section">
-
-<h2 class="text-4xl font-black mb-6">About LaDolce Cafe</h2>
-
-<p class="text-lg text-gray-700 max-w-3xl">
-Mabuhay! LaDolce Cafe is your home for authentic Filipino comfort food.
-</p>
-
-<div class="grid md:grid-cols-3 gap-6 mt-12">
-
-<div class="bg-white p-6 rounded-2xl shadow">
-<h3 class="font-bold">Hours</h3>
-<p>10:00 AM - 10:00 PM</p>
-</div>
-
-<div class="bg-white p-6 rounded-2xl shadow">
-<h3 class="font-bold">Location</h3>
-<p>Rara St., Cabadbaran City</p>
-</div>
-
-<div class="bg-white p-6 rounded-2xl shadow">
-<h3 class="font-bold">Contact</h3>
-<p>09304089307</p>
-</div>
-
-</div>
-</section>
-
-<!-- BANNER -->
-<section class="py-16 bg-[#800000] text-white text-center">
-<h2 class="text-3xl md:text-5xl font-black">
-Good Food. Good Mood. Great Memories.
-</h2>
+<h2 class="text-4xl font-black mb-6">About</h2>
+<p>Authentic Filipino Cuisine served with love.</p>
 </section>
 
 <!-- MENU -->
 <section id="menu" class="section">
-
-<h2 class="text-4xl font-black mb-10">Featured Menu</h2>
-
-<div id="menu-container" class="grid md:grid-cols-3 gap-8"></div>
-
-</section>
-
-<!-- TESTIMONIALS -->
-<section class="section">
-
-<h2 class="text-4xl font-black mb-10 text-center">What Customers Say</h2>
-
-<div class="grid md:grid-cols-3 gap-6">
-
-<div class="bg-white p-6 rounded-2xl shadow">
-<p>"Best Filipino food in Cabadbaran!"</p>
-<span class="text-sm text-gray-500">- Maria</span>
-</div>
-
-<div class="bg-white p-6 rounded-2xl shadow">
-<p>"Cozy place and great meals."</p>
-<span class="text-sm text-gray-500">- John</span>
-</div>
-
-<div class="bg-white p-6 rounded-2xl shadow">
-<p>"Highly recommended for family dining."</p>
-<span class="text-sm text-gray-500">- Carlo</span>
-</div>
-
-</div>
+<h2 class="text-4xl font-black mb-10">Menu</h2>
+<div id="menu-container" class="grid md:grid-cols-3 gap-6"></div>
 </section>
 
 <!-- GALLERY -->
 <section id="gallery" class="section">
-
 <h2 class="text-4xl font-black mb-10">Gallery</h2>
-
 <div id="gallery-container" class="grid md:grid-cols-4 gap-4"></div>
-
 </section>
 
-<!-- CONTACT -->
-<section id="contact" class="py-24 bg-[#2B1C16] text-white text-center">
-
-<h2 class="text-4xl font-black">Visit Us</h2>
-
-<p class="mt-4">Rara St., Cabadbaran City</p>
-<p>10:00 AM - 10:00 PM</p>
-<p class="mt-2">09304089307</p>
-
-</section>
-
-<!-- SUPABASE -->
 <script>
 const SUPABASE_URL = "https://fflnpsiutikdywibbltj.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_WLoDWwjyE2FctbWEoYYSng_qOjZn4hX";
 
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-</script>
 
-<!-- APP -->
-<script>
-
-/* =========================
-   HERO (SAFE + NO CRASH)
-========================= */
 async function loadHero(){
 
-const { data, error } = await supabaseClient
-.from('website_settings')
-.select('*')
-.eq('id',1)
-.maybeSingle(); // 🔥 FIX: prevents crash if empty
+  const { data } = await supabaseClient
+    .from("website_settings")
+    .select("*")
+    .eq("id", 1)
+    .maybeSingle();
 
-if(error){
-  console.log("Hero load error:", error.message);
-  return;
+  if(!data) return;
+
+  document.getElementById("hero-title").innerText =
+    data.hero_title || "LaDolce Cafe";
+
+  document.getElementById("hero-content").innerText =
+    data.hero_description || "";
+
+  // 🔥 FORCE APPLY IMAGE (NO CONDITIONS)
+  if(data.hero_image){
+    document.getElementById("home").style.backgroundImage =
+      `linear-gradient(rgba(43,28,22,.65),rgba(43,28,22,.65)), url('${data.hero_image}')`;
+  }
 }
 
-if(!data) return;
-
-document.getElementById('hero-title').innerText =
-data.hero_title || "LaDolce Cafe";
-
-document.getElementById('hero-content').innerText =
-data.hero_description || "";
-
-/* HERO IMAGE SAFE UPDATE */
-if(data.hero_image && data.hero_image.length > 5){
-document.getElementById('home').style.backgroundImage =
-`linear-gradient(rgba(43,28,22,.65),rgba(43,28,22,.65)), url('${data.hero_image}')`;
-}
-
-}
-
-/* =========================
-   MENU
-========================= */
 async function loadMenu(){
-const { data } = await supabaseClient
-.from('menu_items')
-.select('*')
-.order('created_at',{ascending:false});
 
-const container = document.getElementById('menu-container');
-container.innerHTML = "";
+  const { data } = await supabaseClient
+    .from("menu_items")
+    .select("*")
+    .order("created_at",{ascending:false});
 
-data?.forEach(item=>{
-container.innerHTML += `
-<div class="bg-white rounded-2xl shadow p-5 card-hover">
-<img src="${item.image_url || ''}" class="rounded-xl h-52 w-full object-cover"/>
-<h3 class="text-xl font-bold mt-4">${item.name}</h3>
-<p class="text-gray-600">${item.description || ''}</p>
-<p class="font-black mt-2 text-[#800000]">₱${item.price}</p>
-</div>`;
-});
+  const container = document.getElementById("menu-container");
+  container.innerHTML = "";
+
+  data?.forEach(item=>{
+    container.innerHTML += `
+      <div class="bg-white rounded-2xl shadow p-4 card-hover">
+        ${item.image_url ? `<img src="${item.image_url}" class="h-52 w-full object-cover rounded-xl"/>` : ""}
+        <h3 class="text-xl font-bold mt-3">${item.name}</h3>
+        <p class="text-gray-600">${item.description || ""}</p>
+        <p class="font-black text-[#800000] mt-2">₱${item.price}</p>
+      </div>
+    `;
+  });
 }
 
-/* =========================
-   GALLERY
-========================= */
 async function loadGallery(){
-const { data } = await supabaseClient
-.from('gallery')
-.select('*')
-.order('created_at',{ascending:false});
 
-const container = document.getElementById('gallery-container');
-container.innerHTML = "";
+  const { data } = await supabaseClient
+    .from("gallery")
+    .select("*")
+    .order("created_at",{ascending:false});
 
-data?.forEach(img=>{
-container.innerHTML += `
-<img src="${img.image_url}" class="rounded-2xl h-48 w-full object-cover card-hover"/>
-`;
-});
+  const container = document.getElementById("gallery-container");
+  container.innerHTML = "";
+
+  data?.forEach(img=>{
+    container.innerHTML += `
+      <img src="${img.image_url}" class="rounded-xl h-48 w-full object-cover"/>
+    `;
+  });
 }
 
-/* =========================
-   INIT
-========================= */
 loadHero();
 loadMenu();
 loadGallery();
-
 </script>
 
 </body>
