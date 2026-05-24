@@ -23,28 +23,34 @@ html { scroll-behavior: smooth; }
 
 body{
   background: var(--cream);
-  overflow-x:hidden;
   color:#2b1c16;
 }
 
 .glass{
   backdrop-filter: blur(18px);
-  background: rgba(245,245,220,0.8);
+  background: rgba(245,245,220,0.85);
 }
 
 .hero{
-  background: linear-gradient(rgba(43,28,22,.65), rgba(43,28,22,.75)),
+  background:
+  linear-gradient(rgba(43,28,22,.7),rgba(43,28,22,.7)),
   url('https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb') center/cover;
 }
 
 .card-hover{
-  transition: .3s ease;
+  transition:.3s;
 }
-
 .card-hover:hover{
-  transform: translateY(-8px);
+  transform:translateY(-8px);
 }
 
+.fade{
+  animation:fade .8s ease;
+}
+@keyframes fade{
+  from{opacity:0; transform:translateY(20px);}
+  to{opacity:1; transform:translateY(0);}
+}
 </style>
 </head>
 
@@ -54,9 +60,7 @@ body{
 <nav class="fixed w-full z-50 glass border-b border-[#8B4513]/20">
 <div class="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
 
-<h1 class="font-black text-xl tracking-wide">
-LaDolce Cafe
-</h1>
+<h1 class="font-black text-xl">LaDolce Cafe</h1>
 
 <div class="hidden md:flex gap-6 text-sm font-semibold">
 <a href="#home">Home</a>
@@ -70,8 +74,9 @@ LaDolce Cafe
 </nav>
 
 <!-- HERO -->
-<section id="home" class="hero h-screen flex items-center justify-center text-white">
-<div class="text-center max-w-3xl px-6">
+<section id="home" class="hero h-screen flex items-center justify-center text-white text-center px-6">
+
+<div class="max-w-3xl fade">
 
 <h1 id="hero-title" class="text-5xl md:text-7xl font-black">
 LaDolce Cafe
@@ -89,34 +94,61 @@ Authentic Filipino Cuisine served with love and passion.
 </div>
 </section>
 
+<!-- STATS -->
+<section class="py-16 max-w-6xl mx-auto grid md:grid-cols-3 gap-6 text-center">
+
+<div class="bg-white rounded-2xl p-6 shadow">
+<h2 class="text-4xl font-black text-[#800000]">5K+</h2>
+<p>Happy Customers</p>
+</div>
+
+<div class="bg-white rounded-2xl p-6 shadow">
+<h2 class="text-4xl font-black text-[#800000]">50+</h2>
+<p>Menu Items</p>
+</div>
+
+<div class="bg-white rounded-2xl p-6 shadow">
+<h2 class="text-4xl font-black text-[#800000]">10+</h2>
+<p>Years Serving</p>
+</div>
+
+</section>
+
 <!-- ABOUT -->
 <section id="about" class="py-24 max-w-7xl mx-auto px-6">
 
 <h2 class="text-4xl font-black mb-6">About LaDolce Cafe</h2>
 
 <p class="text-lg leading-relaxed text-gray-700 max-w-3xl">
-Mabuhay! Welcome to LaDolce Cafe — where Filipino cuisine meets comfort and passion.
-We serve freshly prepared meals perfect for families, barkadas, and everyday cravings.
+Mabuhay! LaDolce Cafe is your home for authentic Filipino comfort food,
+crafted with passion, fresh ingredients, and love.
 </p>
 
 <div class="grid md:grid-cols-3 gap-6 mt-12">
 
 <div class="bg-white p-6 rounded-2xl shadow">
-<h3 class="font-bold text-xl">Opening Hours</h3>
+<h3 class="font-bold">Opening Hours</h3>
 <p>10:00 AM - 10:00 PM</p>
 </div>
 
 <div class="bg-white p-6 rounded-2xl shadow">
-<h3 class="font-bold text-xl">Location</h3>
+<h3 class="font-bold">Location</h3>
 <p>Rara St., Brgy. 7, Cabadbaran City</p>
 </div>
 
 <div class="bg-white p-6 rounded-2xl shadow">
-<h3 class="font-bold text-xl">Contact</h3>
+<h3 class="font-bold">Contact</h3>
 <p>09304089307</p>
 </div>
 
 </div>
+</section>
+
+<!-- FEATURED SPECIALS -->
+<section class="py-20 bg-[#800000] text-white text-center">
+
+<h2 class="text-4xl font-black">Chef’s Special Picks</h2>
+<p class="mt-4 text-white/80">Customer favorites made fresh daily</p>
 
 </section>
 
@@ -130,15 +162,31 @@ We serve freshly prepared meals perfect for families, barkadas, and everyday cra
 <div id="menu-container" class="grid md:grid-cols-3 gap-8"></div>
 
 </div>
-
 </section>
 
-<!-- SPECIAL BANNER -->
-<section class="py-20 bg-[#800000] text-white text-center">
+<!-- TESTIMONIALS -->
+<section class="py-24 max-w-6xl mx-auto px-6">
 
-<h2 class="text-3xl md:text-5xl font-black">
-Good Food. Good Mood. Great Memories.
-</h2>
+<h2 class="text-4xl font-black mb-10 text-center">What Customers Say</h2>
+
+<div class="grid md:grid-cols-3 gap-6">
+
+<div class="bg-white p-6 rounded-2xl shadow">
+<p>"Best Filipino food in Cabadbaran! Super sulit!"</p>
+<span class="text-sm text-gray-500">- Maria</span>
+</div>
+
+<div class="bg-white p-6 rounded-2xl shadow">
+<p>"Cozy place, great food, and friendly staff."</p>
+<span class="text-sm text-gray-500">- John</span>
+</div>
+
+<div class="bg-white p-6 rounded-2xl shadow">
+<p>"Highly recommended for family dining."</p>
+<span class="text-sm text-gray-500">- Carlo</span>
+</div>
+
+</div>
 
 </section>
 
@@ -154,7 +202,7 @@ Good Food. Good Mood. Great Memories.
 <!-- CONTACT -->
 <section id="contact" class="py-24 bg-[#2B1C16] text-white text-center">
 
-<h2 class="text-4xl font-black">Visit Us</h2>
+<h2 class="text-4xl font-black">Visit LaDolce Cafe</h2>
 
 <p class="mt-4">Rara St., Brgy. 7, Cabadbaran City</p>
 <p>Open Daily 10:00 AM - 10:00 PM</p>
@@ -211,8 +259,8 @@ container.innerHTML = "";
 
 data?.forEach(item=>{
 container.innerHTML += `
-<div class="bg-white rounded-2xl shadow p-4 card-hover">
-<img src="${item.image_url}" class="rounded-xl h-48 w-full object-cover"/>
+<div class="bg-white rounded-2xl shadow p-5 card-hover">
+<img src="${item.image_url}" class="rounded-xl h-52 w-full object-cover"/>
 <h3 class="text-xl font-bold mt-4">${item.name}</h3>
 <p class="text-gray-600">${item.description}</p>
 <p class="font-black mt-2 text-[#800000]">₱${item.price}</p>
@@ -233,7 +281,7 @@ container.innerHTML = "";
 
 data?.forEach(img=>{
 container.innerHTML += `
-<img src="${img.image_url}" class="rounded-2xl h-48 w-full object-cover"/>
+<img src="${img.image_url}" class="rounded-2xl h-48 w-full object-cover card-hover"/>
 `;
 });
 }
