@@ -1,6 +1,7 @@
-/* =========================================
-   LaDolce Cafe - SUPABASE CMS CONNECTOR
-========================================= */
+/* =====================================================
+   LaDolce Cafe CMS - FINAL ADMIN CONNECTOR
+   CLEAN + FULL CONTROL VERSION
+===================================================== */
 
 const SUPABASE_URL = "https://fflnpsiutikdywibbltj.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_WLoDWwjyE2FctbWEoYYSng_qOjZn4hX";
@@ -10,55 +11,44 @@ const supabaseClient = supabase.createClient(
   SUPABASE_ANON_KEY
 );
 
-/* =========================================
-   FILE UPLOAD (SAFE + REUSABLE)
-========================================= */
-async function uploadFile(file, folder = "kuya-dan-media") {
+/* =====================================================
+   UPLOAD FILE (GLOBAL)
+===================================================== */
+async function uploadFile(file) {
   if (!file) return null;
 
   const fileName = `${Date.now()}-${file.name}`;
 
   const { error } = await supabaseClient.storage
-    .from(folder)
-    .upload(fileName, file, {
-      cacheControl: "3600",
-      upsert: false
-    });
+    .from("kuya-dan-media")
+    .upload(fileName, file);
 
   if (error) {
-    console.error("Upload Error:", error.message);
-    alert("Upload failed!");
+    console.error("Upload error:", error.message);
+    alert("Upload failed");
     return null;
   }
 
   const { data } = supabaseClient.storage
-    .from(folder)
+    .from("kuya-dan-media")
     .getPublicUrl(fileName);
 
   return data.publicUrl;
 }
 
-/* =========================================
-   WEBSITE SETTINGS (CORE CMS)
-========================================= */
-
-// GET SETTINGS
+/* =====================================================
+   WEBSITE SETTINGS (SINGLE ROW ID = 1)
+===================================================== */
 async function getSettings() {
-  const { data, error } = await supabaseClient
+  const { data } = await supabaseClient
     .from("website_settings")
     .select("*")
     .eq("id", 1)
     .single();
 
-  if (error) {
-    console.error("Settings error:", error.message);
-    return null;
-  }
-
   return data;
 }
 
-// UPDATE SETTINGS (GENERIC)
 async function updateSettings(payload) {
   const { error } = await supabaseClient
     .from("website_settings")
@@ -66,33 +56,43 @@ async function updateSettings(payload) {
     .eq("id", 1);
 
   if (error) {
-    console.error("Update error:", error.message);
-    alert("Update failed!");
+    console.error(error.message);
+    alert("Settings update failed");
     return false;
   }
 
   return true;
 }
 
-/* =========================================
-   HERO SECTION
-========================================= */
-async function updateHero(title, desc, imageUrl = null) {
-  const payload = {
-    hero_title: title || "",
-    hero_description: desc || ""
-  };
+/* =====================================================
+   HERO
+===================================================== */
+async function updateHero(title, desc, imageFile) {
+  let imageUrl = null;
 
-  if (imageUrl) {
-    payload.hero_image = imageUrl;
+  if (imageFile) {
+    imageUrl = await uploadFile(imageFile);
   }
 
-  return await updateSettings(payload);
+  return await updateSettings({
+    hero_title: title,
+    hero_description: desc,
+    ...(imageUrl && { hero_image: imageUrl })
+  });
 }
 
-/* =========================================
-   CONTACT SECTION
-========================================= */
+/* =====================================================
+   ABOUT
+===================================================== */
+async function updateAbout(text) {
+  return await updateSettings({
+    about_text: text
+  });
+}
+
+/* =====================================================
+   CONTACT
+===================================================== */
 async function updateContact(phone, address, facebook) {
   return await updateSettings({
     phone,
@@ -101,134 +101,66 @@ async function updateContact(phone, address, facebook) {
   });
 }
 
-/* =========================================
-   ABOUT SECTION
-========================================= */
-async function updateAbout(text) {
-  return await updateSettings({
-    about_text: text
-  });
-}
-
-/* =========================================
-   MENU SYSTEM
-========================================= */
-
-// ADD MENU ITEM
-async function addMenuItem(item) {
+/* =====================================================
+   MENU CRUD
+===================================================== */
+async function addMenu(item) {
   const { error } = await supabaseClient
     .from("menu_items")
     .insert([item]);
 
   if (error) {
-    console.error("Menu error:", error.message);
-    alert("Failed to add menu item");
+    console.error(error.message);
+    alert("Menu add failed");
     return false;
   }
 
   return true;
 }
 
-// GET MENU ITEMS
-async function getMenuItems() {
-  const { data, error } = await supabaseClient
-    .from("menu_items")
-    .select("*")
-    .order("created_at", { ascending: false });
-
-  if (error) {
-    console.error("Menu fetch error:", error.message);
-    return [];
-  }
-
-  return data;
-}
-
-// DELETE MENU ITEM (IMPORTANT)
-async function deleteMenuItem(id) {
+async function deleteMenu(id) {
   const { error } = await supabaseClient
     .from("menu_items")
     .delete()
     .eq("id", id);
 
-  if (error) {
-    alert("Delete failed");
-    return false;
-  }
-
-  return true;
+  return !error;
 }
 
-/* =========================================
-   GALLERY SYSTEM
-========================================= */
+async function getMenu() {
+  const { data } = await supabaseClient
+    .from("menu_items")
+    .select("*")
+    .order("created_at", { ascending: false });
 
-// ADD IMAGE
-async function addGalleryImage(url) {
+  return data || [];
+}
+
+/* =====================================================
+   GALLERY CRUD
+===================================================== */
+async function addGallery(url) {
   const { error } = await supabaseClient
     .from("gallery")
     .insert([{ image_url: url }]);
 
-  if (error) {
-    console.error("Gallery error:", error.message);
-    alert("Failed to upload image");
-    return false;
-  }
-
-  return true;
+  return !error;
 }
 
-// GET IMAGES
-async function getGallery() {
-  const { data, error } = await supabaseClient
-    .from("gallery")
-    .select("*")
-    .order("created_at", { ascending: false });
-
-  if (error) {
-    console.error("Gallery fetch error:", error.message);
-    return [];
-  }
-
-  return data;
-}
-
-// DELETE IMAGE (IMPORTANT)
-async function deleteGalleryImage(id) {
+async function deleteGallery(id) {
   const { error } = await supabaseClient
     .from("gallery")
     .delete()
     .eq("id", id);
 
-  if (error) {
-    alert("Delete failed");
-    return false;
-  }
-
-  return true;
+  return !error;
 }
 
-/* =========================================
-   QUICK HELPERS (OPTIONAL USE)
-========================================= */
+async function getGallery() {
+  const { data } = await supabaseClient
+    .from("gallery")
+    .select("*")
+    .order("created_at", { ascending: false });
 
-// HERO UPDATE WRAPPER
-async function saveHeroFromUI() {
-  const title = document.getElementById("heroTitle")?.value;
-  const desc = document.getElementById("heroDesc")?.value;
-  const file = document.getElementById("heroImage")?.files?.[0];
-
-  let img = null;
-  if (file) img = await uploadFile(file);
-
-  await updateHero(title, desc, img);
-}
-
-// CONTACT WRAPPER
-async function saveContactFromUI() {
-  await updateContact(
-    phone.value,
-    address.value,
-    facebook.value
-  );
+  return data || [];
 }
