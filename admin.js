@@ -1,7 +1,7 @@
 /* =====================================================
-   LADOlCE CAFE CMS PRO MAX
+   LADOLCE CAFE CMS PRO MAX
    FINAL ADMIN CONNECTOR
-   FULLY FIXED VERSION
+   COMPLETE UPDATED VERSION
 ===================================================== */
 
 
@@ -31,6 +31,10 @@ function $(id){
 }
 
 
+/* =====================================================
+   REFRESH PREVIEW
+===================================================== */
+
 function refreshPreview(){
 
   const frame =
@@ -47,8 +51,36 @@ function refreshPreview(){
 
 
 /* =====================================================
+   IMAGE PREVIEW
+===================================================== */
+
+function previewImage(inputId, previewId){
+
+  const input =
+    $(inputId);
+
+  const preview =
+    $(previewId);
+
+  if(!input || !preview) return;
+
+  const file =
+    input.files[0];
+
+  if(file){
+
+    preview.src =
+      URL.createObjectURL(file);
+
+    preview.classList.remove("hidden");
+
+  }
+
+}
+
+
+/* =====================================================
    FILE UPLOAD
-   FINAL FIXED VERSION
 ===================================================== */
 
 async function uploadFile(file){
@@ -104,7 +136,7 @@ async function loadSettings(){
 
   }
 
-  // HERO
+  /* HERO */
   if($("heroTitle"))
     $("heroTitle").value =
       data.hero_title || "";
@@ -113,12 +145,12 @@ async function loadSettings(){
     $("heroDesc").value =
       data.hero_description || "";
 
-  // ABOUT
+  /* ABOUT */
   if($("aboutText"))
     $("aboutText").value =
       data.about_text || "";
 
-  // CONTACT
+  /* CONTACT */
   if($("phone"))
     $("phone").value =
       data.phone || "";
@@ -143,42 +175,73 @@ async function loadSettings(){
     $("openingHours").value =
       data.opening_hours || "";
 
+  /* LOGO PREVIEW */
+  if(data.logo_url && $("logoPreview")){
+
+    $("logoPreview").src =
+      data.logo_url;
+
+    $("logoPreview").classList.remove("hidden");
+
+  }
+
 }
 
 
 /* =====================================================
-   UPDATE HERO
+   UPDATE HERO + LOGO
 ===================================================== */
 
 async function updateHero(){
 
-  const file =
-    $("heroImage").files[0];
+  const heroFile =
+    $("heroImage")?.files[0];
 
-  let imageUrl = null;
+  const logoFile =
+    $("logoImage")?.files[0];
 
-  if(file){
+  let heroUrl = null;
+  let logoUrl = null;
 
-    imageUrl =
-      await uploadFile(file);
+  /* HERO IMAGE */
+  if(heroFile){
+
+    heroUrl =
+      await uploadFile(heroFile);
+
+  }
+
+  /* LOGO IMAGE */
+  if(logoFile){
+
+    logoUrl =
+      await uploadFile(logoFile);
 
   }
 
   const updateData = {
 
     hero_title:
-      $("heroTitle").value,
+      $("heroTitle").value || "",
 
     hero_description:
-      $("heroDesc").value
+      $("heroDesc").value || ""
 
   };
 
-  // ONLY UPDATE IMAGE IF EXISTS
-  if(imageUrl){
+  /* SAVE HERO */
+  if(heroUrl){
 
     updateData.hero_image =
-      imageUrl;
+      heroUrl;
+
+  }
+
+  /* SAVE LOGO */
+  if(logoUrl){
+
+    updateData.logo_url =
+      logoUrl;
 
   }
 
@@ -198,7 +261,7 @@ async function updateHero(){
 
   }
 
-  alert("Hero updated!");
+  alert("Website updated successfully!");
 
   refreshPreview();
 
@@ -353,7 +416,7 @@ async function addMenu(){
 
   }
 
-  // RESET FORM
+  /* RESET */
   $("menuName").value = "";
   $("menuDesc").value = "";
   $("menuPrice").value = "";
@@ -414,6 +477,10 @@ async function loadMenu(){
           <p class="font-bold text-[#800000] mt-2">
             ₱${item.price}
           </p>
+
+          <span class="text-xs bg-[#800000]/10 text-[#800000] px-2 py-1 rounded-full inline-block mt-2">
+            ${item.category || "Food"}
+          </span>
 
         </div>
 
@@ -568,12 +635,12 @@ async function deleteGallery(id){
 
 
 /* =====================================================
-   TESTIMONIALS
+   ADD TESTIMONIAL
 ===================================================== */
 
 async function addTestimonial(){
 
-  const customer_name =
+  const name =
     $("testimonialName").value;
 
   const review =
@@ -582,12 +649,20 @@ async function addTestimonial(){
   const rating =
     parseInt($("testimonialRating").value);
 
+  if(!name || !review){
+
+    alert("Complete testimonial fields");
+
+    return;
+
+  }
+
   const { error } =
     await supabaseClient
       .from("testimonials")
       .insert([{
 
-        customer_name,
+        name,
         review,
         rating
 
@@ -602,6 +677,9 @@ async function addTestimonial(){
     return;
 
   }
+
+  $("testimonialName").value = "";
+  $("testimonialReview").value = "";
 
   loadTestimonials();
 
@@ -634,16 +712,16 @@ async function loadTestimonials(){
 
       <div class="bg-white p-4 rounded-2xl shadow">
 
-        <h3 class="font-black">
-          ${item.customer_name}
+        <h3 class="font-black text-lg">
+          ${item.name}
         </h3>
 
-        <p class="text-sm mt-2">
+        <p class="text-sm mt-2 text-gray-600">
           ${item.review}
         </p>
 
-        <p class="mt-2 text-yellow-500">
-          ⭐ ${item.rating}/5
+        <p class="mt-3 text-yellow-500">
+          ${"⭐".repeat(item.rating || 5)}
         </p>
 
         <button
