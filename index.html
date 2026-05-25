@@ -14,7 +14,7 @@
 <!-- SUPABASE -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<!-- GOOGLE FONT -->
+<!-- FONT -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
@@ -31,8 +31,8 @@ html{
 }
 
 body{
-  background:#0f0f0f;
-  color:white;
+  background:#f7f2ec;
+  color:#2B1C16;
   overflow-x:hidden;
 }
 
@@ -46,22 +46,22 @@ body{
 /* GLASS */
 .glass{
   backdrop-filter:blur(16px);
-  background:rgba(255,255,255,0.05);
+  background:rgba(255,255,255,0.08);
 }
 
 /* CARD */
 .card{
-  transition:0.4s ease;
+  transition:.4s ease;
 }
 
 .card:hover{
-  transform:translateY(-10px);
-  box-shadow:0 25px 60px rgba(0,0,0,0.25);
+  transform:translateY(-8px);
+  box-shadow:0 30px 60px rgba(0,0,0,0.15);
 }
 
 /* BUTTON */
 .btn{
-  transition:.3s;
+  transition:.3s ease;
 }
 
 .btn:hover{
@@ -74,6 +74,7 @@ body{
 }
 
 @keyframes fadeUp{
+
   from{
     opacity:0;
     transform:translateY(40px);
@@ -81,26 +82,28 @@ body{
 
   to{
     opacity:1;
-    transform:translateY(0);
+    transform:translateY(0px);
   }
+
 }
 
-/* SLIDER */
+/* BRAND SLIDER */
 .branding-slider{
   width:max-content;
-  animation:slideBrand 18s linear infinite;
+  animation:slideBrand 20s linear infinite;
 }
 
 .brand-text{
   font-size:clamp(3rem,8vw,8rem);
   font-weight:900;
+  color:white;
   line-height:0.95;
   padding-right:120px;
-  color:white;
   letter-spacing:-3px;
 }
 
 @keyframes slideBrand{
+
   from{
     transform:translateX(0%);
   }
@@ -108,6 +111,7 @@ body{
   to{
     transform:translateX(-50%);
   }
+
 }
 
 /* IMAGE ZOOM */
@@ -129,14 +133,23 @@ nav a{
 }
 
 nav a::after{
+
   content:"";
+
   position:absolute;
+
   left:0;
+
   bottom:-6px;
+
   width:0%;
+
   height:2px;
-  background:white;
+
+  background:#800000;
+
   transition:.3s;
+
 }
 
 nav a:hover::after{
@@ -149,7 +162,7 @@ nav a:hover::after{
 <body>
 
 <!-- NAVBAR -->
-<nav class="fixed top-0 w-full z-50 border-b border-white/10 bg-black/40 backdrop-blur-xl">
+<nav class="fixed top-0 z-50 w-full border-b border-black/10 bg-[#f7f2ec]/80 backdrop-blur-xl">
 
 <div class="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
 
@@ -159,17 +172,22 @@ nav a:hover::after{
 <img
 id="logo"
 src="https://placehold.co/100x100"
-class="w-14 h-14 rounded-full object-cover border border-white/20"
+class="w-14 h-14 rounded-full object-cover border border-black/10"
 />
 
 <div>
-<h1 id="site-title" class="text-2xl font-black">
+
+<h1
+id="site-title"
+class="text-2xl font-black"
+>
 LaDolce Cafe
 </h1>
 
-<p class="uppercase tracking-[0.35em] text-xs text-zinc-400">
+<p class="uppercase tracking-[0.35em] text-xs text-[#800000]">
 Authentic Filipino Cuisine
 </p>
+
 </div>
 
 </div>
@@ -192,26 +210,25 @@ Authentic Filipino Cuisine
 id="heroSection"
 class="hero-bg min-h-screen flex items-center relative overflow-hidden"
 style="background-image:
-linear-gradient(rgba(0,0,0,.72),rgba(0,0,0,.72)),
+linear-gradient(rgba(43,28,22,.65),rgba(43,28,22,.65)),
 url('https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb');"
 >
 
-<!-- GLOW -->
-<div class="absolute w-[700px] h-[700px] bg-[#8B0000]/30 blur-[160px] rounded-full -top-20 -left-20"></div>
+<div class="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent"></div>
 
 <div class="max-w-7xl mx-auto px-6 relative z-10 w-full">
 
-<!-- SLIDING BRAND -->
+<!-- SLIDING TEXT -->
 <div class="overflow-hidden mb-10">
 
 <div class="branding-slider flex whitespace-nowrap">
 
 <h2 class="brand-text">
-GOOD FOOD • GREAT MEMORIES • AUTHENTIC FILIPINO CUISINE •
+GOOD FOOD • GREAT MEMORIES • FILIPINO CUISINE •
 </h2>
 
 <h2 class="brand-text">
-GOOD FOOD • GREAT MEMORIES • AUTHENTIC FILIPINO CUISINE •
+GOOD FOOD • GREAT MEMORIES • FILIPINO CUISINE •
 </h2>
 
 </div>
@@ -220,9 +237,9 @@ GOOD FOOD • GREAT MEMORIES • AUTHENTIC FILIPINO CUISINE •
 
 <div class="max-w-4xl fade-up">
 
-<div class="inline-flex items-center gap-3 rounded-full border border-white/20 px-6 py-3 glass mb-8">
+<div class="inline-flex items-center gap-3 rounded-full border border-white/20 px-6 py-3 glass mb-8 text-white">
 
-<span class="h-3 w-3 rounded-full bg-[#8B0000] animate-pulse"></span>
+<span class="h-3 w-3 rounded-full bg-[#800000] animate-pulse"></span>
 
 <p class="text-sm font-medium">
 Welcome To LaDolce Cafe
@@ -232,14 +249,14 @@ Welcome To LaDolce Cafe
 
 <h1
 id="hero-title"
-class="text-6xl md:text-8xl font-black leading-none"
+class="text-6xl md:text-8xl font-black leading-none text-white"
 >
 Authentic Filipino Cuisine
 </h1>
 
 <p
 id="hero-description"
-class="text-xl text-zinc-300 mt-10 max-w-3xl leading-relaxed"
+class="text-xl text-white/85 mt-10 max-w-3xl leading-relaxed"
 >
 Mabuhay! Welcome to LaDolce Cafe — Authentic Filipino Cuisine served with love and passion.
 </p>
@@ -248,7 +265,7 @@ Mabuhay! Welcome to LaDolce Cafe — Authentic Filipino Cuisine served with love
 
 <a
 href="#menu"
-class="btn bg-[#8B0000] text-white px-10 py-5 rounded-2xl font-bold text-lg"
+class="btn bg-[#800000] text-white px-10 py-5 rounded-2xl font-bold text-lg"
 >
 View Menu
 </a>
@@ -269,18 +286,18 @@ Visit Us
 </section>
 
 <!-- ABOUT -->
-<section id="about" class="py-32 bg-[#f5f0ea] text-black">
+<section id="about" class="py-32">
 
 <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-20 items-center">
 
-<div class="fade-up">
+<div>
 
-<p class="uppercase tracking-[0.3em] text-[#8B0000] text-sm font-bold">
+<p class="uppercase tracking-[0.3em] text-[#800000] text-sm font-bold">
 About Us
 </p>
 
 <h2 class="text-6xl font-black mt-6 leading-tight">
-Authentic Filipino Comfort Food.
+Traditional Filipino Flavors With Heart.
 </h2>
 
 <p
@@ -295,23 +312,23 @@ LaDolce Cafe is a cozy restaurant offering authentic Filipino dishes made with l
 <div class="grid grid-cols-2 gap-6">
 
 <div class="bg-white rounded-[2rem] p-8 shadow-lg card">
-<h3 class="text-5xl font-black text-[#8B0000]">10+</h3>
+<h3 class="text-5xl font-black text-[#800000]">10+</h3>
 <p class="mt-4 text-zinc-600">Years Serving Happiness</p>
 </div>
 
-<div class="bg-[#8B0000] text-white rounded-[2rem] p-8 card">
+<div class="bg-[#800000] text-white rounded-[2rem] p-8 card">
 <h3 class="text-5xl font-black">100%</h3>
 <p class="mt-4 text-white/80">Authentic Filipino Taste</p>
 </div>
 
 <div class="bg-white rounded-[2rem] p-8 shadow-lg card">
-<h3 class="text-5xl font-black text-[#8B0000]">Fresh</h3>
+<h3 class="text-5xl font-black text-[#800000]">Fresh</h3>
 <p class="mt-4 text-zinc-600">Daily Ingredients</p>
 </div>
 
-<div class="bg-black text-white rounded-[2rem] p-8 card">
+<div class="bg-[#2B1C16] text-white rounded-[2rem] p-8 card">
 <h3 class="text-5xl font-black">Family</h3>
-<p class="mt-4 text-zinc-400">Friendly Dining Experience</p>
+<p class="mt-4 text-white/70">Friendly Dining Experience</p>
 </div>
 
 </div>
@@ -321,13 +338,13 @@ LaDolce Cafe is a cozy restaurant offering authentic Filipino dishes made with l
 </section>
 
 <!-- MENU -->
-<section id="menu" class="py-32 bg-[#111111]">
+<section id="menu" class="py-32 bg-[#2B1C16] text-white">
 
 <div class="max-w-7xl mx-auto px-6">
 
 <div class="text-center mb-20">
 
-<p class="uppercase tracking-[0.3em] text-[#8B0000] text-sm font-bold">
+<p class="uppercase tracking-[0.3em] text-[#d4a373] text-sm font-bold">
 Featured Menu
 </p>
 
@@ -346,17 +363,17 @@ class="grid md:grid-cols-2 xl:grid-cols-3 gap-8"
 
 </section>
 
-<!-- BANNER -->
-<section class="bg-[#8B0000] py-24 overflow-hidden">
+<!-- BRANDING -->
+<section class="bg-[#800000] py-20 overflow-hidden">
 
 <div class="branding-slider flex whitespace-nowrap">
 
 <h2 class="brand-text">
-LADOlCE CAFE • GOOD FOOD • FAMILY • MEMORIES • FILIPINO CUISINE •
+LADOLCE CAFE • GOOD FOOD • FAMILY • MEMORIES •
 </h2>
 
 <h2 class="brand-text">
-LADOlCE CAFE • GOOD FOOD • FAMILY • MEMORIES • FILIPINO CUISINE •
+LADOLCE CAFE • GOOD FOOD • FAMILY • MEMORIES •
 </h2>
 
 </div>
@@ -364,13 +381,13 @@ LADOlCE CAFE • GOOD FOOD • FAMILY • MEMORIES • FILIPINO CUISINE •
 </section>
 
 <!-- GALLERY -->
-<section id="gallery" class="py-32 bg-[#f5f0ea] text-black">
+<section id="gallery" class="py-32">
 
 <div class="max-w-7xl mx-auto px-6">
 
 <div class="text-center mb-20">
 
-<p class="uppercase tracking-[0.3em] text-[#8B0000] text-sm font-bold">
+<p class="uppercase tracking-[0.3em] text-[#800000] text-sm font-bold">
 Gallery
 </p>
 
@@ -390,11 +407,11 @@ class="grid md:grid-cols-2 xl:grid-cols-4 gap-6"
 </section>
 
 <!-- CONTACT -->
-<section id="contact" class="bg-black py-32">
+<section id="contact" class="bg-[#2B1C16] text-white py-32">
 
 <div class="max-w-5xl mx-auto px-6 text-center">
 
-<p class="uppercase tracking-[0.3em] text-[#8B0000] text-sm font-bold">
+<p class="uppercase tracking-[0.3em] text-[#d4a373] text-sm font-bold">
 Visit Us
 </p>
 
@@ -402,7 +419,7 @@ Visit Us
 We'd Love To Serve You.
 </h2>
 
-<div class="mt-14 space-y-5 text-xl text-zinc-300">
+<div class="mt-14 space-y-5 text-xl text-white/80">
 
 <p id="contact-address">
 Rara St., Brgy. 7, Cabadbaran City
@@ -422,7 +439,7 @@ Rara St., Brgy. 7, Cabadbaran City
 id="facebook-link"
 href="#"
 target="_blank"
-class="inline-block mt-12 btn bg-[#8B0000] px-10 py-5 rounded-2xl text-lg font-bold"
+class="inline-block mt-12 btn bg-[#800000] px-10 py-5 rounded-2xl text-lg font-bold"
 >
 Visit Facebook Page
 </a>
@@ -432,19 +449,11 @@ Visit Facebook Page
 </section>
 
 <!-- FOOTER -->
-<footer class="border-t border-white/10 bg-black py-10">
+<footer class="bg-black py-10 text-center text-zinc-500">
 
-<div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
-
-<p class="text-zinc-500">
+<p>
 © 2026 LaDolce Cafe. All rights reserved.
 </p>
-
-<p class="text-zinc-600 text-sm">
-Designed with passion and Filipino hospitality.
-</p>
-
-</div>
 
 </footer>
 
@@ -466,6 +475,7 @@ SUPABASE_ANON_KEY
 /* =========================================
    LOAD WEBSITE SETTINGS
 ========================================= */
+
 async function loadWebsiteSettings(){
 
 const { data, error } =
@@ -476,8 +486,11 @@ await supabaseClient
 .single();
 
 if(error){
+
 console.error(error);
+
 return;
+
 }
 
 document.getElementById("site-title").innerText =
@@ -502,44 +515,37 @@ document.getElementById("contact-hours").innerText =
 data.opening_hours || "";
 
 if(data.facebook){
+
 document.getElementById("facebook-link").href =
 data.facebook;
+
 }
 
-/* =========================================
-   HERO IMAGE FIX
-========================================= */
-
+/* HERO IMAGE FIX */
 if(data.hero_image){
 
-const cleanUrl =
+const heroUrl =
 data.hero_image.trim();
 
-console.log("Hero URL:", cleanUrl);
+console.log("Hero Image:", heroUrl);
 
 document.getElementById("heroSection").style.backgroundImage = `
-
 linear-gradient(
-rgba(0,0,0,.72),
-rgba(0,0,0,.72)
+rgba(43,28,22,.65),
+rgba(43,28,22,.65)
 ),
-
-url("${cleanUrl}")
-
+url('${heroUrl}')
 `;
 
 }
 
-/* =========================================
-   LOGO FIX
-========================================= */
-
+/* LOGO FIX */
 if(data.logo_url){
 
 const logoUrl =
 data.logo_url.trim();
 
-console.log("Logo URL:", logoUrl);
+console.log("Logo Image:", logoUrl);
 
 document.getElementById("logo").src =
 logoUrl;
@@ -549,8 +555,9 @@ logoUrl;
 }
 
 /* =========================================
-   MENU
+   LOAD MENU
 ========================================= */
+
 async function loadMenu(){
 
 const { data } =
@@ -591,11 +598,11 @@ ${item.description || ""}
 
 <div class="flex justify-between items-center mt-8">
 
-<p class="text-3xl font-black text-[#8B0000]">
+<p class="text-3xl font-black text-[#d4a373]">
 ₱${item.price || ""}
 </p>
 
-<button class="btn bg-[#8B0000] px-5 py-3 rounded-xl font-bold">
+<button class="btn bg-[#800000] px-5 py-3 rounded-xl font-bold">
 Order
 </button>
 
@@ -612,8 +619,9 @@ Order
 }
 
 /* =========================================
-   GALLERY
+   LOAD GALLERY
 ========================================= */
+
 async function loadGallery(){
 
 const { data } =
@@ -646,10 +654,7 @@ class="w-full h-72 object-cover"
 
 }
 
-/* =========================================
-   INIT
-========================================= */
-
+/* INIT */
 loadWebsiteSettings();
 loadMenu();
 loadGallery();
