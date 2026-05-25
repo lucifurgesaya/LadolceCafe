@@ -1,6 +1,6 @@
 /* =====================================================
-   LADOLCE CAFE CMS - FINAL ADMIN CONNECTOR
-   FULLY FIXED PRODUCTION VERSION
+   LADOLCE CAFE CMS - FINAL FIXED ADMIN.JS
+   FULL SAFE VERSION
 ===================================================== */
 
 /* =====================================================
@@ -20,24 +20,6 @@ supabase.createClient(
 );
 
 /* =====================================================
-   REFRESH PREVIEW
-===================================================== */
-
-function refreshPreview(){
-
-  const frame =
-  document.getElementById("previewFrame");
-
-  if(frame){
-
-    frame.src =
-    "index.html?v=" + Date.now();
-
-  }
-
-}
-
-/* =====================================================
    HELPERS
 ===================================================== */
 
@@ -47,7 +29,7 @@ function $(id){
 
 }
 
-function setInputValue(id,value){
+function setValue(id,value){
 
   const el = $(id);
 
@@ -60,23 +42,42 @@ function setInputValue(id,value){
 }
 
 /* =====================================================
+   REFRESH PREVIEW
+===================================================== */
+
+function refreshPreview(){
+
+  const frame =
+  $("previewFrame");
+
+  if(frame){
+
+    frame.src =
+    "index.html?v=" + Date.now();
+
+  }
+
+}
+
+/* =====================================================
    IMAGE PREVIEW
 ===================================================== */
 
 function previewImage(inputId, previewId){
 
-  const file =
-  $(inputId).files[0];
-
-  if(!file) return;
+  const input =
+  $(inputId);
 
   const preview =
   $(previewId);
 
+  const file =
+  input?.files[0];
+
+  if(!file || !preview) return;
+
   preview.src =
   URL.createObjectURL(file);
-
-  preview.classList.remove("hidden");
 
 }
 
@@ -98,7 +99,7 @@ async function uploadFile(file){
 
   if(error){
 
-    console.error("UPLOAD ERROR:", error);
+    console.error("UPLOAD ERROR:",error);
 
     alert(error.message);
 
@@ -111,7 +112,7 @@ async function uploadFile(file){
   .from("cafe")
   .getPublicUrl(fileName);
 
-  console.log("PUBLIC URL:", data.publicUrl);
+  console.log("PUBLIC URL:",data.publicUrl);
 
   return data.publicUrl;
 
@@ -139,70 +140,70 @@ async function loadWebsiteSettings(){
   }
 
   /* HERO */
-  setInputValue(
+  setValue(
     "heroTitle",
     data.hero_title
   );
 
-  setInputValue(
+  setValue(
     "heroDesc",
     data.hero_description
   );
 
   /* ABOUT */
-  setInputValue(
+  setValue(
     "aboutText",
     data.about_text
   );
 
   /* CONTACT */
-  setInputValue(
+  setValue(
     "phone",
     data.phone
   );
 
-  setInputValue(
-    "email",
-    data.email
-  );
-
-  setInputValue(
+  setValue(
     "address",
     data.address
   );
 
-  setInputValue(
+  setValue(
     "facebook",
     data.facebook
   );
 
-  setInputValue(
-    "instagram",
-    data.instagram
-  );
-
-  setInputValue(
+  setValue(
     "openingHours",
     data.opening_hours
   );
 
-  /* LOGO */
+  /* LOGO PREVIEW */
   if(data.logo_url){
 
-    $("logoPreview").src =
-    data.logo_url;
+    const logoPreview =
+    $("logoPreview");
 
-    $("logoPreview").classList.remove("hidden");
+    if(logoPreview){
+
+      logoPreview.src =
+      data.logo_url;
+
+    }
 
   }
 
-  /* HERO */
+  /* HERO PREVIEW */
   if(data.hero_image){
 
-    $("heroPreview").src =
-    data.hero_image;
+    const heroPreview =
+    $("heroPreview");
 
-    $("heroPreview").classList.remove("hidden");
+    if(heroPreview){
+
+      heroPreview.src =
+      data.hero_image;
+
+    }
 
   }
 
@@ -216,7 +217,7 @@ async function updateWebsiteSettings(){
 
   /* HERO IMAGE */
   const heroFile =
-  $("heroImage").files[0];
+  $("heroImage")?.files[0];
 
   let heroImageUrl = null;
 
@@ -229,7 +230,7 @@ async function updateWebsiteSettings(){
 
   /* LOGO IMAGE */
   const logoFile =
-  $("logoImage").files[0];
+  $("logoImage")?.files[0];
 
   let logoUrl = null;
 
@@ -243,35 +244,29 @@ async function updateWebsiteSettings(){
   const updateData = {
 
     hero_title:
-    $("heroTitle").value,
+    $("heroTitle")?.value || "",
 
     hero_description:
-    $("heroDesc").value,
+    $("heroDesc")?.value || "",
 
     about_text:
-    $("aboutText").value,
+    $("aboutText")?.value || "",
 
     phone:
-    $("phone").value,
-
-    email:
-    $("email").value,
+    $("phone")?.value || "",
 
     address:
-    $("address").value,
+    $("address")?.value || "",
 
     facebook:
-    $("facebook").value,
-
-    instagram:
-    $("instagram").value,
+    $("facebook")?.value || "",
 
     opening_hours:
-    $("openingHours").value
+    $("openingHours")?.value || ""
 
   };
 
-  /* HERO IMAGE */
+  /* SAVE HERO IMAGE */
   if(heroImageUrl){
 
     updateData.hero_image =
@@ -279,7 +274,7 @@ async function updateWebsiteSettings(){
 
   }
 
-  /* LOGO */
+  /* SAVE LOGO */
   if(logoUrl){
 
     updateData.logo_url =
@@ -318,7 +313,7 @@ async function updateWebsiteSettings(){
 async function addMenu(){
 
   const imageFile =
-  $("menuImage").files[0];
+  $("menuImage")?.files[0];
 
   let imageUrl = null;
 
@@ -332,21 +327,18 @@ async function addMenu(){
   const menuData = {
 
     name:
-    $("menuName").value,
+    $("menuName")?.value || "",
 
     description:
-    $("menuDesc").value,
+    $("menuDescription")?.value || "",
 
     price:
     parseFloat(
-      $("menuPrice").value
+      $("menuPrice")?.value || 0
     ),
 
     category:
-    $("menuCategory").value,
-
-    is_featured:
-    $("menuFeatured").checked,
+    $("menuCategory")?.value || "",
 
     image_url:
     imageUrl
@@ -371,7 +363,7 @@ async function addMenu(){
   alert("Menu item added!");
 
   $("menuName").value = "";
-  $("menuDesc").value = "";
+  $("menuDescription").value = "";
   $("menuPrice").value = "";
   $("menuCategory").value = "";
   $("menuImage").value = "";
@@ -406,6 +398,8 @@ async function loadMenuItems(){
 
   const container =
   $("menuList");
+
+  if(!container) return;
 
   container.innerHTML = "";
 
@@ -478,7 +472,7 @@ async function deleteMenuItem(id){
 async function uploadGallery(){
 
   const file =
-  $("galleryImage").files[0];
+  $("galleryImage")?.files[0];
 
   if(!file){
 
@@ -534,6 +528,8 @@ async function loadGallery(){
 
   const container =
   $("galleryList");
+
+  if(!container) return;
 
   container.innerHTML = "";
 
