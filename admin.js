@@ -1,6 +1,6 @@
 /* =====================================================
    LADOLCE CAFE CMS - FINAL ADMIN CONNECTOR
-   FULL FIXED VERSION
+   FULLY FIXED PRODUCTION VERSION
 ===================================================== */
 
 /* =====================================================
@@ -60,7 +60,28 @@ function setInputValue(id,value){
 }
 
 /* =====================================================
-   UPLOAD FILE (FINAL FIXED)
+   IMAGE PREVIEW
+===================================================== */
+
+function previewImage(inputId, previewId){
+
+  const file =
+  $(inputId).files[0];
+
+  if(!file) return;
+
+  const preview =
+  $(previewId);
+
+  preview.src =
+  URL.createObjectURL(file);
+
+  preview.classList.remove("hidden");
+
+}
+
+/* =====================================================
+   UPLOAD FILE
 ===================================================== */
 
 async function uploadFile(file){
@@ -70,7 +91,6 @@ async function uploadFile(file){
   const fileName =
   `${Date.now()}-${file.name}`;
 
-  /* UPLOAD */
   const { error } =
   await supabaseClient.storage
   .from("cafe")
@@ -86,7 +106,6 @@ async function uploadFile(file){
 
   }
 
-  /* GET PUBLIC URL */
   const { data } =
   supabaseClient.storage
   .from("cafe")
@@ -126,7 +145,7 @@ async function loadWebsiteSettings(){
   );
 
   setInputValue(
-    "heroDescription",
+    "heroDesc",
     data.hero_description
   );
 
@@ -143,6 +162,11 @@ async function loadWebsiteSettings(){
   );
 
   setInputValue(
+    "email",
+    data.email
+  );
+
+  setInputValue(
     "address",
     data.address
   );
@@ -153,23 +177,32 @@ async function loadWebsiteSettings(){
   );
 
   setInputValue(
+    "instagram",
+    data.instagram
+  );
+
+  setInputValue(
     "openingHours",
     data.opening_hours
   );
 
-  /* LOGO PREVIEW */
+  /* LOGO */
   if(data.logo_url){
 
     $("logoPreview").src =
     data.logo_url;
 
+    $("logoPreview").classList.remove("hidden");
+
   }
 
-  /* HERO PREVIEW */
+  /* HERO */
   if(data.hero_image){
 
     $("heroPreview").src =
     data.hero_image;
+
+    $("heroPreview").classList.remove("hidden");
 
   }
 
@@ -213,7 +246,7 @@ async function updateWebsiteSettings(){
     $("heroTitle").value,
 
     hero_description:
-    $("heroDescription").value,
+    $("heroDesc").value,
 
     about_text:
     $("aboutText").value,
@@ -221,18 +254,24 @@ async function updateWebsiteSettings(){
     phone:
     $("phone").value,
 
+    email:
+    $("email").value,
+
     address:
     $("address").value,
 
     facebook:
     $("facebook").value,
 
+    instagram:
+    $("instagram").value,
+
     opening_hours:
     $("openingHours").value
 
   };
 
-  /* SAVE HERO IMAGE */
+  /* HERO IMAGE */
   if(heroImageUrl){
 
     updateData.hero_image =
@@ -240,7 +279,7 @@ async function updateWebsiteSettings(){
 
   }
 
-  /* SAVE LOGO */
+  /* LOGO */
   if(logoUrl){
 
     updateData.logo_url =
@@ -296,7 +335,7 @@ async function addMenu(){
     $("menuName").value,
 
     description:
-    $("menuDescription").value,
+    $("menuDesc").value,
 
     price:
     parseFloat(
@@ -305,6 +344,9 @@ async function addMenu(){
 
     category:
     $("menuCategory").value,
+
+    is_featured:
+    $("menuFeatured").checked,
 
     image_url:
     imageUrl
@@ -329,7 +371,7 @@ async function addMenu(){
   alert("Menu item added!");
 
   $("menuName").value = "";
-  $("menuDescription").value = "";
+  $("menuDesc").value = "";
   $("menuPrice").value = "";
   $("menuCategory").value = "";
   $("menuImage").value = "";
