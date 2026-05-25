@@ -1,9 +1,7 @@
 /* =====================================================
-   LADOLCE CAFE CMS PRO MAX
-   FINAL ADMIN CONNECTOR
-   COMPLETE UPDATED VERSION
+   LADOLCE CAFE CMS - FINAL ADMIN CONNECTOR
+   FULL FIXED VERSION
 ===================================================== */
-
 
 /* =====================================================
    SUPABASE
@@ -21,16 +19,6 @@ supabase.createClient(
   SUPABASE_ANON_KEY
 );
 
-
-/* =====================================================
-   HELPERS
-===================================================== */
-
-function $(id){
-  return document.getElementById(id);
-}
-
-
 /* =====================================================
    REFRESH PREVIEW
 ===================================================== */
@@ -38,49 +26,41 @@ function $(id){
 function refreshPreview(){
 
   const frame =
-    $("previewFrame");
+  document.getElementById("previewFrame");
 
   if(frame){
 
     frame.src =
-      "index.html?v=" + Date.now();
+    "index.html?v=" + Date.now();
 
   }
 
 }
 
-
 /* =====================================================
-   IMAGE PREVIEW
+   HELPERS
 ===================================================== */
 
-function previewImage(inputId, previewId){
+function $(id){
 
-  const input =
-    $(inputId);
+  return document.getElementById(id);
 
-  const preview =
-    $(previewId);
+}
 
-  if(!input || !preview) return;
+function setInputValue(id,value){
 
-  const file =
-    input.files[0];
+  const el = $(id);
 
-  if(file){
+  if(el){
 
-    preview.src =
-      URL.createObjectURL(file);
-
-    preview.classList.remove("hidden");
+    el.value = value || "";
 
   }
 
 }
 
-
 /* =====================================================
-   FILE UPLOAD
+   UPLOAD FILE (FINAL FIXED)
 ===================================================== */
 
 async function uploadFile(file){
@@ -88,12 +68,13 @@ async function uploadFile(file){
   if(!file) return null;
 
   const fileName =
-    `${Date.now()}-${file.name}`;
+  `${Date.now()}-${file.name}`;
 
+  /* UPLOAD */
   const { error } =
-    await supabaseClient.storage
-      .from("cafe")
-      .upload(fileName, file);
+  await supabaseClient.storage
+  .from("cafe")
+  .upload(fileName,file);
 
   if(error){
 
@@ -105,28 +86,30 @@ async function uploadFile(file){
 
   }
 
+  /* GET PUBLIC URL */
   const { data } =
-    supabaseClient.storage
-      .from("cafe")
-      .getPublicUrl(fileName);
+  supabaseClient.storage
+  .from("cafe")
+  .getPublicUrl(fileName);
+
+  console.log("PUBLIC URL:", data.publicUrl);
 
   return data.publicUrl;
 
 }
 
-
 /* =====================================================
    LOAD WEBSITE SETTINGS
 ===================================================== */
 
-async function loadSettings(){
+async function loadWebsiteSettings(){
 
   const { data, error } =
-    await supabaseClient
-      .from("website_settings")
-      .select("*")
-      .eq("id",1)
-      .single();
+  await supabaseClient
+  .from("website_settings")
+  .select("*")
+  .eq("id",1)
+  .single();
 
   if(error){
 
@@ -137,103 +120,123 @@ async function loadSettings(){
   }
 
   /* HERO */
-  if($("heroTitle"))
-    $("heroTitle").value =
-      data.hero_title || "";
+  setInputValue(
+    "heroTitle",
+    data.hero_title
+  );
 
-  if($("heroDesc"))
-    $("heroDesc").value =
-      data.hero_description || "";
+  setInputValue(
+    "heroDescription",
+    data.hero_description
+  );
 
   /* ABOUT */
-  if($("aboutText"))
-    $("aboutText").value =
-      data.about_text || "";
+  setInputValue(
+    "aboutText",
+    data.about_text
+  );
 
   /* CONTACT */
-  if($("phone"))
-    $("phone").value =
-      data.phone || "";
+  setInputValue(
+    "phone",
+    data.phone
+  );
 
-  if($("email"))
-    $("email").value =
-      data.email || "";
+  setInputValue(
+    "address",
+    data.address
+  );
 
-  if($("address"))
-    $("address").value =
-      data.address || "";
+  setInputValue(
+    "facebook",
+    data.facebook
+  );
 
-  if($("facebook"))
-    $("facebook").value =
-      data.facebook || "";
-
-  if($("instagram"))
-    $("instagram").value =
-      data.instagram || "";
-
-  if($("openingHours"))
-    $("openingHours").value =
-      data.opening_hours || "";
+  setInputValue(
+    "openingHours",
+    data.opening_hours
+  );
 
   /* LOGO PREVIEW */
-  if(data.logo_url && $("logoPreview")){
+  if(data.logo_url){
 
     $("logoPreview").src =
-      data.logo_url;
+    data.logo_url;
 
-    $("logoPreview").classList.remove("hidden");
+  }
+
+  /* HERO PREVIEW */
+  if(data.hero_image){
+
+    $("heroPreview").src =
+    data.hero_image;
 
   }
 
 }
 
-
 /* =====================================================
-   UPDATE HERO + LOGO
+   UPDATE WEBSITE SETTINGS
 ===================================================== */
 
-async function updateHero(){
-
-  const heroFile =
-    $("heroImage")?.files[0];
-
-  const logoFile =
-    $("logoImage")?.files[0];
-
-  let heroUrl = null;
-  let logoUrl = null;
+async function updateWebsiteSettings(){
 
   /* HERO IMAGE */
+  const heroFile =
+  $("heroImage").files[0];
+
+  let heroImageUrl = null;
+
   if(heroFile){
 
-    heroUrl =
-      await uploadFile(heroFile);
+    heroImageUrl =
+    await uploadFile(heroFile);
 
   }
 
   /* LOGO IMAGE */
+  const logoFile =
+  $("logoImage").files[0];
+
+  let logoUrl = null;
+
   if(logoFile){
 
     logoUrl =
-      await uploadFile(logoFile);
+    await uploadFile(logoFile);
 
   }
 
   const updateData = {
 
     hero_title:
-      $("heroTitle").value || "",
+    $("heroTitle").value,
 
     hero_description:
-      $("heroDesc").value || ""
+    $("heroDescription").value,
+
+    about_text:
+    $("aboutText").value,
+
+    phone:
+    $("phone").value,
+
+    address:
+    $("address").value,
+
+    facebook:
+    $("facebook").value,
+
+    opening_hours:
+    $("openingHours").value
 
   };
 
-  /* SAVE HERO */
-  if(heroUrl){
+  /* SAVE HERO IMAGE */
+  if(heroImageUrl){
 
     updateData.hero_image =
-      heroUrl;
+    heroImageUrl;
 
   }
 
@@ -241,15 +244,15 @@ async function updateHero(){
   if(logoUrl){
 
     updateData.logo_url =
-      logoUrl;
+    logoUrl;
 
   }
 
   const { error } =
-    await supabaseClient
-      .from("website_settings")
-      .update(updateData)
-      .eq("id",1);
+  await supabaseClient
+  .from("website_settings")
+  .update(updateData)
+  .eq("id",1);
 
   if(error){
 
@@ -263,93 +266,11 @@ async function updateHero(){
 
   alert("Website updated successfully!");
 
-  refreshPreview();
-
-}
-
-
-/* =====================================================
-   UPDATE ABOUT
-===================================================== */
-
-async function updateAbout(){
-
-  const { error } =
-    await supabaseClient
-      .from("website_settings")
-      .update({
-
-        about_text:
-          $("aboutText").value
-
-      })
-      .eq("id",1);
-
-  if(error){
-
-    console.error(error);
-
-    alert(error.message);
-
-    return;
-
-  }
-
-  alert("About updated!");
+  loadWebsiteSettings();
 
   refreshPreview();
 
 }
-
-
-/* =====================================================
-   UPDATE CONTACT
-===================================================== */
-
-async function updateContact(){
-
-  const { error } =
-    await supabaseClient
-      .from("website_settings")
-      .update({
-
-        phone:
-          $("phone").value,
-
-        email:
-          $("email").value,
-
-        address:
-          $("address").value,
-
-        facebook:
-          $("facebook").value,
-
-        instagram:
-          $("instagram").value,
-
-        opening_hours:
-          $("openingHours").value
-
-      })
-      .eq("id",1);
-
-  if(error){
-
-    console.error(error);
-
-    alert(error.message);
-
-    return;
-
-  }
-
-  alert("Contact updated!");
-
-  refreshPreview();
-
-}
-
 
 /* =====================================================
    ADD MENU ITEM
@@ -357,54 +278,43 @@ async function updateContact(){
 
 async function addMenu(){
 
-  const name =
-    $("menuName").value;
-
-  const description =
-    $("menuDesc").value;
-
-  const price =
-    parseFloat($("menuPrice").value);
-
-  const category =
-    $("menuCategory")?.value || "Food";
-
-  const featured =
-    $("menuFeatured")?.checked || false;
-
-  const file =
-    $("menuImage").files[0];
-
-  if(!name || !price){
-
-    alert("Menu name and price required");
-
-    return;
-
-  }
+  const imageFile =
+  $("menuImage").files[0];
 
   let imageUrl = null;
 
-  if(file){
+  if(imageFile){
 
     imageUrl =
-      await uploadFile(file);
+    await uploadFile(imageFile);
 
   }
 
+  const menuData = {
+
+    name:
+    $("menuName").value,
+
+    description:
+    $("menuDescription").value,
+
+    price:
+    parseFloat(
+      $("menuPrice").value
+    ),
+
+    category:
+    $("menuCategory").value,
+
+    image_url:
+    imageUrl
+
+  };
+
   const { error } =
-    await supabaseClient
-      .from("menu_items")
-      .insert([{
-
-        name,
-        description,
-        price,
-        category,
-        is_featured: featured,
-        image_url: imageUrl
-
-      }]);
+  await supabaseClient
+  .from("menu_items")
+  .insert([menuData]);
 
   if(error){
 
@@ -416,32 +326,33 @@ async function addMenu(){
 
   }
 
-  /* RESET */
+  alert("Menu item added!");
+
   $("menuName").value = "";
-  $("menuDesc").value = "";
+  $("menuDescription").value = "";
   $("menuPrice").value = "";
+  $("menuCategory").value = "";
   $("menuImage").value = "";
 
-  loadMenu();
+  loadMenuItems();
 
   refreshPreview();
 
 }
 
-
 /* =====================================================
-   LOAD MENU
+   LOAD MENU ITEMS
 ===================================================== */
 
-async function loadMenu(){
+async function loadMenuItems(){
 
   const { data, error } =
-    await supabaseClient
-      .from("menu_items")
-      .select("*")
-      .order("created_at",{
-        ascending:false
-      });
+  await supabaseClient
+  .from("menu_items")
+  .select("*")
+  .order("created_at",{
+    ascending:false
+  });
 
   if(error){
 
@@ -451,47 +362,46 @@ async function loadMenu(){
 
   }
 
-  $("menuList").innerHTML = "";
+  const container =
+  $("menuList");
+
+  container.innerHTML = "";
 
   data.forEach(item=>{
 
-    $("menuList").innerHTML += `
+    container.innerHTML += `
 
-      <div class="bg-white rounded-2xl p-4 shadow flex gap-4 items-center">
+    <div class="bg-white rounded-2xl shadow p-4 flex gap-4 items-center">
 
-        <img
-          src="${item.image_url || 'https://placehold.co/100x100'}"
-          class="w-20 h-20 rounded-xl object-cover"
-        />
+      <img
+      src="${item.image_url || 'https://placehold.co/100'}"
+      class="w-20 h-20 rounded-xl object-cover"
+      />
 
-        <div class="flex-1">
+      <div class="flex-1">
 
-          <h3 class="font-black text-lg">
-            ${item.name}
-          </h3>
+        <h3 class="font-black text-lg">
+          ${item.name}
+        </h3>
 
-          <p class="text-sm text-gray-500">
-            ${item.description || ''}
-          </p>
+        <p class="text-gray-500 text-sm">
+          ${item.description || ""}
+        </p>
 
-          <p class="font-bold text-[#800000] mt-2">
-            ₱${item.price}
-          </p>
-
-          <span class="text-xs bg-[#800000]/10 text-[#800000] px-2 py-1 rounded-full inline-block mt-2">
-            ${item.category || "Food"}
-          </span>
-
-        </div>
-
-        <button
-          onclick="deleteMenu(${item.id})"
-          class="bg-red-500 text-white px-4 py-2 rounded-xl"
-        >
-          Delete
-        </button>
+        <p class="font-bold text-[#800000] mt-2">
+          ₱${item.price}
+        </p>
 
       </div>
+
+      <button
+      onclick="deleteMenuItem(${item.id})"
+      class="bg-red-500 text-white px-4 py-2 rounded-xl"
+      >
+      Delete
+      </button>
+
+    </div>
 
     `;
 
@@ -499,29 +409,25 @@ async function loadMenu(){
 
 }
 
-
 /* =====================================================
-   DELETE MENU
+   DELETE MENU ITEM
 ===================================================== */
 
-async function deleteMenu(id){
+async function deleteMenuItem(id){
 
-  const confirmDelete =
-    confirm("Delete menu item?");
-
-  if(!confirmDelete) return;
+  if(!confirm("Delete menu item?"))
+  return;
 
   await supabaseClient
-    .from("menu_items")
-    .delete()
-    .eq("id",id);
+  .from("menu_items")
+  .delete()
+  .eq("id",id);
 
-  loadMenu();
+  loadMenuItems();
 
   refreshPreview();
 
 }
-
 
 /* =====================================================
    UPLOAD GALLERY IMAGE
@@ -530,29 +436,27 @@ async function deleteMenu(id){
 async function uploadGallery(){
 
   const file =
-    $("galleryImage").files[0];
+  $("galleryImage").files[0];
 
   if(!file){
 
-    alert("Choose image");
+    alert("Select image first");
 
     return;
 
   }
 
   const imageUrl =
-    await uploadFile(file);
+  await uploadFile(file);
 
   if(!imageUrl) return;
 
   const { error } =
-    await supabaseClient
-      .from("gallery")
-      .insert([{
-
-        image_url: imageUrl
-
-      }]);
+  await supabaseClient
+  .from("gallery")
+  .insert([{
+    image_url:imageUrl
+  }]);
 
   if(error){
 
@@ -564,14 +468,13 @@ async function uploadGallery(){
 
   }
 
-  $("galleryImage").value = "";
+  alert("Gallery image uploaded!");
 
   loadGallery();
 
   refreshPreview();
 
 }
-
 
 /* =====================================================
    LOAD GALLERY
@@ -580,34 +483,37 @@ async function uploadGallery(){
 async function loadGallery(){
 
   const { data } =
-    await supabaseClient
-      .from("gallery")
-      .select("*")
-      .order("created_at",{
-        ascending:false
-      });
+  await supabaseClient
+  .from("gallery")
+  .select("*")
+  .order("created_at",{
+    ascending:false
+  });
 
-  $("galleryList").innerHTML = "";
+  const container =
+  $("galleryList");
 
-  data.forEach(item=>{
+  container.innerHTML = "";
 
-    $("galleryList").innerHTML += `
+  data.forEach(img=>{
 
-      <div class="relative">
+    container.innerHTML += `
 
-        <img
-          src="${item.image_url}"
-          class="h-24 w-full rounded-xl object-cover"
-        />
+    <div class="relative">
 
-        <button
-          onclick="deleteGallery(${item.id})"
-          class="absolute top-2 right-2 bg-red-600 text-white rounded-full w-7 h-7"
-        >
-          ×
-        </button>
+      <img
+      src="${img.image_url}"
+      class="w-full h-32 rounded-2xl object-cover"
+      />
 
-      </div>
+      <button
+      onclick="deleteGalleryImage(${img.id})"
+      class="absolute top-2 right-2 bg-red-500 text-white px-3 py-1 rounded-lg"
+      >
+      X
+      </button>
+
+    </div>
 
     `;
 
@@ -615,17 +521,19 @@ async function loadGallery(){
 
 }
 
-
 /* =====================================================
-   DELETE GALLERY
+   DELETE GALLERY IMAGE
 ===================================================== */
 
-async function deleteGallery(id){
+async function deleteGalleryImage(id){
+
+  if(!confirm("Delete image?"))
+  return;
 
   await supabaseClient
-    .from("gallery")
-    .delete()
-    .eq("id",id);
+  .from("gallery")
+  .delete()
+  .eq("id",id);
 
   loadGallery();
 
@@ -633,139 +541,12 @@ async function deleteGallery(id){
 
 }
 
-
 /* =====================================================
-   ADD TESTIMONIAL
+   INIT
 ===================================================== */
 
-async function addTestimonial(){
+loadWebsiteSettings();
 
-  const name =
-    $("testimonialName").value;
-
-  const review =
-    $("testimonialReview").value;
-
-  const rating =
-    parseInt($("testimonialRating").value);
-
-  if(!name || !review){
-
-    alert("Complete testimonial fields");
-
-    return;
-
-  }
-
-  const { error } =
-    await supabaseClient
-      .from("testimonials")
-      .insert([{
-
-        name,
-        review,
-        rating
-
-      }]);
-
-  if(error){
-
-    console.error(error);
-
-    alert(error.message);
-
-    return;
-
-  }
-
-  $("testimonialName").value = "";
-  $("testimonialReview").value = "";
-
-  loadTestimonials();
-
-  refreshPreview();
-
-}
-
-
-/* =====================================================
-   LOAD TESTIMONIALS
-===================================================== */
-
-async function loadTestimonials(){
-
-  const { data } =
-    await supabaseClient
-      .from("testimonials")
-      .select("*")
-      .order("created_at",{
-        ascending:false
-      });
-
-  if(!$("testimonialList")) return;
-
-  $("testimonialList").innerHTML = "";
-
-  data.forEach(item=>{
-
-    $("testimonialList").innerHTML += `
-
-      <div class="bg-white p-4 rounded-2xl shadow">
-
-        <h3 class="font-black text-lg">
-          ${item.name}
-        </h3>
-
-        <p class="text-sm mt-2 text-gray-600">
-          ${item.review}
-        </p>
-
-        <p class="mt-3 text-yellow-500">
-          ${"⭐".repeat(item.rating || 5)}
-        </p>
-
-        <button
-          onclick="deleteTestimonial(${item.id})"
-          class="mt-4 bg-red-500 text-white px-3 py-2 rounded-xl"
-        >
-          Delete
-        </button>
-
-      </div>
-
-    `;
-
-  });
-
-}
-
-
-/* =====================================================
-   DELETE TESTIMONIAL
-===================================================== */
-
-async function deleteTestimonial(id){
-
-  await supabaseClient
-    .from("testimonials")
-    .delete()
-    .eq("id",id);
-
-  loadTestimonials();
-
-  refreshPreview();
-
-}
-
-
-/* =====================================================
-   INITIALIZE CMS
-===================================================== */
-
-loadSettings();
-
-loadMenu();
+loadMenuItems();
 
 loadGallery();
-
-loadTestimonials();
