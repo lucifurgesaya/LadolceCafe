@@ -114,10 +114,21 @@ body{
 
   margin-top:18px;
 
+  border:2px solid #f1f1f1;
+
 }
 
 iframe{
   border:none;
+}
+
+.badge{
+  background:#800000;
+  color:white;
+  padding:6px 14px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:700;
 }
 
 </style>
@@ -171,7 +182,7 @@ Refresh Preview
 
 <div class="grid xl:grid-cols-2 gap-10">
 
-<!-- LEFT SIDE -->
+<!-- LEFT -->
 <div class="space-y-10">
 
 <!-- HERO -->
@@ -179,12 +190,12 @@ Refresh Preview
 
 <div class="mb-8">
 
-<p class="uppercase tracking-[0.3em] text-[#800000] text-sm font-bold">
-Hero Section
-</p>
+<div class="badge">
+Website Branding
+</div>
 
 <h2 class="text-5xl font-black mt-4">
-Website Branding
+Hero Section
 </h2>
 
 </div>
@@ -235,7 +246,7 @@ class="preview-image hidden"
 
 </div>
 
-<!-- HERO TITLE -->
+<!-- TITLE -->
 <div>
 
 <label class="font-semibold">
@@ -245,13 +256,13 @@ Hero Title
 <input
 id="heroTitle"
 type="text"
-placeholder="LaDolce Cafe"
+placeholder="Authentic Filipino Cuisine"
 class="input"
 />
 
 </div>
 
-<!-- HERO DESC -->
+<!-- DESCRIPTION -->
 <div>
 
 <label class="font-semibold">
@@ -261,7 +272,7 @@ Hero Description
 <textarea
 id="heroDesc"
 rows="5"
-placeholder="Authentic Filipino Cuisine..."
+placeholder="Welcome to LaDolce Cafe..."
 class="input"
 ></textarea>
 
@@ -283,9 +294,9 @@ Save Hero Section
 
 <div class="mb-8">
 
-<p class="uppercase tracking-[0.3em] text-[#800000] text-sm font-bold">
-About
-</p>
+<div class="badge">
+About Section
+</div>
 
 <h2 class="text-5xl font-black mt-4">
 About LaDolce Cafe
@@ -314,12 +325,12 @@ Save About Section
 
 <div class="mb-8">
 
-<p class="uppercase tracking-[0.3em] text-[#800000] text-sm font-bold">
-Contact
-</p>
+<div class="badge">
+Contact Information
+</div>
 
 <h2 class="text-5xl font-black mt-4">
-Contact Information
+Cafe Contact
 </h2>
 
 </div>
@@ -384,9 +395,9 @@ Save Contact Info
 
 <div class="mb-8">
 
-<p class="uppercase tracking-[0.3em] text-[#800000] text-sm font-bold">
-Food Menu
-</p>
+<div class="badge">
+Menu System
+</div>
 
 <h2 class="text-5xl font-black mt-4">
 Add Menu Item
@@ -453,7 +464,6 @@ Add Menu Item
 
 </div>
 
-<!-- MENU LIST -->
 <div
 id="menuList"
 class="grid gap-5 mt-10"
@@ -466,9 +476,9 @@ class="grid gap-5 mt-10"
 
 <div class="mb-8">
 
-<p class="uppercase tracking-[0.3em] text-[#800000] text-sm font-bold">
+<div class="badge">
 Gallery
-</p>
+</div>
 
 <h2 class="text-5xl font-black mt-4">
 Cafe Photos
@@ -502,9 +512,9 @@ class="grid md:grid-cols-3 gap-4 mt-10"
 
 <div class="mb-8">
 
-<p class="uppercase tracking-[0.3em] text-[#800000] text-sm font-bold">
+<div class="badge">
 Testimonials
-</p>
+</div>
 
 <h2 class="text-5xl font-black mt-4">
 Customer Reviews
@@ -557,7 +567,7 @@ class="grid gap-5 mt-10"
 
 </div>
 
-<!-- RIGHT SIDE -->
+<!-- RIGHT -->
 <div class="sticky top-28 h-[92vh]">
 
 <div class="bg-white rounded-[2.5rem] overflow-hidden shadow-2xl h-full">
