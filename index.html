@@ -98,23 +98,25 @@ body{
 
 /* BRAND SLIDER */
 .branding-slider{
+  display:flex;
   width:max-content;
-  animation:slideBrand 20s linear infinite;
+  animation:slideBrand 25s linear infinite;
 }
 
 .brand-text{
   font-size:clamp(3rem,8vw,8rem);
   font-weight:900;
   color:white;
-  line-height:0.95;
-  padding-right:120px;
+  line-height:1;
+  padding-right:80px;
   letter-spacing:-3px;
+  flex-shrink:0;
 }
 
 @keyframes slideBrand{
 
   from{
-    transform:translateX(0%);
+    transform:translateX(0);
   }
 
   to{
@@ -166,9 +168,7 @@ nav a:hover::after{
   width:100%;
 }
 
-/* =========================================
-   SLIDING GALLERY
-========================================= */
+/* SLIDING GALLERY */
 
 #gallery-slider{
   width:max-content;
@@ -225,7 +225,6 @@ nav a:hover::after{
 
 <div class="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
 
-<!-- LEFT -->
 <div class="flex items-center gap-4">
 
 <img
@@ -251,7 +250,6 @@ Authentic Filipino Cuisine
 
 </div>
 
-<!-- RIGHT -->
 <div class="hidden md:flex gap-10 font-semibold">
 
 <a href="#about">About</a>
@@ -280,17 +278,17 @@ url('https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb');
 
 <div class="max-w-7xl mx-auto px-6 relative z-10 w-full">
 
-<!-- SLIDER -->
-<div class="overflow-hidden mb-10">
+<!-- HERO SLIDER -->
+<div class="overflow-hidden mb-10 w-full">
 
-<div class="branding-slider flex whitespace-nowrap">
+<div class="branding-slider whitespace-nowrap">
 
 <h2 class="brand-text">
-GOOD FOOD • GREAT MEMORIES • FILIPINO CUISINE •
+GOOD FOOD • GREAT MEMORIES • FILIPINO CUISINE • GOOD FOOD • GREAT MEMORIES • FILIPINO CUISINE •
 </h2>
 
 <h2 class="brand-text">
-GOOD FOOD • GREAT MEMORIES • FILIPINO CUISINE •
+GOOD FOOD • GREAT MEMORIES • FILIPINO CUISINE • GOOD FOOD • GREAT MEMORIES • FILIPINO CUISINE •
 </h2>
 
 </div>
@@ -422,6 +420,23 @@ Taste The Best Of LaDolce
 id="menu-container"
 class="grid md:grid-cols-2 xl:grid-cols-3 gap-8"
 ></div>
+
+</div>
+
+</section>
+
+<!-- BRANDING -->
+<section class="bg-[#800000] py-20 overflow-hidden w-full">
+
+<div class="branding-slider whitespace-nowrap">
+
+<h2 class="brand-text">
+LADOLCE CAFE • GOOD FOOD • FAMILY • MEMORIES • LADOLCE CAFE • GOOD FOOD • FAMILY • MEMORIES •
+</h2>
+
+<h2 class="brand-text">
+LADOLCE CAFE • GOOD FOOD • FAMILY • MEMORIES • LADOLCE CAFE • GOOD FOOD • FAMILY • MEMORIES •
+</h2>
 
 </div>
 
