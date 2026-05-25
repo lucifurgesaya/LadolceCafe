@@ -166,6 +166,54 @@ nav a:hover::after{
   width:100%;
 }
 
+/* =========================================
+   SLIDING GALLERY
+========================================= */
+
+#gallery-slider{
+  width:max-content;
+}
+
+.gallery-item{
+  width:420px;
+  flex-shrink:0;
+  border-radius:2rem;
+  overflow:hidden;
+  position:relative;
+  box-shadow:0 20px 40px rgba(0,0,0,0.15);
+}
+
+.gallery-item img{
+  width:100%;
+  height:500px;
+  object-fit:cover;
+  transition:transform .6s ease;
+}
+
+.gallery-item:hover img{
+  transform:scale(1.08);
+}
+
+.animate-gallery-slide{
+  animation:gallerySlide 45s linear infinite;
+}
+
+.animate-gallery-slide:hover{
+  animation-play-state:paused;
+}
+
+@keyframes gallerySlide{
+
+  from{
+    transform:translateX(0);
+  }
+
+  to{
+    transform:translateX(-50%);
+  }
+
+}
+
 </style>
 
 </head>
@@ -337,16 +385,6 @@ LaDolce Cafe is a cozy restaurant offering authentic Filipino dishes made with l
 <p class="mt-4 text-white/80">Authentic Filipino Taste</p>
 </div>
 
-<div class="bg-white rounded-[2rem] p-8 shadow-lg card">
-<h3 class="text-5xl font-black text-[#800000]">Fresh</h3>
-<p class="mt-4 text-zinc-600">Daily Ingredients</p>
-</div>
-
-<div class="bg-[#2B1C16] text-white rounded-[2rem] p-8 card">
-<h3 class="text-5xl font-black">Family</h3>
-<p class="mt-4 text-white/70">Friendly Dining Experience</p>
-</div>
-
 </div>
 
 </div>
@@ -379,23 +417,6 @@ class="grid md:grid-cols-2 xl:grid-cols-3 gap-8"
 
 </section>
 
-<!-- BRANDING -->
-<section class="bg-[#800000] py-20 overflow-hidden">
-
-<div class="branding-slider flex whitespace-nowrap">
-
-<h2 class="brand-text">
-LADOLCE CAFE • GOOD FOOD • FAMILY • MEMORIES •
-</h2>
-
-<h2 class="brand-text">
-LADOLCE CAFE • GOOD FOOD • FAMILY • MEMORIES •
-</h2>
-
-</div>
-
-</section>
-
 <!-- GALLERY -->
 <section id="gallery" class="py-32 overflow-hidden">
 
@@ -411,15 +432,10 @@ Gallery
 Food & Memories
 </h2>
 
-<p class="text-zinc-600 mt-6 text-lg">
-Experience the warmth, flavors, and memories of LaDolce Cafe.
-</p>
-
 </div>
 
 </div>
 
-<!-- SLIDING GALLERY -->
 <div class="relative overflow-hidden">
 
 <div
@@ -427,21 +443,16 @@ id="gallery-slider"
 class="flex gap-6 w-max animate-gallery-slide px-6"
 >
 
-<!-- IMAGES LOAD HERE -->
-
 </div>
 
 </div>
 
 </section>
+
 <!-- CONTACT -->
 <section id="contact" class="bg-[#2B1C16] text-white py-32">
 
 <div class="max-w-5xl mx-auto px-6 text-center">
-
-<p class="uppercase tracking-[0.3em] text-[#d4a373] text-sm font-bold">
-Visit Us
-</p>
 
 <h2 class="text-6xl font-black mt-6">
 We'd Love To Serve You.
@@ -463,48 +474,9 @@ Rara St., Brgy. 7, Cabadbaran City
 
 </div>
 
-<div class="flex justify-center gap-4 mt-10 flex-wrap">
-
-<a
-id="facebook-link"
-href="#"
-target="_blank"
-class="btn bg-[#800000] px-10 py-5 rounded-2xl text-lg font-bold"
->
-Facebook
-</a>
-
-<a
-id="instagram-link"
-href="#"
-target="_blank"
-class="btn bg-white text-black px-10 py-5 rounded-2xl text-lg font-bold"
->
-Instagram
-</a>
-
-<a
-id="email-link"
-href="#"
-class="btn bg-[#d4a373] text-black px-10 py-5 rounded-2xl text-lg font-bold"
->
-Email Us
-</a>
-
-</div>
-
 </div>
 
 </section>
-
-<!-- FOOTER -->
-<footer class="bg-black py-10 text-center text-zinc-500">
-
-<p>
-© 2026 LaDolce Cafe. All rights reserved.
-</p>
-
-</footer>
 
 <!-- SUPABASE -->
 <script>
@@ -524,19 +496,14 @@ SUPABASE_ANON_KEY
 /* LOAD SETTINGS */
 async function loadWebsiteSettings(){
 
-const { data, error } =
+const { data } =
 await supabaseClient
 .from("website_settings")
 .select("*")
 .eq("id",1)
 .single();
 
-if(error){
-
-console.error(error);
-return;
-
-}
+if(!data) return;
 
 document.getElementById("hero-title").innerText =
 data.hero_title || "LaDolce Cafe";
@@ -556,35 +523,7 @@ data.address || "";
 document.getElementById("contact-hours").innerText =
 data.opening_hours || "";
 
-/* FACEBOOK */
-if(data.facebook){
-
-document.getElementById("facebook-link").href =
-data.facebook;
-
-}
-
-/* INSTAGRAM */
-if(data.instagram){
-
-document.getElementById("instagram-link").href =
-data.instagram;
-
-}
-
-/* EMAIL */
-if(data.email){
-
-document.getElementById("email-link").href =
-`mailto:${data.email}`;
-
-}
-
-/* HERO IMAGE */
-if(data.hero_image && data.hero_image.includes("http")){
-
-const heroUrl =
-data.hero_image.trim();
+if(data.hero_image){
 
 document.getElementById("heroSection").style.backgroundImage =
 `
@@ -592,16 +531,15 @@ linear-gradient(
 rgba(43,28,22,.65),
 rgba(43,28,22,.65)
 ),
-url('${heroUrl}')
+url('${data.hero_image}')
 `;
 
 }
 
-/* LOGO */
-if(data.logo_url && data.logo_url.includes("http")){
+if(data.logo_url){
 
 document.getElementById("logo").src =
-data.logo_url.trim();
+data.logo_url;
 
 }
 
@@ -630,7 +568,7 @@ container.innerHTML += `
 <div class="zoom-image">
 
 <img
-src="${item.image_url || 'https://placehold.co/600x400'}"
+src="${item.image_url}"
 class="w-full h-72 object-cover"
 />
 
@@ -639,20 +577,16 @@ class="w-full h-72 object-cover"
 <div class="p-8">
 
 <h3 class="text-3xl font-black">
-${item.name || ""}
+${item.name}
 </h3>
 
-<p class="text-zinc-400 mt-4 leading-relaxed">
+<p class="text-zinc-400 mt-4">
 ${item.description || ""}
 </p>
 
-<div class="flex justify-between items-center mt-8">
-
-<p class="text-3xl font-black text-[#d4a373]">
-₱${item.price || ""}
+<p class="text-3xl font-black text-[#d4a373] mt-8">
+₱${item.price}
 </p>
-
-</div>
 
 </div>
 
@@ -674,19 +608,28 @@ await supabaseClient
 .order("created_at",{ascending:false});
 
 const container =
-document.getElementById("gallery-container");
+document.getElementById("gallery-slider");
 
 container.innerHTML = "";
 
-data?.forEach(img=>{
+if(!data || data.length === 0){
+return;
+}
+
+const duplicatedGallery = [
+...data,
+...data
+];
+
+duplicatedGallery.forEach(img=>{
 
 container.innerHTML += `
 
-<div class="zoom-image rounded-[2rem] overflow-hidden shadow-xl card">
+<div class="gallery-item">
 
 <img
 src="${img.image_url}"
-class="w-full h-72 object-cover"
+alt="LaDolce Cafe Gallery"
 />
 
 </div>
@@ -696,17 +639,6 @@ class="w-full h-72 object-cover"
 });
 
 }
-
-/* PARALLAX */
-window.addEventListener("scroll",()=>{
-
-const hero =
-document.getElementById("heroSection");
-
-hero.style.backgroundPositionY =
-window.scrollY * 0.5 + "px";
-
-});
 
 /* INIT */
 loadWebsiteSettings();
