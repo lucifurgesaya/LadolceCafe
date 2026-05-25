@@ -1,17 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-<meta
-name="viewport"
-content="width=device-width, initial-scale=1.0"
-/>
-
-<title>
-LaDolce Cafe
-</title>
+<title>LaDolce Cafe</title>
 
 <link rel="icon" href="logo.ico">
 
@@ -23,11 +16,9 @@ LaDolce Cafe
 
 <!-- GOOGLE FONT -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<link
-href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
-rel="stylesheet"
-/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
 
@@ -40,123 +31,125 @@ html{
 }
 
 body{
-  background:#f7f4ef;
-  color:#2B1C16;
+  background:#0f0f0f;
+  color:white;
   overflow-x:hidden;
 }
 
 /* HERO */
-.hero{
-
-  min-height:100vh;
-
+.hero-bg{
   background-size:cover;
-
   background-position:center;
-
   background-repeat:no-repeat;
-
-  position:relative;
-
-  display:flex;
-
-  align-items:center;
-
-}
-
-.hero::before{
-
-  content:"";
-
-  position:absolute;
-
-  inset:0;
-
-  background:
-  linear-gradient(
-    rgba(0,0,0,0.65),
-    rgba(0,0,0,0.65)
-  );
-
-}
-
-.hero-content{
-  position:relative;
-  z-index:2;
 }
 
 /* GLASS */
 .glass{
-
-  backdrop-filter:blur(18px);
-
-  background:rgba(255,255,255,0.08);
-
+  backdrop-filter:blur(16px);
+  background:rgba(255,255,255,0.05);
 }
 
 /* CARD */
 .card{
-
   transition:0.4s ease;
-
 }
 
 .card:hover{
-
-  transform:translateY(-8px);
-
-  box-shadow:
-  0 25px 50px rgba(0,0,0,0.12);
-
+  transform:translateY(-10px);
+  box-shadow:0 25px 60px rgba(0,0,0,0.25);
 }
 
 /* BUTTON */
 .btn{
-
-  transition:0.3s;
-
+  transition:.3s;
 }
 
 .btn:hover{
-
-  transform:
-  translateY(-2px)
-  scale(1.02);
-
+  transform:translateY(-3px) scale(1.03);
 }
 
-.section{
-  max-width:1400px;
-  margin:auto;
-  padding:120px 24px;
-}
-
+/* FADE */
 .fade-up{
   animation:fadeUp 1s ease;
 }
 
 @keyframes fadeUp{
-
   from{
     opacity:0;
-    transform:translateY(30px);
+    transform:translateY(40px);
   }
 
   to{
     opacity:1;
     transform:translateY(0);
   }
+}
 
+/* SLIDER */
+.branding-slider{
+  width:max-content;
+  animation:slideBrand 18s linear infinite;
+}
+
+.brand-text{
+  font-size:clamp(3rem,8vw,8rem);
+  font-weight:900;
+  line-height:0.95;
+  padding-right:120px;
+  color:white;
+  letter-spacing:-3px;
+}
+
+@keyframes slideBrand{
+  from{
+    transform:translateX(0%);
+  }
+
+  to{
+    transform:translateX(-50%);
+  }
+}
+
+/* IMAGE ZOOM */
+.zoom-image{
+  overflow:hidden;
+}
+
+.zoom-image img{
+  transition:transform .5s ease;
+}
+
+.zoom-image:hover img{
+  transform:scale(1.08);
+}
+
+/* NAV */
+nav a{
+  position:relative;
+}
+
+nav a::after{
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:-6px;
+  width:0%;
+  height:2px;
+  background:white;
+  transition:.3s;
+}
+
+nav a:hover::after{
+  width:100%;
 }
 
 </style>
-
 </head>
 
 <body>
 
 <!-- NAVBAR -->
-<nav class="fixed top-0 z-50 w-full border-b border-white/10 bg-black/30 backdrop-blur-xl text-white">
+<nav class="fixed top-0 w-full z-50 border-b border-white/10 bg-black/40 backdrop-blur-xl">
 
 <div class="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
 
@@ -166,98 +159,103 @@ body{
 <img
 id="logo"
 src="https://placehold.co/100x100"
-class="h-14 w-14 object-cover rounded-full border border-white/20"
+class="w-14 h-14 rounded-full object-cover border border-white/20"
 />
 
 <div>
-
-<h1
-id="nav-title"
-class="text-2xl font-black"
->
+<h1 id="site-title" class="text-2xl font-black">
 LaDolce Cafe
 </h1>
 
-<p class="text-xs uppercase tracking-[0.3em] text-zinc-300">
+<p class="uppercase tracking-[0.35em] text-xs text-zinc-400">
 Authentic Filipino Cuisine
 </p>
-
 </div>
 
 </div>
 
 <!-- RIGHT -->
-<div class="hidden md:flex gap-8 text-sm font-semibold">
+<div class="hidden md:flex gap-10 font-semibold">
 
-<a href="#about" class="hover:text-yellow-300 transition">
-About
-</a>
-
-<a href="#menu" class="hover:text-yellow-300 transition">
-Menu
-</a>
-
-<a href="#gallery" class="hover:text-yellow-300 transition">
-Gallery
-</a>
-
-<a href="#testimonials" class="hover:text-yellow-300 transition">
-Reviews
-</a>
-
-<a href="#contact" class="hover:text-yellow-300 transition">
-Contact
-</a>
+<a href="#about">About</a>
+<a href="#menu">Menu</a>
+<a href="#gallery">Gallery</a>
+<a href="#contact">Contact</a>
 
 </div>
 
 </div>
-
 </nav>
 
 <!-- HERO -->
 <section
-id="hero"
-class="hero"
-style="background-image:url('https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?q=80&w=2070&auto=format&fit=crop');"
+id="heroSection"
+class="hero-bg min-h-screen flex items-center relative overflow-hidden"
+style="background-image:
+linear-gradient(rgba(0,0,0,.72),rgba(0,0,0,.72)),
+url('https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb');"
 >
 
-<div class="max-w-7xl mx-auto px-6 py-40 relative z-10">
+<!-- GLOW -->
+<div class="absolute w-[700px] h-[700px] bg-[#8B0000]/30 blur-[160px] rounded-full -top-20 -left-20"></div>
 
-<div class="max-w-3xl fade-up">
+<div class="max-w-7xl mx-auto px-6 relative z-10 w-full">
 
-<div class="inline-flex items-center gap-3 rounded-full border border-white/20 px-5 py-2 glass text-white">
+<!-- SLIDING BRAND -->
+<div class="overflow-hidden mb-10">
 
-☕ Welcome To LaDolce Cafe
+<div class="branding-slider flex whitespace-nowrap">
+
+<h2 class="brand-text">
+GOOD FOOD • GREAT MEMORIES • AUTHENTIC FILIPINO CUISINE •
+</h2>
+
+<h2 class="brand-text">
+GOOD FOOD • GREAT MEMORIES • AUTHENTIC FILIPINO CUISINE •
+</h2>
+
+</div>
+
+</div>
+
+<div class="max-w-4xl fade-up">
+
+<div class="inline-flex items-center gap-3 rounded-full border border-white/20 px-6 py-3 glass mb-8">
+
+<span class="h-3 w-3 rounded-full bg-[#8B0000] animate-pulse"></span>
+
+<p class="text-sm font-medium">
+Welcome To LaDolce Cafe
+</p>
 
 </div>
 
 <h1
 id="hero-title"
-class="text-6xl md:text-8xl font-black leading-none text-white mt-8"
+class="text-6xl md:text-8xl font-black leading-none"
 >
-LaDolce Cafe
+Authentic Filipino Cuisine
 </h1>
 
 <p
-id="hero-desc"
-class="text-xl text-zinc-200 mt-8 leading-relaxed"
+id="hero-description"
+class="text-xl text-zinc-300 mt-10 max-w-3xl leading-relaxed"
 >
-Authentic Filipino Cuisine served with love and passion.
+Mabuhay! Welcome to LaDolce Cafe — Authentic Filipino Cuisine served with love and passion.
 </p>
 
-<div class="flex flex-wrap gap-5 mt-10">
+<div class="flex flex-wrap gap-5 mt-12">
 
 <a
 href="#menu"
-class="bg-[#800000] text-white px-8 py-4 rounded-2xl font-bold btn"
+class="btn bg-[#8B0000] text-white px-10 py-5 rounded-2xl font-bold text-lg"
 >
 View Menu
 </a>
 
 <a
 href="#contact"
-class="bg-white text-black px-8 py-4 rounded-2xl font-bold btn"
+class="btn bg-white text-black px-10 py-5 rounded-2xl font-bold text-lg"
 >
 Visit Us
 </a>
@@ -271,91 +269,50 @@ Visit Us
 </section>
 
 <!-- ABOUT -->
-<section
-id="about"
-class="section"
->
+<section id="about" class="py-32 bg-[#f5f0ea] text-black">
 
-<div class="grid lg:grid-cols-2 gap-20 items-center">
+<div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-20 items-center">
 
-<div>
+<div class="fade-up">
 
-<p class="uppercase tracking-[0.3em] text-[#800000] text-sm font-bold">
+<p class="uppercase tracking-[0.3em] text-[#8B0000] text-sm font-bold">
 About Us
 </p>
 
 <h2 class="text-6xl font-black mt-6 leading-tight">
-A Cafe Built With Love & Tradition.
+Authentic Filipino Comfort Food.
 </h2>
-
-</div>
-
-<div>
 
 <p
 id="about-text"
-class="text-xl leading-relaxed text-zinc-600"
+class="mt-8 text-zinc-700 text-xl leading-relaxed"
 >
-LaDolce Cafe is your cozy destination for authentic Filipino comfort food,
-crafted with passion, warmth, and unforgettable flavors.
+LaDolce Cafe is a cozy restaurant offering authentic Filipino dishes made with love and passion.
 </p>
 
 </div>
 
+<div class="grid grid-cols-2 gap-6">
+
+<div class="bg-white rounded-[2rem] p-8 shadow-lg card">
+<h3 class="text-5xl font-black text-[#8B0000]">10+</h3>
+<p class="mt-4 text-zinc-600">Years Serving Happiness</p>
 </div>
 
-</section>
-
-<!-- FEATURES -->
-<section class="bg-white py-24">
-
-<div class="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-8">
-
-<div class="bg-[#faf7f2] rounded-[2rem] p-10 card">
-
-<div class="text-5xl">
-🍽️
+<div class="bg-[#8B0000] text-white rounded-[2rem] p-8 card">
+<h3 class="text-5xl font-black">100%</h3>
+<p class="mt-4 text-white/80">Authentic Filipino Taste</p>
 </div>
 
-<h3 class="text-3xl font-black mt-6">
-Authentic Dishes
-</h3>
-
-<p class="text-zinc-600 mt-4">
-Traditional Filipino flavors made with premium ingredients.
-</p>
-
+<div class="bg-white rounded-[2rem] p-8 shadow-lg card">
+<h3 class="text-5xl font-black text-[#8B0000]">Fresh</h3>
+<p class="mt-4 text-zinc-600">Daily Ingredients</p>
 </div>
 
-<div class="bg-[#faf7f2] rounded-[2rem] p-10 card">
-
-<div class="text-5xl">
-☕
+<div class="bg-black text-white rounded-[2rem] p-8 card">
+<h3 class="text-5xl font-black">Family</h3>
+<p class="mt-4 text-zinc-400">Friendly Dining Experience</p>
 </div>
-
-<h3 class="text-3xl font-black mt-6">
-Premium Coffee
-</h3>
-
-<p class="text-zinc-600 mt-4">
-Freshly brewed coffee and handcrafted cafe beverages.
-</p>
-
-</div>
-
-<div class="bg-[#faf7f2] rounded-[2rem] p-10 card">
-
-<div class="text-5xl">
-❤️
-</div>
-
-<h3 class="text-3xl font-black mt-6">
-Family Atmosphere
-</h3>
-
-<p class="text-zinc-600 mt-4">
-Warm hospitality and memorable dining experiences.
-</p>
 
 </div>
 
@@ -364,97 +321,68 @@ Warm hospitality and memorable dining experiences.
 </section>
 
 <!-- MENU -->
-<section
-id="menu"
-class="section"
->
+<section id="menu" class="py-32 bg-[#111111]">
+
+<div class="max-w-7xl mx-auto px-6">
 
 <div class="text-center mb-20">
 
-<p class="uppercase tracking-[0.3em] text-[#800000] text-sm font-bold">
-Our Menu
+<p class="uppercase tracking-[0.3em] text-[#8B0000] text-sm font-bold">
+Featured Menu
 </p>
 
 <h2 class="text-6xl font-black mt-6">
-Featured Dishes
+Taste The Best Of LaDolce
 </h2>
 
 </div>
 
 <div
 id="menu-container"
-class="grid lg:grid-cols-3 gap-10"
+class="grid md:grid-cols-2 xl:grid-cols-3 gap-8"
 ></div>
+
+</div>
 
 </section>
 
 <!-- BANNER -->
-<section class="py-24 bg-[#800000] text-white text-center">
+<section class="bg-[#8B0000] py-24 overflow-hidden">
 
-<div class="max-w-4xl mx-auto px-6">
+<div class="branding-slider flex whitespace-nowrap">
 
-<h2 class="text-5xl md:text-7xl font-black leading-tight">
-Good Food.
-<br>
-Great Memories.
+<h2 class="brand-text">
+LADOlCE CAFE • GOOD FOOD • FAMILY • MEMORIES • FILIPINO CUISINE •
 </h2>
 
-<p class="text-xl text-zinc-200 mt-8">
-Experience authentic Filipino comfort food like never before.
-</p>
+<h2 class="brand-text">
+LADOlCE CAFE • GOOD FOOD • FAMILY • MEMORIES • FILIPINO CUISINE •
+</h2>
 
 </div>
 
 </section>
 
 <!-- GALLERY -->
-<section
-id="gallery"
-class="section"
->
+<section id="gallery" class="py-32 bg-[#f5f0ea] text-black">
+
+<div class="max-w-7xl mx-auto px-6">
 
 <div class="text-center mb-20">
 
-<p class="uppercase tracking-[0.3em] text-[#800000] text-sm font-bold">
+<p class="uppercase tracking-[0.3em] text-[#8B0000] text-sm font-bold">
 Gallery
 </p>
 
 <h2 class="text-6xl font-black mt-6">
-Inside LaDolce Cafe
+Food & Memories
 </h2>
 
 </div>
 
 <div
 id="gallery-container"
-class="grid md:grid-cols-2 lg:grid-cols-4 gap-6"
-></div>
-
-</section>
-
-<!-- TESTIMONIALS -->
-<section
-id="testimonials"
-class="bg-white py-32"
->
-
-<div class="max-w-7xl mx-auto px-6">
-
-<div class="text-center mb-20">
-
-<p class="uppercase tracking-[0.3em] text-[#800000] text-sm font-bold">
-Customer Reviews
-</p>
-
-<h2 class="text-6xl font-black mt-6">
-What People Say
-</h2>
-
-</div>
-
-<div
-id="testimonial-container"
-class="grid lg:grid-cols-3 gap-8"
+class="grid md:grid-cols-2 xl:grid-cols-4 gap-6"
 ></div>
 
 </div>
@@ -462,131 +390,58 @@ class="grid lg:grid-cols-3 gap-8"
 </section>
 
 <!-- CONTACT -->
-<section
-id="contact"
-class="bg-[#2B1C16] text-white py-32"
->
+<section id="contact" class="bg-black py-32">
 
-<div class="max-w-6xl mx-auto px-6">
+<div class="max-w-5xl mx-auto px-6 text-center">
 
-<div class="grid lg:grid-cols-2 gap-20">
-
-<div>
-
-<p class="uppercase tracking-[0.3em] text-zinc-400 text-sm font-bold">
+<p class="uppercase tracking-[0.3em] text-[#8B0000] text-sm font-bold">
 Visit Us
 </p>
 
-<h2 class="text-6xl font-black mt-6 leading-tight">
+<h2 class="text-6xl font-black mt-6">
 We'd Love To Serve You.
 </h2>
 
-<p class="text-zinc-300 text-xl mt-8 leading-relaxed">
-Enjoy delicious meals, premium coffee, and unforgettable moments
-at LaDolce Cafe.
+<div class="mt-14 space-y-5 text-xl text-zinc-300">
+
+<p id="contact-address">
+Rara St., Brgy. 7, Cabadbaran City
 </p>
 
-</div>
-
-<div class="space-y-8">
-
-<div>
-
-<p class="text-zinc-400 uppercase tracking-[0.2em] text-sm">
-Phone
-</p>
-
-<h3
-id="contact-phone"
-class="text-3xl font-black mt-2"
->
-09304089307
-</h3>
-
-</div>
-
-<div>
-
-<p class="text-zinc-400 uppercase tracking-[0.2em] text-sm">
-Address
-</p>
-
-<h3
-id="contact-address"
-class="text-3xl font-black mt-2"
->
-Cabadbaran City
-</h3>
-
-</div>
-
-<div>
-
-<p class="text-zinc-400 uppercase tracking-[0.2em] text-sm">
-Opening Hours
-</p>
-
-<h3
-id="contact-hours"
-class="text-3xl font-black mt-2"
->
+<p id="contact-hours">
 10:00 AM - 10:00 PM
-</h3>
+</p>
+
+<p id="contact-phone">
+09304089307
+</p>
 
 </div>
-
-<div class="flex flex-wrap gap-4 pt-4">
 
 <a
 id="facebook-link"
 href="#"
 target="_blank"
-class="bg-[#800000] px-8 py-4 rounded-2xl font-bold btn"
+class="inline-block mt-12 btn bg-[#8B0000] px-10 py-5 rounded-2xl text-lg font-bold"
 >
-Facebook
+Visit Facebook Page
 </a>
-
-<a
-id="instagram-link"
-href="#"
-target="_blank"
-class="bg-white text-black px-8 py-4 rounded-2xl font-bold btn"
->
-Instagram
-</a>
-
-</div>
-
-</div>
-
-</div>
 
 </div>
 
 </section>
 
 <!-- FOOTER -->
-<footer class="bg-black text-white border-t border-white/10">
+<footer class="border-t border-white/10 bg-black py-10">
 
-<div class="max-w-7xl mx-auto px-6 py-10 flex flex-col md:flex-row justify-between items-center gap-6">
+<div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
 
-<div>
-
-<h3
-id="footer-title"
-class="text-2xl font-black"
->
-LaDolce Cafe
-</h3>
-
-<p class="text-zinc-500 mt-2">
-Authentic Filipino Cuisine served with passion.
+<p class="text-zinc-500">
+© 2026 LaDolce Cafe. All rights reserved.
 </p>
 
-</div>
-
-<p class="text-zinc-500 text-sm">
-© 2026 LaDolce Cafe. All rights reserved.
+<p class="text-zinc-600 text-sm">
+Designed with passion and Filipino hospitality.
 </p>
 
 </div>
@@ -604,14 +459,14 @@ const SUPABASE_ANON_KEY =
 
 const supabaseClient =
 supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_ANON_KEY
+SUPABASE_URL,
+SUPABASE_ANON_KEY
 );
 
 /* =========================================
    LOAD WEBSITE SETTINGS
 ========================================= */
-async function loadSettings(){
+async function loadWebsiteSettings(){
 
 const { data, error } =
 await supabaseClient
@@ -621,54 +476,22 @@ await supabaseClient
 .single();
 
 if(error){
-  console.error(error);
-  return;
+console.error(error);
+return;
 }
 
-if(!data) return;
-
-/* LOGO */
-if(data.logo_url){
-
-document.getElementById("logo").src =
-data.logo_url;
-
-}
-
-/* TITLES */
-document.getElementById("nav-title").innerText =
-data.hero_title || "LaDolce Cafe";
-
-document.getElementById("footer-title").innerText =
+document.getElementById("site-title").innerText =
 data.hero_title || "LaDolce Cafe";
 
 document.getElementById("hero-title").innerText =
 data.hero_title || "LaDolce Cafe";
 
-/* DESCRIPTION */
-document.getElementById("hero-desc").innerText =
+document.getElementById("hero-description").innerText =
 data.hero_description || "";
 
 document.getElementById("about-text").innerText =
 data.about_text || "";
 
-/* HERO BG */
-if(data.hero_image){
-
-document.getElementById("hero").style.backgroundImage = `
-
-linear-gradient(
-rgba(0,0,0,0.65),
-rgba(0,0,0,0.65)
-),
-
-url('${data.hero_image}')
-
-`;
-
-}
-
-/* CONTACT */
 document.getElementById("contact-phone").innerText =
 data.phone || "";
 
@@ -678,38 +501,63 @@ data.address || "";
 document.getElementById("contact-hours").innerText =
 data.opening_hours || "";
 
-/* LINKS */
 if(data.facebook){
-
 document.getElementById("facebook-link").href =
 data.facebook;
+}
+
+/* =========================================
+   HERO IMAGE FIX
+========================================= */
+
+if(data.hero_image){
+
+const cleanUrl =
+data.hero_image.trim();
+
+console.log("Hero URL:", cleanUrl);
+
+document.getElementById("heroSection").style.backgroundImage = `
+
+linear-gradient(
+rgba(0,0,0,.72),
+rgba(0,0,0,.72)
+),
+
+url("${cleanUrl}")
+
+`;
 
 }
 
-if(data.instagram){
+/* =========================================
+   LOGO FIX
+========================================= */
 
-document.getElementById("instagram-link").href =
-data.instagram;
+if(data.logo_url){
+
+const logoUrl =
+data.logo_url.trim();
+
+console.log("Logo URL:", logoUrl);
+
+document.getElementById("logo").src =
+logoUrl;
 
 }
 
 }
 
 /* =========================================
-   LOAD MENU
+   MENU
 ========================================= */
 async function loadMenu(){
 
-const { data, error } =
+const { data } =
 await supabaseClient
 .from("menu_items")
 .select("*")
 .order("created_at",{ascending:false});
-
-if(error){
-  console.error(error);
-  return;
-}
 
 const container =
 document.getElementById("menu-container");
@@ -720,43 +568,38 @@ data?.forEach(item=>{
 
 container.innerHTML += `
 
-<div class="bg-white rounded-[2rem] overflow-hidden shadow-xl card">
+<div class="bg-[#181818] rounded-[2rem] overflow-hidden border border-white/10 card">
+
+<div class="zoom-image">
 
 <img
 src="${item.image_url || 'https://placehold.co/600x400'}"
-class="h-72 w-full object-cover"
+class="w-full h-72 object-cover"
 />
-
-<div class="p-8">
-
-<div class="flex justify-between items-start gap-4">
-
-<h3 class="text-3xl font-black">
-${item.name || ''}
-</h3>
-
-<p class="text-2xl font-black text-[#800000]">
-₱${item.price || 0}
-</p>
 
 </div>
 
-<p class="text-zinc-600 mt-5 leading-relaxed">
-${item.description || ''}
+<div class="p-8">
+
+<h3 class="text-3xl font-black">
+${item.name || ""}
+</h3>
+
+<p class="text-zinc-400 mt-4 leading-relaxed">
+${item.description || ""}
 </p>
 
-${
-item.category
-?
+<div class="flex justify-between items-center mt-8">
 
-`<div class="mt-6 inline-block bg-[#800000]/10 text-[#800000] px-4 py-2 rounded-full text-sm font-bold">
-${item.category}
-</div>`
+<p class="text-3xl font-black text-[#8B0000]">
+₱${item.price || ""}
+</p>
 
-:
+<button class="btn bg-[#8B0000] px-5 py-3 rounded-xl font-bold">
+Order
+</button>
 
-""
-}
+</div>
 
 </div>
 
@@ -769,20 +612,15 @@ ${item.category}
 }
 
 /* =========================================
-   LOAD GALLERY
+   GALLERY
 ========================================= */
 async function loadGallery(){
 
-const { data, error } =
+const { data } =
 await supabaseClient
 .from("gallery")
 .select("*")
 .order("created_at",{ascending:false});
-
-if(error){
-  console.error(error);
-  return;
-}
 
 const container =
 document.getElementById("gallery-container");
@@ -793,59 +631,12 @@ data?.forEach(img=>{
 
 container.innerHTML += `
 
-<div class="overflow-hidden rounded-[2rem] card">
+<div class="zoom-image rounded-[2rem] overflow-hidden shadow-xl card">
 
 <img
 src="${img.image_url}"
-class="h-72 w-full object-cover hover:scale-110 transition duration-500"
+class="w-full h-72 object-cover"
 />
-
-</div>
-
-`;
-
-});
-
-}
-
-/* =========================================
-   LOAD TESTIMONIALS
-========================================= */
-async function loadTestimonials(){
-
-const { data, error } =
-await supabaseClient
-.from("testimonials")
-.select("*")
-.order("created_at",{ascending:false});
-
-if(error){
-  console.error(error);
-  return;
-}
-
-const container =
-document.getElementById("testimonial-container");
-
-container.innerHTML = "";
-
-data?.forEach(item=>{
-
-container.innerHTML += `
-
-<div class="bg-[#faf7f2] rounded-[2rem] p-10 card">
-
-<div class="text-yellow-500 text-2xl">
-${"⭐".repeat(item.rating || 5)}
-</div>
-
-<p class="text-zinc-600 text-lg mt-6 leading-relaxed">
-"${item.review}"
-</p>
-
-<h3 class="text-2xl font-black mt-8">
-${item.customer_name}
-</h3>
 
 </div>
 
@@ -858,10 +649,10 @@ ${item.customer_name}
 /* =========================================
    INIT
 ========================================= */
-loadSettings();
+
+loadWebsiteSettings();
 loadMenu();
 loadGallery();
-loadTestimonials();
 
 </script>
 
