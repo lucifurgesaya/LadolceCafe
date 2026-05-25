@@ -496,28 +496,6 @@ class="w-full h-full bg-white"
 
 </main>
 
-<script>
-
-function previewImage(inputId, previewId){
-
-  const input =
-  document.getElementById(inputId);
-
-  const preview =
-  document.getElementById(previewId);
-
-  const file =
-  input.files[0];
-
-  if(!file) return;
-
-  preview.src =
-  URL.createObjectURL(file);
-
-}
-
-</script>
-
 <!-- ADMIN JS -->
 <script src="admin.js"></script>
 
