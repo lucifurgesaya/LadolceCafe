@@ -1,8 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
+/>
 
 <title>LaDolce Cafe</title>
 
@@ -18,7 +23,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link
+href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+rel="stylesheet"
+>
 
 <style>
 
@@ -41,6 +49,7 @@ body{
   background-size:cover;
   background-position:center;
   background-repeat:no-repeat;
+  transition:background-image .5s ease;
 }
 
 /* GLASS */
@@ -114,17 +123,18 @@ body{
 
 }
 
-/* IMAGE ZOOM */
+/* IMAGE EFFECT */
 .zoom-image{
   overflow:hidden;
 }
 
 .zoom-image img{
-  transition:transform .5s ease;
+  transition:transform .5s ease, opacity .4s ease;
 }
 
 .zoom-image:hover img{
   transform:scale(1.08);
+  opacity:.92;
 }
 
 /* NAV */
@@ -157,6 +167,7 @@ nav a:hover::after{
 }
 
 </style>
+
 </head>
 
 <body>
@@ -171,14 +182,14 @@ nav a:hover::after{
 
 <img
 id="logo"
-src="https://placehold.co/100x100"
-class="w-14 h-14 rounded-full object-cover border border-black/10"
+src="logo.png"
+class="w-14 h-14 rounded-full object-cover border border-black/10 shadow-lg"
 />
 
 <div>
 
 <h1
-id="site-title"
+id="logo-title"
 class="text-2xl font-black"
 >
 LaDolce Cafe
@@ -203,22 +214,25 @@ Authentic Filipino Cuisine
 </div>
 
 </div>
+
 </nav>
 
 <!-- HERO -->
 <section
 id="heroSection"
 class="hero-bg min-h-screen flex items-center relative overflow-hidden"
-style="background-image:
+style="
+background-image:
 linear-gradient(rgba(43,28,22,.65),rgba(43,28,22,.65)),
-url('https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb');"
+url('https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb');
+"
 >
 
 <div class="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent"></div>
 
 <div class="max-w-7xl mx-auto px-6 relative z-10 w-full">
 
-<!-- SLIDING TEXT -->
+<!-- SLIDER -->
 <div class="overflow-hidden mb-10">
 
 <div class="branding-slider flex whitespace-nowrap">
@@ -435,14 +449,35 @@ Rara St., Brgy. 7, Cabadbaran City
 
 </div>
 
+<div class="flex justify-center gap-4 mt-10 flex-wrap">
+
 <a
 id="facebook-link"
 href="#"
 target="_blank"
-class="inline-block mt-12 btn bg-[#800000] px-10 py-5 rounded-2xl text-lg font-bold"
+class="btn bg-[#800000] px-10 py-5 rounded-2xl text-lg font-bold"
 >
-Visit Facebook Page
+Facebook
 </a>
+
+<a
+id="instagram-link"
+href="#"
+target="_blank"
+class="btn bg-white text-black px-10 py-5 rounded-2xl text-lg font-bold"
+>
+Instagram
+</a>
+
+<a
+id="email-link"
+href="#"
+class="btn bg-[#d4a373] text-black px-10 py-5 rounded-2xl text-lg font-bold"
+>
+Email Us
+</a>
+
+</div>
 
 </div>
 
@@ -472,10 +507,7 @@ SUPABASE_URL,
 SUPABASE_ANON_KEY
 );
 
-/* =========================================
-   LOAD WEBSITE SETTINGS
-========================================= */
-
+/* LOAD SETTINGS */
 async function loadWebsiteSettings(){
 
 const { data, error } =
@@ -488,13 +520,9 @@ await supabaseClient
 if(error){
 
 console.error(error);
-
 return;
 
 }
-
-document.getElementById("site-title").innerText =
-data.hero_title || "LaDolce Cafe";
 
 document.getElementById("hero-title").innerText =
 data.hero_title || "LaDolce Cafe";
@@ -514,6 +542,7 @@ data.address || "";
 document.getElementById("contact-hours").innerText =
 data.opening_hours || "";
 
+/* FACEBOOK */
 if(data.facebook){
 
 document.getElementById("facebook-link").href =
@@ -521,15 +550,30 @@ data.facebook;
 
 }
 
-/* HERO IMAGE FIX */
-if(data.hero_image){
+/* INSTAGRAM */
+if(data.instagram){
+
+document.getElementById("instagram-link").href =
+data.instagram;
+
+}
+
+/* EMAIL */
+if(data.email){
+
+document.getElementById("email-link").href =
+`mailto:${data.email}`;
+
+}
+
+/* HERO IMAGE */
+if(data.hero_image && data.hero_image.includes("http")){
 
 const heroUrl =
 data.hero_image.trim();
 
-console.log("Hero Image:", heroUrl);
-
-document.getElementById("heroSection").style.backgroundImage = `
+document.getElementById("heroSection").style.backgroundImage =
+`
 linear-gradient(
 rgba(43,28,22,.65),
 rgba(43,28,22,.65)
@@ -539,25 +583,17 @@ url('${heroUrl}')
 
 }
 
-/* LOGO FIX */
-if(data.logo_url){
-
-const logoUrl =
-data.logo_url.trim();
-
-console.log("Logo Image:", logoUrl);
+/* LOGO */
+if(data.logo_url && data.logo_url.includes("http")){
 
 document.getElementById("logo").src =
-logoUrl;
+data.logo_url.trim();
 
 }
 
 }
 
-/* =========================================
-   LOAD MENU
-========================================= */
-
+/* LOAD MENU */
 async function loadMenu(){
 
 const { data } =
@@ -602,10 +638,6 @@ ${item.description || ""}
 ₱${item.price || ""}
 </p>
 
-<button class="btn bg-[#800000] px-5 py-3 rounded-xl font-bold">
-Order
-</button>
-
 </div>
 
 </div>
@@ -618,10 +650,7 @@ Order
 
 }
 
-/* =========================================
-   LOAD GALLERY
-========================================= */
-
+/* LOAD GALLERY */
 async function loadGallery(){
 
 const { data } =
@@ -653,6 +682,17 @@ class="w-full h-72 object-cover"
 });
 
 }
+
+/* PARALLAX */
+window.addEventListener("scroll",()=>{
+
+const hero =
+document.getElementById("heroSection");
+
+hero.style.backgroundPositionY =
+window.scrollY * 0.5 + "px";
+
+});
 
 /* INIT */
 loadWebsiteSettings();
