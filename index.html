@@ -385,6 +385,16 @@ LaDolce Cafe is a cozy restaurant offering authentic Filipino dishes made with l
 <p class="mt-4 text-white/80">Authentic Filipino Taste</p>
 </div>
 
+<div class="bg-white rounded-[2rem] p-8 shadow-lg card">
+<h3 class="text-5xl font-black text-[#800000]">Fresh</h3>
+<p class="mt-4 text-zinc-600">Daily Ingredients</p>
+</div>
+
+<div class="bg-[#2B1C16] text-white rounded-[2rem] p-8 card">
+<h3 class="text-5xl font-black">Family</h3>
+<p class="mt-4 text-white/70">Friendly Dining Experience</p>
+</div>
+
 </div>
 
 </div>
@@ -432,6 +442,10 @@ Gallery
 Food & Memories
 </h2>
 
+<p class="text-zinc-600 mt-6 text-lg">
+Experience the warmth, flavors, and memories of LaDolce Cafe.
+</p>
+
 </div>
 
 </div>
@@ -453,6 +467,10 @@ class="flex gap-6 w-max animate-gallery-slide px-6"
 <section id="contact" class="bg-[#2B1C16] text-white py-32">
 
 <div class="max-w-5xl mx-auto px-6 text-center">
+
+<p class="uppercase tracking-[0.3em] text-[#d4a373] text-sm font-bold">
+Visit Us
+</p>
 
 <h2 class="text-6xl font-black mt-6">
 We'd Love To Serve You.
@@ -478,7 +496,15 @@ Rara St., Brgy. 7, Cabadbaran City
 
 </section>
 
-<!-- SUPABASE -->
+<!-- FOOTER -->
+<footer class="bg-black py-10 text-center text-zinc-500">
+
+<p>
+© 2026 LaDolce Cafe. All rights reserved.
+</p>
+
+</footer>
+
 <script>
 
 const SUPABASE_URL =
@@ -568,7 +594,7 @@ container.innerHTML += `
 <div class="zoom-image">
 
 <img
-src="${item.image_url}"
+src="${item.image_url || 'https://placehold.co/600x400'}"
 class="w-full h-72 object-cover"
 />
 
@@ -577,16 +603,20 @@ class="w-full h-72 object-cover"
 <div class="p-8">
 
 <h3 class="text-3xl font-black">
-${item.name}
+${item.name || ""}
 </h3>
 
-<p class="text-zinc-400 mt-4">
+<p class="text-zinc-400 mt-4 leading-relaxed">
 ${item.description || ""}
 </p>
 
-<p class="text-3xl font-black text-[#d4a373] mt-8">
-₱${item.price}
+<div class="flex justify-between items-center mt-8">
+
+<p class="text-3xl font-black text-[#d4a373]">
+₱${item.price || ""}
 </p>
+
+</div>
 
 </div>
 
@@ -613,7 +643,15 @@ document.getElementById("gallery-slider");
 container.innerHTML = "";
 
 if(!data || data.length === 0){
+
+container.innerHTML = `
+<div class="text-center w-full py-20 text-zinc-500 text-xl">
+No gallery images uploaded yet.
+</div>
+`;
+
 return;
+
 }
 
 const duplicatedGallery = [
@@ -639,6 +677,17 @@ alt="LaDolce Cafe Gallery"
 });
 
 }
+
+/* PARALLAX */
+window.addEventListener("scroll",()=>{
+
+const hero =
+document.getElementById("heroSection");
+
+hero.style.backgroundPositionY =
+window.scrollY * 0.5 + "px";
+
+});
 
 /* INIT */
 loadWebsiteSettings();
