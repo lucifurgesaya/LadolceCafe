@@ -3,384 +3,634 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>LaDolce Admin CMS</title>
+
+<title>LaDolce Cafe CMS PRO MAX</title>
 
 <link rel="icon" href="logo.ico">
+
+<!-- TAILWIND -->
 <script src="https://cdn.tailwindcss.com"></script>
+
+<!-- SUPABASE -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+<!-- FONT -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link
+href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+rel="stylesheet"
+/>
+
 <style>
+
+*{
+  font-family:'Inter',sans-serif;
+}
+
 body{
-  background:#F5F5DC;
-  font-family:sans-serif;
+  background:#f5f5dc;
+  color:#2b1c16;
+}
+
+.glass{
+  backdrop-filter:blur(18px);
+  background:rgba(255,255,255,0.7);
 }
 
 .card{
   background:white;
-  padding:20px;
-  border-radius:16px;
-  box-shadow:0 10px 25px rgba(0,0,0,0.08);
+  border-radius:32px;
+  padding:32px;
+  box-shadow:0 20px 40px rgba(0,0,0,0.06);
 }
 
-input,textarea{
+.input{
   width:100%;
-  padding:10px;
-  margin-top:6px;
   border:1px solid #ddd;
-  border-radius:10px;
+  padding:16px;
+  border-radius:18px;
+  outline:none;
+  transition:0.3s;
 }
 
-button{
-  transition:.2s;
+.input:focus{
+  border-color:#800000;
+  box-shadow:0 0 0 4px rgba(128,0,0,0.1);
 }
-button:hover{
-  transform:scale(1.03);
+
+.btn-primary{
+  background:#800000;
+  color:white;
+  font-weight:700;
+  transition:0.3s;
 }
+
+.btn-primary:hover{
+  transform:translateY(-2px);
+}
+
+.btn-secondary{
+  background:#2B1C16;
+  color:white;
+  font-weight:700;
+}
+
+.section-title{
+  font-size:2rem;
+  font-weight:900;
+}
+
+.label{
+  font-size:14px;
+  font-weight:700;
+  margin-bottom:8px;
+  display:block;
+}
+
+iframe{
+  border:none;
+}
+
 </style>
 </head>
 
 <body>
 
-<!-- HEADER -->
-<header class="bg-[#2B1C16] text-white flex justify-between p-4">
-<h1 class="font-black text-xl">LaDolce CMS Admin</h1>
+<!-- NAVBAR -->
+<nav class="sticky top-0 z-50 glass border-b border-black/10">
 
-<div class="flex gap-2">
-<a href="index.html" target="_blank"
-class="bg-[#800000] px-4 py-2 rounded-xl">
-Open Site
+<div class="max-w-[1800px] mx-auto px-6 py-5 flex justify-between items-center">
+
+<div>
+
+<p class="uppercase tracking-[0.3em] text-[#800000] text-xs font-bold">
+LaDolce Cafe
+</p>
+
+<h1 class="text-4xl font-black mt-2">
+CMS Dashboard
+</h1>
+
+</div>
+
+<div class="flex gap-4">
+
+<a
+href="index.html"
+target="_blank"
+class="btn-secondary px-6 py-3 rounded-2xl"
+>
+Open Website
 </a>
 
-<button onclick="refreshPreview()"
-class="bg-white text-black px-4 py-2 rounded-xl">
-Refresh
+<button
+onclick="refreshPreview()"
+class="btn-primary px-6 py-3 rounded-2xl"
+>
+Refresh Preview
 </button>
+
 </div>
-</header>
 
-<!-- GRID -->
-<div class="grid lg:grid-cols-2 gap-6 p-6">
+</div>
 
-<!-- LEFT PANEL -->
-<div class="space-y-6">
+</nav>
+
+
+<!-- MAIN -->
+<main class="max-w-[1800px] mx-auto px-6 py-10">
+
+<div class="grid xl:grid-cols-2 gap-10">
+
+<!-- LEFT -->
+<div class="space-y-10">
 
 <!-- HERO -->
-<div class="card">
-<h2 class="font-black text-lg">Hero Section</h2>
+<section class="card">
 
-<input id="heroTitle" placeholder="Hero Title">
-<textarea id="heroDesc" placeholder="Hero Description"></textarea>
-<input type="file" id="heroImage">
+<div class="mb-10">
 
-<button onclick="updateHero()"
-class="mt-3 bg-[#800000] text-white px-4 py-2 rounded-xl">
-Save Hero
-</button>
+<p class="uppercase tracking-[0.3em] text-[#800000] text-sm font-bold">
+Hero Section
+</p>
+
+<h2 class="section-title mt-4">
+Homepage Hero
+</h2>
+
 </div>
+
+<div class="space-y-6">
+
+<div>
+<label class="label">Hero Title</label>
+<input
+id="heroTitle"
+type="text"
+placeholder="Authentic Filipino Cuisine"
+class="input"
+/>
+</div>
+
+<div>
+<label class="label">Hero Description</label>
+
+<textarea
+id="heroDesc"
+rows="5"
+placeholder="Hero Description"
+class="input"
+></textarea>
+</div>
+
+<div>
+<label class="label">Hero Background Image</label>
+
+<input
+id="heroImage"
+type="file"
+accept="image/*"
+class="input"
+/>
+</div>
+
+<button
+onclick="updateHero()"
+class="btn-primary w-full py-5 rounded-2xl text-lg"
+>
+Update Hero
+</button>
+
+</div>
+
+</section>
+
 
 <!-- ABOUT -->
-<div class="card">
-<h2 class="font-black text-lg">About</h2>
+<section class="card">
 
-<textarea id="aboutText" placeholder="About text"></textarea>
+<div class="mb-10">
 
-<button onclick="updateAbout()"
-class="mt-3 bg-green-700 text-white px-4 py-2 rounded-xl">
-Save About
-</button>
+<p class="uppercase tracking-[0.3em] text-[#800000] text-sm font-bold">
+About Section
+</p>
+
+<h2 class="section-title mt-4">
+About LaDolce Cafe
+</h2>
+
 </div>
+
+<div class="space-y-6">
+
+<div>
+<label class="label">About Description</label>
+
+<textarea
+id="aboutText"
+rows="7"
+placeholder="About text..."
+class="input"
+></textarea>
+</div>
+
+<button
+onclick="updateAbout()"
+class="btn-primary w-full py-5 rounded-2xl text-lg"
+>
+Save About Section
+</button>
+
+</div>
+
+</section>
+
 
 <!-- CONTACT -->
-<div class="card">
-<h2 class="font-black text-lg">Contact</h2>
+<section class="card">
 
-<input id="phone" placeholder="Phone">
-<input id="address" placeholder="Address">
-<input id="facebook" placeholder="Facebook Link">
-<input id="hours" placeholder="Opening Hours">
+<div class="mb-10">
 
-<button onclick="updateContact()"
-class="mt-3 bg-[#800000] text-white px-4 py-2 rounded-xl">
-Save Contact
-</button>
+<p class="uppercase tracking-[0.3em] text-[#800000] text-sm font-bold">
+Contact Settings
+</p>
+
+<h2 class="section-title mt-4">
+Cafe Information
+</h2>
+
 </div>
+
+<div class="space-y-6">
+
+<div>
+<label class="label">Phone Number</label>
+
+<input
+id="phone"
+type="text"
+placeholder="09304089307"
+class="input"
+/>
+</div>
+
+<div>
+<label class="label">Email</label>
+
+<input
+id="email"
+type="text"
+placeholder="ladolcecafe@gmail.com"
+class="input"
+/>
+</div>
+
+<div>
+<label class="label">Address</label>
+
+<input
+id="address"
+type="text"
+placeholder="Cafe Address"
+class="input"
+/>
+</div>
+
+<div>
+<label class="label">Facebook Link</label>
+
+<input
+id="facebook"
+type="text"
+placeholder="Facebook URL"
+class="input"
+/>
+</div>
+
+<div>
+<label class="label">Instagram Link</label>
+
+<input
+id="instagram"
+type="text"
+placeholder="Instagram URL"
+class="input"
+/>
+</div>
+
+<div>
+<label class="label">Opening Hours</label>
+
+<input
+id="openingHours"
+type="text"
+placeholder="10:00 AM - 10:00 PM"
+class="input"
+/>
+</div>
+
+<button
+onclick="updateContact()"
+class="btn-primary w-full py-5 rounded-2xl text-lg"
+>
+Save Contact Settings
+</button>
+
+</div>
+
+</section>
+
 
 <!-- MENU -->
-<div class="card">
-<h2 class="font-black text-lg">Menu</h2>
+<section class="card">
 
-<input id="menuName" placeholder="Name">
-<input id="menuPrice" placeholder="Price">
-<textarea id="menuDesc" placeholder="Description"></textarea>
-<input type="file" id="menuImage">
+<div class="mb-10">
 
-<button onclick="addMenu()"
-class="mt-3 bg-green-700 text-white px-4 py-2 rounded-xl">
-Add Item
+<p class="uppercase tracking-[0.3em] text-[#800000] text-sm font-bold">
+Menu Management
+</p>
+
+<h2 class="section-title mt-4">
+Add Menu Item
+</h2>
+
+</div>
+
+<div class="space-y-6">
+
+<div>
+<label class="label">Menu Name</label>
+
+<input
+id="menuName"
+type="text"
+placeholder="Chicken Inasal"
+class="input"
+/>
+</div>
+
+<div>
+<label class="label">Price</label>
+
+<input
+id="menuPrice"
+type="number"
+placeholder="199"
+class="input"
+/>
+</div>
+
+<div>
+<label class="label">Category</label>
+
+<select
+id="menuCategory"
+class="input"
+>
+
+<option>Food</option>
+<option>Drinks</option>
+<option>Dessert</option>
+<option>Special</option>
+
+</select>
+
+</div>
+
+<div>
+<label class="label">Description</label>
+
+<textarea
+id="menuDesc"
+rows="5"
+placeholder="Menu description..."
+class="input"
+></textarea>
+</div>
+
+<div class="flex items-center gap-3">
+
+<input
+id="menuFeatured"
+type="checkbox"
+class="h-5 w-5"
+/>
+
+<label class="font-semibold">
+Featured Item
+</label>
+
+</div>
+
+<div>
+<label class="label">Menu Image</label>
+
+<input
+id="menuImage"
+type="file"
+accept="image/*"
+class="input"
+/>
+</div>
+
+<button
+onclick="addMenu()"
+class="btn-primary w-full py-5 rounded-2xl text-lg"
+>
+Add Menu Item
 </button>
 
-<div id="menuList" class="mt-4 space-y-2"></div>
 </div>
+
+<div class="mt-12">
+
+<h3 class="text-2xl font-black mb-6">
+Current Menu
+</h3>
+
+<div
+id="menuList"
+class="grid gap-5"
+></div>
+
+</div>
+
+</section>
+
 
 <!-- GALLERY -->
-<div class="card">
-<h2 class="font-black text-lg">Gallery</h2>
+<section class="card">
 
-<input type="file" id="galleryImage">
+<div class="mb-10">
 
-<button onclick="uploadGallery()"
-class="mt-3 bg-[#800000] text-white px-4 py-2 rounded-xl">
-Upload Image
+<p class="uppercase tracking-[0.3em] text-[#800000] text-sm font-bold">
+Gallery
+</p>
+
+<h2 class="section-title mt-4">
+Upload Gallery Images
+</h2>
+
+</div>
+
+<div class="space-y-6">
+
+<div>
+<label class="label">Gallery Image</label>
+
+<input
+id="galleryImage"
+type="file"
+accept="image/*"
+class="input"
+/>
+</div>
+
+<button
+onclick="uploadGallery()"
+class="btn-primary w-full py-5 rounded-2xl text-lg"
+>
+Upload Gallery Image
 </button>
 
-<div id="galleryList" class="grid grid-cols-3 gap-2 mt-4"></div>
 </div>
 
+<div
+id="galleryList"
+class="grid md:grid-cols-3 gap-4 mt-10"
+></div>
+
+</section>
+
+
+<!-- TESTIMONIALS -->
+<section class="card">
+
+<div class="mb-10">
+
+<p class="uppercase tracking-[0.3em] text-[#800000] text-sm font-bold">
+Testimonials
+</p>
+
+<h2 class="section-title mt-4">
+Customer Reviews
+</h2>
+
 </div>
 
-<!-- RIGHT PANEL (LIVE PREVIEW) -->
-<div class="card h-[90vh] sticky top-4">
-<h2 class="font-black mb-2">Live Preview</h2>
+<div class="space-y-6">
 
-<iframe id="previewFrame"
+<div>
+<label class="label">Customer Name</label>
+
+<input
+id="testimonialName"
+type="text"
+placeholder="Maria"
+class="input"
+/>
+</div>
+
+<div>
+<label class="label">Review</label>
+
+<textarea
+id="testimonialReview"
+rows="5"
+placeholder="Amazing food..."
+class="input"
+></textarea>
+</div>
+
+<div>
+<label class="label">Rating</label>
+
+<select
+id="testimonialRating"
+class="input"
+>
+
+<option value="5">5 Stars</option>
+<option value="4">4 Stars</option>
+<option value="3">3 Stars</option>
+
+</select>
+
+</div>
+
+<button
+onclick="addTestimonial()"
+class="btn-primary w-full py-5 rounded-2xl text-lg"
+>
+Add Testimonial
+</button>
+
+</div>
+
+<div class="mt-12">
+
+<h3 class="text-2xl font-black mb-6">
+Customer Testimonials
+</h3>
+
+<div
+id="testimonialList"
+class="grid gap-5"
+></div>
+
+</div>
+
+</section>
+
+</div>
+
+
+<!-- RIGHT -->
+<div class="sticky top-28 h-[92vh]">
+
+<div class="bg-white rounded-[2rem] overflow-hidden shadow-2xl h-full">
+
+<div class="flex items-center justify-between px-6 py-5 border-b">
+
+<div>
+
+<h2 class="text-2xl font-black">
+Live Website Preview
+</h2>
+
+<p class="text-gray-500 text-sm">
+Real-time LaDolce Cafe preview
+</p>
+
+</div>
+
+<button
+onclick="refreshPreview()"
+class="btn-primary px-5 py-3 rounded-2xl"
+>
+Refresh
+</button>
+
+</div>
+
+<iframe
+id="previewFrame"
 src="index.html"
-class="w-full h-full border rounded-xl"></iframe>
+class="w-full h-full bg-white"
+></iframe>
+
+</div>
+
 </div>
 
 </div>
 
-<script>
+</main>
 
-const SUPABASE_URL = "https://fflnpsiutikdywibbltj.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_WLoDWwjyE2FctbWEoYYSng_qOjZn4hX";
 
-const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-const $ = (id) => document.getElementById(id);
-
-/* =========================
-   REFRESH PREVIEW
-========================= */
-function refreshPreview(){
-  $("previewFrame").src = "index.html?v=" + Date.now();
-}
-
-/* =========================
-   UPLOAD FILE
-========================= */
-async function uploadFile(file){
-  if(!file) return null;
-
-  const fileName = Date.now() + "-" + file.name;
-
-  const { error } = await supabaseClient.storage
-    .from("kuya-dan-media")
-    .upload(fileName, file);
-
-  if(error){
-    console.error(error.message);
-    alert("Upload failed");
-    return null;
-  }
-
-  const { data } = supabaseClient.storage
-    .from("kuya-dan-media")
-    .getPublicUrl(fileName);
-
-  return data.publicUrl;
-}
-
-/* =========================
-   HERO
-========================= */
-async function updateHero(){
-
-const img = await uploadFile($("heroImage").files[0]);
-
-const { error } = await supabaseClient
-.from("website_settings")
-.update({
-  hero_title: $("heroTitle").value,
-  hero_description: $("heroDesc").value,
-  hero_image: img
-})
-.eq("id",1);
-
-if(error){
-  console.error(error.message);
-  alert("Hero update failed");
-  return;
-}
-
-refreshPreview();
-}
-
-/* =========================
-   ABOUT
-========================= */
-async function updateAbout(){
-
-await supabaseClient
-.from("website_settings")
-.update({
-  about_text: $("aboutText").value
-})
-.eq("id",1);
-
-refreshPreview();
-}
-
-/* =========================
-   CONTACT
-========================= */
-async function updateContact(){
-
-await supabaseClient
-.from("website_settings")
-.update({
-  phone: $("phone").value,
-  address: $("address").value,
-  facebook: $("facebook").value,
-  opening_hours: $("hours").value
-})
-.eq("id",1);
-
-refreshPreview();
-}
-
-/* =========================
-   MENU ADD
-========================= */
-async function addMenu(){
-
-const img = await uploadFile($("menuImage").files[0]);
-
-const name = $("menuName").value;
-const price = $("menuPrice").value;
-const desc = $("menuDesc").value;
-
-if(!name || !price){
-  alert("Name and price required");
-  return;
-}
-
-const { error } = await supabaseClient
-.from("menu_items")
-.insert([{
-  name,
-  price,
-  description: desc,
-  image_url: img
-}]);
-
-if(error){
-  console.error(error.message);
-  alert("Menu add failed");
-  return;
-}
-
-loadMenu();
-refreshPreview();
-}
-
-/* =========================
-   LOAD MENU
-========================= */
-async function loadMenu(){
-
-const { data } = await supabaseClient
-.from("menu_items")
-.select("*")
-.order("created_at",{ascending:false});
-
-$("menuList").innerHTML = "";
-
-data?.forEach(i=>{
-$("menuList").innerHTML += `
-<div class="flex justify-between items-center bg-gray-100 p-2 rounded">
-  <div>
-    <p class="font-bold">${i.name}</p>
-    <p>₱${i.price}</p>
-  </div>
-
-  <button onclick="deleteMenu(${i.id})"
-  class="text-red-600 font-bold">X</button>
-</div>`;
-});
-}
-
-/* =========================
-   DELETE MENU
-========================= */
-async function deleteMenu(id){
-
-await supabaseClient
-.from("menu_items")
-.delete()
-.eq("id",id);
-
-loadMenu();
-refreshPreview();
-}
-
-/* =========================
-   GALLERY UPLOAD
-========================= */
-async function uploadGallery(){
-
-const url = await uploadFile($("galleryImage").files[0]);
-
-await supabaseClient
-.from("gallery")
-.insert([{ image_url: url }]);
-
-loadGallery();
-refreshPreview();
-}
-
-/* =========================
-   LOAD GALLERY
-========================= */
-async function loadGallery(){
-
-const { data } = await supabaseClient
-.from("gallery")
-.select("*")
-.order("created_at",{ascending:false});
-
-$("galleryList").innerHTML = "";
-
-data?.forEach(i=>{
-$("galleryList").innerHTML += `
-<div class="relative">
-  <img src="${i.image_url}" class="h-20 w-full object-cover rounded"/>
-  <button onclick="deleteGallery(${i.id})"
-  class="absolute top-1 right-1 bg-red-600 text-white px-2 rounded">X</button>
-</div>`;
-});
-}
-
-/* =========================
-   DELETE GALLERY
-========================= */
-async function deleteGallery(id){
-
-await supabaseClient
-.from("gallery")
-.delete()
-.eq("id",id);
-
-loadGallery();
-refreshPreview();
-}
-
-/* =========================
-   INIT
-========================= */
-loadMenu();
-loadGallery();
-
-</script>
+<!-- ADMIN CONNECTOR -->
+<script src="admin.js"></script>
 
 </body>
 </html>
